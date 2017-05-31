@@ -1,0 +1,3 @@
+prefix=os.path.abspath( os.path.dirname(__file__)+'/../local/x86')
+from cerbero.config import Architecture
+target_arch = Architecture.X86

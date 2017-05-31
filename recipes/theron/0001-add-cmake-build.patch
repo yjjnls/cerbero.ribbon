@@ -1,0 +1,117 @@
+From cd359a2da57423a2e3878163b6998c5d69cc8587 Mon Sep 17 00:00:00 2001
+From: Mingyi <mingyi.z@outlook.com>
+Date: Thu, 27 Apr 2017 13:57:53 +0800
+Subject: [PATCH] add cmake build
+
+---
+ Benchmarks/CMakelists.txt | 15 +++++++++++++++
+ CMakelists.txt            | 26 ++++++++++++++++++++++++++
+ Tests/CMakelists.txt      | 13 +++++++++++++
+ Tutorial/CMakelists.txt   | 19 +++++++++++++++++++
+ 4 files changed, 73 insertions(+)
+ create mode 100644 Benchmarks/CMakelists.txt
+ create mode 100644 CMakelists.txt
+ create mode 100644 Tests/CMakelists.txt
+ create mode 100644 Tutorial/CMakelists.txt
+
+diff --git a/Benchmarks/CMakelists.txt b/Benchmarks/CMakelists.txt
+new file mode 100644
+index 0000000..110d63a
+--- /dev/null
++++ b/Benchmarks/CMakelists.txt
+@@ -0,0 +1,15 @@
++cmake_minimum_required(VERSION 3.8)
++project(benchmarks)
++
++set( _list   ParallelThreadRing 
++					PingPong 
++					PrimeFactors 
++					ThreadRing)
++include_directories(Common)
++foreach( i ${_list} )
++    file(GLOB_RECURSE _sources "${i}/*.cpp")
++    add_executable( ${i} ${_sources} )
++	target_link_libraries( ${i} theron )
++	install(TARGETS ${i} RUNTIME DESTINATION ${ACM_INSTALL_SHARE_DIR}/benchmarks )
++
++endforeach()
+diff --git a/CMakelists.txt b/CMakelists.txt
+new file mode 100644
+index 0000000..1a2c4c0
+--- /dev/null
++++ b/CMakelists.txt
+@@ -0,0 +1,26 @@
++cmake_minimum_required(VERSION 3.8)
++project(theron VERSION 6.00.02 )
++set(PROJECT_DESCRIPTION "Theron : C++ concurrency library based on the Actor Model")
++
++include(AutoCMake)
++
++file(GLOB_RECURSE theron_public_HEADERS include/*.h)
++file(GLOB_RECURSE theron_public_SOURCES Theron/*.cpp)
++
++include_directories(include)
++add_library( theron STATIC ${theron_public_SOURCES} ${theron_public_SOURCES} )
++
++install(TARGETS theron 
++        ARCHIVE DESTINATION "${ACM_INSTALL_LIB_DIR}"
++		LIBRARY DESTINATION "${ACM_INSTALL_LIB_DIR}" )
++
++install(DIRECTORY include/Theron DESTINATION "${ACM_INSTALL_INCLUDE_DIR}")
++
++acmInstallPackage()
++
++add_subdirectory( tests )
++add_subdirectory( tutorial )
++add_subdirectory( benchmarks )
++
++
++
+diff --git a/Tests/CMakelists.txt b/Tests/CMakelists.txt
+new file mode 100644
+index 0000000..6a6b903
+--- /dev/null
++++ b/Tests/CMakelists.txt
+@@ -0,0 +1,13 @@
++cmake_minimum_required(VERSION 3.8)
++project(tests)
++
++file(GLOB_RECURSE tests_private_HEADERS "(TestSuite|TestFramework)/*.h")
++file(GLOB_RECURSE tests_public_SOURCES  Tests.cpp)
++
++add_executable( tests ${tests_private_HEADERS} ${tests_public_SOURCES} )
++
++target_link_libraries( tests theron )
++add_test( tests  ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/tests  )
++
++set_tests_properties(tests PROPERTIES PASS_REGULAR_EXPRESSION "PASSED" )
++install(TARGETS tests RUNTIME DESTINATION ${ACM_INSTALL_SHARE_DIR} )
+\ No newline at end of file
+diff --git a/Tutorial/CMakelists.txt b/Tutorial/CMakelists.txt
+new file mode 100644
+index 0000000..09dff9b
+--- /dev/null
++++ b/Tutorial/CMakelists.txt
+@@ -0,0 +1,19 @@
++cmake_minimum_required(VERSION 3.8)
++project(tutorial)
++
++set( _list  Alignment 
++            Client 
++            CustomAllocators 
++            FileReader
++            HelloWorld
++            MessageRegistration
++            Server
++            UnhandledMessages)
++
++foreach( i ${_list} )
++    file(GLOB_RECURSE _sources "${i}/*.cpp")
++    add_executable( ${i} ${_sources} )
++	target_link_libraries( ${i} theron )
++	install(TARGETS ${i} RUNTIME DESTINATION ${ACM_INSTALL_SHARE_DIR}/tutorial )
++
++endforeach()
+-- 
+2.12.2.windows.1
+

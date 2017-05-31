@@ -1,0 +1,76 @@
+From f640ebe8032dc9928314ec6f50a63557e6b44973 Mon Sep 17 00:00:00 2001
+From: Mingyi <mingyi.z@outlook.com>
+Date: Fri, 5 May 2017 12:00:37 +0800
+Subject: [PATCH] AutoCMake adaptation
+
+remove win32 postfix
+---
+ CMakeLists.txt      |  8 +++++++-
+ log4cplus.pc.cmakin | 13 +++++++++++++
+ src/CMakeLists.txt  |  4 ++--
+ 3 files changed, 22 insertions(+), 3 deletions(-)
+ create mode 100644 log4cplus.pc.cmakin
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index e4709ab..4099739 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -86,7 +86,7 @@ if (LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME)
+ endif (LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME)
+ 
+ set (log4cplus "log4cplus${log4cplus_postfix}")
+-
++MESSAGE( "+++++++ ${log4cplus}")
+ if (WITH_ICONV)
+   set(LOG4CPLUS_WITH_ICONV 1)
+ endif ()
+@@ -115,6 +115,12 @@ file(WRITE ${DEFINES_HXX_CMAKE} ${FILE_BUFFER})
+ 
+ configure_file(${DEFINES_HXX_CMAKE} ${DEFINES_HXX} @ONLY)
+ 
++set(VERSION ${PROJECT_VERSION} )
++set(prefix ${CMAKE_INSTALL_PREFIX})
++configure_file(log4cplus.pc.cmakin ${log4cplus_BINARY_DIR}/log4cplus.pc @ONLY)
++install( FILES ${log4cplus_BINARY_DIR}/log4cplus.pc 
++         DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig )
++
+ include_directories (${log4cplus_SOURCE_DIR}/include
+                      ${log4cplus_BINARY_DIR}/include
+                     )
+diff --git a/log4cplus.pc.cmakin b/log4cplus.pc.cmakin
+new file mode 100644
+index 0000000..9c0b965
+--- /dev/null
++++ b/log4cplus.pc.cmakin
+@@ -0,0 +1,13 @@
++prefix=@prefix@
++exec_prefix=${prefix}/bin
++libdir=${prefix}/lib
++includedir=${prefix}/include
++modules=
++
++Name: log4cplus
++Version: @VERSION@
++Description: Simple to use, thread-safe C++ logging API
++Requires:
++Libs: -L${libdir} -llog4cplus
++Libs.private: @LIBS@
++Cflags: -I${includedir}
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 82e5295..45c0d09 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -117,8 +117,8 @@ else ()
+ endif ()
+ 
+ if (WIN32)
+-  set_target_properties (${log4cplus} PROPERTIES
+-    DEBUG_POSTFIX "D")
++#  set_target_properties (${log4cplus} PROPERTIES
++#    DEBUG_POSTFIX "D")
+   target_link_libraries (${log4cplus} ws2_32 advapi32)
+ endif ()
+ 
+-- 
+2.12.0.windows.1
+

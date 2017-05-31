@@ -1,0 +1,90 @@
+From 4b58048545eb417a009b22a3a8afd58e1a4ef8b8 Mon Sep 17 00:00:00 2001
+From: Mingyi <mingyi.z@outlook.com>
+Date: Fri, 5 May 2017 14:05:43 +0800
+Subject: [PATCH] AutoCMake adaptation
+
+---
+ CMakeLists.txt           | 48 +++++++++++++++++++++++++++---------------------
+ libwebsockets.pc.cmakein | 11 +++++++++++
+ 2 files changed, 38 insertions(+), 21 deletions(-)
+ create mode 100644 libwebsockets.pc.cmakein
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index be757da..44125ec 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1478,27 +1478,33 @@ if (LWS_WITH_LWSWS)
+ 		)
+ endif (LWS_WITH_LWSWS)
+ 
+-if (UNIX)
+-
+-# Generate and install pkgconfig.
+-# (This is not indented, because the tabs will be part of the output)
+-file(WRITE "${PROJECT_BINARY_DIR}/libwebsockets.pc"
+-"prefix=\"${CMAKE_INSTALL_PREFIX}\"
+-exec_prefix=\${prefix}
+-libdir=\${exec_prefix}/lib${LIB_SUFFIX}
+-includedir=\${prefix}/include
+-
+-Name: libwebsockets
+-Description: Websockets server and client library
+-Version: ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}
+-
+-Libs: -L\${libdir} -lwebsockets
+-Cflags: -I\${includedir}"
+-)
+-
+-	install(FILES "${PROJECT_BINARY_DIR}/libwebsockets.pc"
+-		DESTINATION lib${LIB_SUFFIX}/pkgconfig)
+-endif(UNIX)
++set(VERSION 2.2.1)
++set(prefix ${CMAKE_INSTALL_PREFIX})
++configure_file(libwebsockets.pc.cmakein ${log4cplus_BINARY_DIR}/libwebsockets.pc @ONLY)
++install( FILES ${log4cplus_BINARY_DIR}/libwebsockets.pc 
++         DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/libwebsockets.pc )
++#-------------------------------------
++#if (UNIX)
++#
++## Generate and install pkgconfig.
++## (This is not indented, because the tabs will be part of the output)
++#file(WRITE "${PROJECT_BINARY_DIR}/libwebsockets.pc"
++#"prefix=\"${CMAKE_INSTALL_PREFIX}\"
++#exec_prefix=\${prefix}
++#libdir=\${exec_prefix}/lib${LIB_SUFFIX}
++#includedir=\${prefix}/include
++#
++#Name: libwebsockets
++#Description: Websockets server and client library
++#Version: ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}
++#
++#Libs: -L\${libdir} -lwebsockets
++#Cflags: -I\${includedir}"
++#)
++#
++#	install(FILES "${PROJECT_BINARY_DIR}/libwebsockets.pc"
++#		DESTINATION lib${LIB_SUFFIX}/pkgconfig)
++#endif(UNIX)
+ 
+ #
+ # Installation preparations.
+diff --git a/libwebsockets.pc.cmakein b/libwebsockets.pc.cmakein
+new file mode 100644
+index 0000000..9097a2a
+--- /dev/null
++++ b/libwebsockets.pc.cmakein
+@@ -0,0 +1,11 @@
++prefix=@prefix@
++exec_prefix=@prefix@/bin
++libdir=@prefix@/lib
++includedir=@prefix@/include
++
++Name: libwebsockets
++Version: @VERSION@
++Description: Websockets server and client library
++Requires:
++Libs: -L${libdir} -lwebsockets
++Cflags: -I${includedir}
+-- 
+2.12.2.windows.1
+

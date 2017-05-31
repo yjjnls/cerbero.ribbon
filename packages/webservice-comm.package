@@ -1,0 +1,13 @@
+# vi:si:et:sw=4:sts=4:ts=4:syntax=python
+# -*- Mode: Python -*-
+
+
+class Package(custom.WebService, package.Package):
+
+    name = 'webservice-comm'
+    shortdesc = 'Web Service communication devel component'
+    longdesc = 'Web Service communication devel component'
+    uuid = ''
+    #deps = ['base-libs']
+
+    files = ['theron:libs','log4cplus:libs','libwebsockets','libevent']

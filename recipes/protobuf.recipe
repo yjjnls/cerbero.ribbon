@@ -1,0 +1,17 @@
+# -*- Mode: Python -*- vi:si:et:sw=4:sts=4:ts=4:syntax=python
+#from cerbero.tools.libtool import LibtoolLibrary
+
+
+class Recipe(recipe.Recipe):
+    name = 'protobuf'
+    version = '3.3.0'
+    stype = SourceType.TARBALL
+    btype = BuildType.AUTOCMAKE
+	
+    url = 'https://github.com/google/protobuf/archive/v%s.tar.gz'%version
+    licenses = [License.BSD_like]
+    
+    def prepare(self):
+        if self.config.target_platform == Platform.WINDOWS:
+            self.configure_options += '-Dprotobuf_BUILD_TESTS=OFF '
+            self.configure_options += ' ./cmake '
