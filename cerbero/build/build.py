@@ -361,15 +361,20 @@ class AutoCMake (MakefilesBase):
     configure_tpl = '%(config-sh)s -DCMAKE_INSTALL_PREFIX=%(prefix)s '\
                     '-DCMAKE_LIBRARY_OUTPUT_PATH=%(libdir)s '\
                     '-DCMAKE_BUILD_TYPE=%(build_type)s '\
-                    '-DDCMAKE_CONFIGURATION_TYPES=%(build_type)s '\
+                    '-DCMAKE_CONFIGURATION_TYPES=%(build_type)s '\
                     '-DCMAKE_MODULE_PATH=D:/github.com/AutoCMake '\
                     '%(options)s '\
 
-    make = 'msbuild.exe ALL_BUILD.vcxproj'
-    make_install = 'msbuild.exe INSTALL.vcxproj'
-    make_check = 'msbuild.exe RUN_TESTS.vcxproj'
-    make_clean = 'msbuild.exe /t:clean ALL_BUILD.vcxproj'
 
+
+
+    def __init__(self):
+        MakefilesBase.__init__(self)
+
+        self.make = 'msbuild.exe ALL_BUILD.vcxproj //p:Configuration=%s'%self.config.build_type
+        self.make_install = 'msbuild.exe INSTALL.vcxproj //p:Configuration=%s'%self.config.build_type
+        self.make_check = 'msbuild.exe RUN_TESTS.vcxproj //p:Configuration=%s'%self.config.build_type
+        self.make_clean = 'msbuild.exe //t:clean ALL_BUILD.vcxproj //p:Configuration=%s'%self.config.build_type
 
     @modify_environment
     def configure(self):
