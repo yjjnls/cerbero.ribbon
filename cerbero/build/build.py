@@ -371,10 +371,11 @@ class AutoCMake (MakefilesBase):
     def __init__(self):
         MakefilesBase.__init__(self)
 
-        self.make = 'msbuild.exe ALL_BUILD.vcxproj //p:Configuration=%s'%self.config.build_type
-        self.make_install = 'msbuild.exe INSTALL.vcxproj //p:Configuration=%s'%self.config.build_type
-        self.make_check = 'msbuild.exe RUN_TESTS.vcxproj //p:Configuration=%s'%self.config.build_type
-        self.make_clean = 'msbuild.exe //t:clean ALL_BUILD.vcxproj //p:Configuration=%s'%self.config.build_type
+        if self.config.target_platform == Platform.WINDOWS:
+            self.make = 'msbuild.exe ALL_BUILD.vcxproj //p:Configuration=%s'%self.config.build_type
+            self.make_install = 'msbuild.exe INSTALL.vcxproj //p:Configuration=%s'%self.config.build_type
+            self.make_check = 'msbuild.exe RUN_TESTS.vcxproj //p:Configuration=%s'%self.config.build_type
+            self.make_clean = 'msbuild.exe //t:clean ALL_BUILD.vcxproj //p:Configuration=%s'%self.config.build_type
 
     @modify_environment
     def configure(self):
