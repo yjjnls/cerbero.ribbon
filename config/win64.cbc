@@ -1,4 +1,7 @@
-prefix=os.path.abspath( os.path.dirname(__file__)+'/../local/x86_64')
 from cerbero.config import Architecture
 arch = Architecture.X86_64
 target_arch = Architecture.X86_64
+build_type='Release'
+home_dir=os.path.abspath( os.getcwd()+ '/build/release')
+prefix=os.path.abspath( home_dir + '/local/x86_64')
+
