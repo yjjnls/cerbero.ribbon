@@ -20,7 +20,9 @@ class Recipe(recipe.Recipe):
     #files_libs = ['libz']
     #files_devel = ['include/zlib.h', 'include/zconf.h', 'lib/pkgconfig/zlib.pc']
 
-
+    def prepare(self):
+        self.configure_options += " -DEVENT__BUILD_SHARED_LIBRARIES=OFF "
+        self.configure_options += " -DEVENT__DISABLE_TESTS=ON "
 #    def prepare(self):
 #        pass
 #        return
