@@ -14,7 +14,8 @@ class Recipe(recipe.Recipe):
     #can_use_configure_cache = False
     #configure_tpl = "./configure --prefix %(prefix)s "\
     #                "--libdir %(libdir)s %(options)s"
-    patches = ['libevent/0001-AutoCMake-model.patch']
+    patches = ['libevent/0001-AutoCMake-model.patch',
+	           '0002-openssl-find-from-pc.patch']
     #
     #files_libs = ['libz']
     #files_devel = ['include/zlib.h', 'include/zconf.h', 'lib/pkgconfig/zlib.pc']

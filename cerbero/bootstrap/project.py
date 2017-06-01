@@ -34,6 +34,7 @@ class Project (BootstrapperBase):
     def start(self):
         print 'Project bootstrap-----------'
         self._install_sdk()
+        print '------END OF Project--------'
 
     def _install_sdk(self):
         if not self.prj_config:

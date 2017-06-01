@@ -1,0 +1,54 @@
+From 2d929267ec03b5f17e8d2097aa8e83fb4261fbad Mon Sep 17 00:00:00 2001
+From: Cerbero <cerbero@gstreamer.freedesktop.org>
+Date: Thu, 1 Jun 2017 15:56:40 +0800
+Subject: [PATCH 2/2] openssl find from pc
+
+---
+ CMakeLists.txt | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 67d84b3..7444804 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -680,12 +680,36 @@ if(EVENT__HAVE_EVENT_PORTS)
+ endif()
+ 
+ if (NOT EVENT__DISABLE_OPENSSL)
+-    find_package(OpenSSL REQUIRED)
++
++    find_package(PkgConfig REQUIRED)
++
++    if( $ENV{MSYSTEM} STREQUAL "msys" )
++		foreach ( _var $ENV{PKG_CONFIG_LIBDIR} $ENV{PKG_CONFIG_PATH} )
++			
++			execute_process(COMMAND cygpath --unix ${_var} 
++			OUTPUT_VARIABLE upath 
++			OUTPUT_STRIP_TRAILING_WHITESPACE)
++			if( NOT _PKG_CONFIG_PATH )
++				SET( _PKG_CONFIG_PATH ${upath})
++			else()
++				SET( _PKG_CONFIG_PATH ${upath}:${_PKG_CONFIG_PATH} )
++			endif()
++		endforeach()
++		SET(ENV{PKG_CONFIG_PATH} ${_PKG_CONFIG_PATH})
++	endif()
++
++	pkg_check_modules(OPENSSL   OpenSSL>=1.1  REQUIRED)
++	
++	set(OPENSSL_INCLUDE_DIR ${OPENSSL_INCLUDEDIR})#find_package(OpenSSL REQUIRED)
+ 
+     set(EVENT__HAVE_OPENSSL 1)
+ 
+     message(STATUS "OpenSSL include: ${OPENSSL_INCLUDE_DIR}")
+     message(STATUS "OpenSSL lib: ${OPENSSL_LIBRARIES}")
++	MESSAGE( "before: ${LINK_DIRECTORIES}")
++	link_directories( ${OPENSSL_LIBDIR})
++	MESSAGE( "after: ${LINK_DIRECTORIES}")
++	MESSAGE( "CMAKE_FIND_LIBRARY_PREFIXES:${CMAKE_LIBRARY_PATH}")
+ 
+     include_directories(${OPENSSL_INCLUDE_DIR})
+ 
+-- 
+2.12.2.windows.1
+
