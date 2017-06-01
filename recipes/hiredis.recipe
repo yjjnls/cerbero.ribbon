@@ -9,7 +9,7 @@ class Recipe(recipe.Recipe):
     btype = BuildType.AUTOCMAKE
     tarball_dirname = 'hiredis-0.13.3'
     url = 'https://github.com/redis/hiredis/archive/v0.13.3.tar.gz'
-    licenses = [License.BSD_like] 
+    licenses = [License.BSD_like]
 
     # patches = ['theron/0001-add-cmake-build.patch']
     #
