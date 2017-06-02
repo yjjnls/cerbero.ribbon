@@ -16,18 +16,18 @@ class Recipe(recipe.Recipe):
     files_libs = ['lssleay32','libeay32']
     files_devel = ['include/openssl', 'lib/pkgconfig/lssleay32.pc', 'lib/pkgconfig/libeay32.pc']
 
-    def prepare(self):
-        if self.config.target_platform == Platform.WINDOWS:
-            if self.config.target_arch == Architecture.X86:
-                if self.config.build_type == 'Debug':
-                    self.configure_options += " perl Configure --debug-VC-WIN32 "
-                if self.config.build_type == 'Release':
-                    self.configure_options += " perl Configure --VC-WIN32 "
-                self.configure = " ./ms/do_ms.bat "
-            if self.config.target_arch == Architecture.X86_64:
-                if self.config.build_type == 'Debug':
-                    self.configure_options += " Configure --debug-VC-WIN64A "
-                if self.config.build_type == 'Release':
-                    self.configure_options += " perl Configure --VC-WIN64A "
-                self.configure = "./ms/do_win64a.bat "
+    # def prepare(self):
+    #     if self.config.target_platform == Platform.WINDOWS:
+    #         if self.config.target_arch == Architecture.X86:
+    #             if self.config.build_type == 'Debug':
+    #                 self.configure_options += " perl Configure debug-VC-WIN32 "
+    #             if self.config.build_type == 'Release':
+    #                 self.configure_options += " perl Configure VC-WIN32 "
+    #             # self.configure = " ./ms/do_ms.bat "
+    #         if self.config.target_arch == Architecture.X86_64:
+    #             if self.config.build_type == 'Debug':
+    #                 self.configure_options += " debug-VC-WIN64A "
+    #             if self.config.build_type == 'Release':
+    #                 self.configure_options += " Configure --VC-WIN64A "
+    #             # self.configure = "perl Configure debug-VC-WIN64A && ./ms/do_win64a.bat "
         
