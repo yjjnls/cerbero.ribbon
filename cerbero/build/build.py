@@ -362,7 +362,6 @@ class AutoCMake (MakefilesBase):
                     '-DCMAKE_LIBRARY_OUTPUT_PATH=%(libdir)s '\
                     '-DCMAKE_BUILD_TYPE=%(build_type)s '\
                     '-DCMAKE_CONFIGURATION_TYPES=%(build_type)s '\
-                    '-DCMAKE_MODULE_PATH=D:/github.com/AutoCMake '\
                     '%(options)s '\
 
 
@@ -395,7 +394,10 @@ class AutoCMake (MakefilesBase):
 
         if self.config_src_dir != self.make_dir:
             self.configure_options += ' %s '%self.config_src_dir
-            
+
+        _autocmake = os.path.abspath( os.path.dirname(__file__) +'/../AutoCMake' )
+        self.configure_options += '-DCMAKE_MODULE_PATH=%s '%_autocmake
+
 
 
 
