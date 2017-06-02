@@ -1,0 +1,33 @@
+# -*- Mode: Python -*- vi:si:et:sw=4:sts=4:ts=4:syntax=python
+#from cerbero.tools.libtool import LibtoolLibrary
+
+
+class Recipe(recipe.Recipe):
+    name = 'openssl'
+    version = '1.0.2l'
+    stype = SourceType.TARBALL
+    btype = BuildType.AUTOCMAKE
+    tarball_dirname = 'openssl-1.0.2l'
+    url = 'https://github.com/openssl/openssl/archive/OpenSSL_1_0_2l.tar.gz'
+    licenses = [License.BSD_like]
+
+    # patches = ['theron/0001-add-cmake-build.patch']
+    #
+    # files_libs = ['openssl']
+    files_devel = ['include/openssl', 'lib/pkgconfig/openssl.pc']
+
+    def prepare(self):
+        if self.config.target_platform == Platform.WINDOWS:
+            if self.config.target_arch == Architecture.X86:
+                if self.config.build_type == 'Debug':
+                    self.configure = " perl Configure debug-VC-WIN32 "
+                if self.config.build_type == 'Release':
+                    self.configure = " perl Configure VC-WIN32 "
+                # self.configure_options += " ms/do_ms.bat "
+            if self.config.target_arch == Architecture.X86_64:
+                if self.config.build_type == 'Debug':
+                    self.configure = " perl Configure debug-VC-WIN64A "
+                if self.config.build_type == 'Release':
+                    self.configure = " perl Configure VC-WIN64A "
+                # self.configure_options += " ./ms/do_win64a.bat "
+        
