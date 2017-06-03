@@ -1,0 +1,180 @@
+From 5018e5c663cbd009511d690c7bdff1b99406ab81 Mon Sep 17 00:00:00 2001
+From: mingyiz <mingyi.z@outlook.com>
+Date: Sat, 3 Jun 2017 18:06:55 +0800
+Subject: [PATCH] AutoCMake adaptation
+
+miss local
+---
+ CMakelists.txt           | 20 ++++++++++++++++++++
+ gst/CMakelists.txt       | 24 ++++++++++++++++++++++++
+ local/CMakelists.txt     |  9 +++++++++
+ owr/CMakelists.txt       | 21 +++++++++++++++++++++
+ tests/CMakelists.txt     | 33 +++++++++++++++++++++++++++++++++
+ transport/CMakelists.txt |  9 +++++++++
+ 6 files changed, 116 insertions(+)
+ create mode 100644 CMakelists.txt
+ create mode 100644 gst/CMakelists.txt
+ create mode 100644 local/CMakelists.txt
+ create mode 100644 owr/CMakelists.txt
+ create mode 100644 tests/CMakelists.txt
+ create mode 100644 transport/CMakelists.txt
+
+diff --git a/CMakelists.txt b/CMakelists.txt
+new file mode 100644
+index 0000000..4c2fd04
+--- /dev/null
++++ b/CMakelists.txt
+@@ -0,0 +1,20 @@
++cmake_minimum_required( VERSION 3.0 )
++
++project( openwebrtc )
++set(VERSION 0.3.0-1)
++set(OWR_API_VERSION 0.3)
++include( AutoCMake )
++
++autocmake_pkgconfig_init()
++
++include_directories( ${CMAKE_SOURCE_DIR}/owr )
++include_directories( ${CMAKE_SOURCE_DIR}/gst )
++include_directories( ${CMAKE_SOURCE_DIR}/local )
++include_directories( ${CMAKE_SOURCE_DIR}/transport )
++  
++add_subdirectory( local  )
++add_subdirectory( transport  )
++add_subdirectory( gst  )
++add_subdirectory( owr  ) 
++add_subdirectory( tests  )
++
+diff --git a/gst/CMakelists.txt b/gst/CMakelists.txt
+new file mode 100644
+index 0000000..316c1bf
+--- /dev/null
++++ b/gst/CMakelists.txt
+@@ -0,0 +1,24 @@
++project(openwebrtc_gst C)
++
++file( GLOB _SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.c )
++file( GLOB _HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.h )
++
++autocmake_install_pc(NAME openwebrtc-gst-${OWR_API_VERSION}
++                     DESCRIPTION "libopenwebrtc-gst"
++                     REQUIRES gstreamer-1.0 openwebrtc-0.3
++					 LIBS openwebrtc_gst )
++					 
++autocmake_add_library(openwebrtc_gst SHARED 
++                      MODULES gstreamer-1.0 gstreamer-video-1.0
++					  SOURCES ${_SOURCES} ${_HEADERS} )
++
++target_link_libraries(openwebrtc_gst openwebrtc_transport openwebrtc_local openwebrtc-${OWR_API_VERSION} )		
++install(TARGETS openwebrtc_gst
++        LIBRARY DESTINATION lib 
++        ARCHIVE DESTINATION lib
++		RUNTIME DESTINATION bin
++		)					  
++INSTALL(FILES owr_gst_audio_renderer.h owr_gst_media_source.h owr_gst_video_renderer.h
++        DESTINATION include/owr )				 
++    
++		
+\ No newline at end of file
+diff --git a/local/CMakelists.txt b/local/CMakelists.txt
+new file mode 100644
+index 0000000..227fbfc
+--- /dev/null
++++ b/local/CMakelists.txt
+@@ -0,0 +1,9 @@
++project( openwebrtc_local C)
++
++file( GLOB _SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.c )
++file( GLOB _HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.h )
++
++autocmake_add_library(openwebrtc_local STATIC 
++                      MODULES gstreamer-1.0
++					  SOURCES ${_SOURCES} ${_HEADERS}
++                     )
+\ No newline at end of file
+diff --git a/owr/CMakelists.txt b/owr/CMakelists.txt
+new file mode 100644
+index 0000000..545932c
+--- /dev/null
++++ b/owr/CMakelists.txt
+@@ -0,0 +1,21 @@
++project(openwebrtc-${OWR_API_VERSION} C)
++
++file( GLOB _SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.c )
++file( GLOB _HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.h )
++
++autocmake_install_pc(NAME openwebrtc-${OWR_API_VERSION}
++                     DESCRIPTION "libopenwebrtc"
++                     REQUIRES glib-2.0 gobject-2.0 gmodule-2.0 gthread-2.0 gstreamer-1.0 nice
++					 LIBS openwebrtc )
++autocmake_add_library(openwebrtc-${OWR_API_VERSION} SHARED 
++                      MODULES gstreamer-1.0 gstreamer-gl-1.0 nice
++					  SOURCES ${_SOURCES} ${_HEADERS}
++                     )
++target_link_libraries(openwebrtc-${OWR_API_VERSION} openwebrtc_transport openwebrtc_local )					 
++install(TARGETS openwebrtc-${OWR_API_VERSION}
++        LIBRARY DESTINATION lib 
++        ARCHIVE DESTINATION lib
++		RUNTIME DESTINATION bin
++		)
++INSTALL(FILES owr.h owr_media_source.h owr_bus.h owr_message_origin.h owr_types.h
++        DESTINATION include/owr ) 
+\ No newline at end of file
+diff --git a/tests/CMakelists.txt b/tests/CMakelists.txt
+new file mode 100644
+index 0000000..c2d0447
+--- /dev/null
++++ b/tests/CMakelists.txt
+@@ -0,0 +1,33 @@
++PROJECT( tests )
++
++autocmake_check_modules( this gstreamer-1.0 gstreamer-base-1.0 
++			  gstreamer-video-1.0 gstreamer-audio-1.0
++			  gstreamer-rtp-1.0
++			  gstreamer-app-1.0
++			  gstreamer-sctp-1.0
++			  json-glib-1.0
++			  libsoup-2.4
++			  openssl)
++
++include_directories( ${this_INCLUDE_DIRECTORIES} )
++link_directories( ${this_LINK_DIRECTORIES} )
++
++macro( _add_test _name )
++
++	add_executable (${_name} ${ARGN})
++	target_link_libraries(${_name}  ${this_LIBS} openwebrtc-${OWR_API_VERSION} openwebrtc_gst )
++	install(TARGETS ${_name}
++			RUNTIME DESTINATION test/openwebrtc	)
++	add_dependencies(${_name} openwebrtc-${OWR_API_VERSION} openwebrtc_gst )
++
++endmacro()
++
++_add_test( test-init test_init.c )
++_add_test( test-bus test_bus.c )
++_add_test( test-uri test_uri.c test_utils.c )
++_add_test( test-gst-io test_gst_io.c )
++_add_test( test-list-devices list_devices.c )
++_add_test( test-self-view test_self_view.c test_utils.c )
++_add_test( test-send-receive test_send_receive.c test_utils.c )
++_add_test( test-client test_client.c )
++
+diff --git a/transport/CMakelists.txt b/transport/CMakelists.txt
+new file mode 100644
+index 0000000..92e54a8
+--- /dev/null
++++ b/transport/CMakelists.txt
+@@ -0,0 +1,9 @@
++project( openwebrtc_transport C)
++
++file( GLOB _SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.c )
++file( GLOB _HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.h )
++
++autocmake_add_library(openwebrtc_transport STATIC 
++                      MODULES gstreamer-1.0 nice openssl gstreamer-sctp-1.0
++					  SOURCES ${_SOURCES} ${_HEADERS}
++                     )
+\ No newline at end of file
+-- 
+2.12.0.windows.1
+
