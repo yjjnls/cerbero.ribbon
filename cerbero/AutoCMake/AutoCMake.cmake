@@ -14,7 +14,7 @@ macro( autocmake_default_set _variable _defalut _value)
        set( ${_variable} ${_defalut}  )
 	   SET(M "-[${_variable}:${${_variable}}@${_defalut}]${M}")
    endif()
-   MESSAGE("${M} => ${${_variable}}")
+   #MESSAGE("${M} => ${${_variable}}")
 endmacro()
 
 macro( autocmake_install_pc       )
@@ -67,7 +67,7 @@ macro( autocmake_install_pc       )
 			"Requires:\n"
 			"Libs: -L\${libdir} -L\${sharedlibdir} ${_libs}\n"
 			"Cflags: -I\${includedir} ${_this_CFLAGS}\n"  )
-	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_this_NAME}.pc DESTINATION "${_this_DESTINATION}/${_this_NAME}.pc")
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_this_NAME}.pc DESTINATION "${_this_DESTINATION}")
 endmacro()
 
 macro( autocmake_pkgconfig_init )
@@ -105,4 +105,38 @@ macro( autocmake_check_modules _prefix )
 	endforeach()
 	#MESSAGE("*_LINK_DIRECTORIES*" ${${_prefix}_LINK_DIRECTORIES})
 	#MESSAGE("*_INCLUDE_DIRECTORIES*" ${${_prefix}_INCLUDE_DIRECTORIES})
+endmacro()
+
+macro( autocmake_add_library _name )
+	CMAKE_PARSE_ARGUMENTS( _this "STATIC;SHARED"
+		   ""
+		   "MODULES;SOURCES"
+		   ${ARGN} )
+	autocmake_check_modules( _module ${_this_MODULES})
+	include_directories( ${_module_INCLUDE_DIRECTORIES} )
+	link_directories( ${_module_LINK_DIRECTORIES} )
+
+	MESSAGE(" ${_this_STATIC} | ${_this_SHARED}")
+
+	if( ${_this_STATIC} )
+	    add_library( ${_name} STATIC ${_this_SOURCES})
+	endif()
+
+	if( ${_this_SHARED} )
+	    add_library( ${_name} SHARED ${_this_SOURCES})
+		target_link_libraries( ${_name} ${_module_LIBS})	
+	endif()
+
+
+endmacro()
+
+macro( autocmake_add_add_executable _name )
+	CMAKE_PARSE_ARGUMENTS( _this "" ""
+		   "MODULES;SOURCES"
+		   ${ARGN} )
+	autocmake_check_modules( _module ${_this_MODULES})
+	include_directories( ${_module_INCLUDE_DIRECTORIES} )
+	link_directories( ${_module_LINK_DIRECTORIES} )
+	add_executable( ${_name} ${_this_SOURCES})
+	target_link_libraries( ${_name} ${_module_LIBS})	
 endmacro()

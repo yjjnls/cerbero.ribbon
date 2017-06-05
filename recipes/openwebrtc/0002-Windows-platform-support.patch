@@ -1,0 +1,125 @@
+From 3b3ce7bbe94079a3f537df21b5f8805faadc6c0a Mon Sep 17 00:00:00 2001
+From: mingyiz <mingyi.z@outlook.com>
+Date: Sat, 3 Jun 2017 18:08:42 +0800
+Subject: [PATCH 2/2] Windows platform support
+
+---
+ local/owr_device_list.c         | 26 ++++++++++++++++++++++++++
+ tests/test_client.c             |  5 +++++
+ transport/owr_session.c         |  6 +++---
+ transport/owr_transport_agent.c |  8 +++++---
+ 4 files changed, 39 insertions(+), 6 deletions(-)
+
+diff --git a/local/owr_device_list.c b/local/owr_device_list.c
+index 8145381..1372602 100644
+--- a/local/owr_device_list.c
++++ b/local/owr_device_list.c
+@@ -698,3 +698,29 @@ static gboolean enumerate_video_source_devices(GClosure *callback)
+ }
+ 
+ #endif /*defined(__ANDROID__)*/
++#ifdef _MSC_VER
++static gboolean enumerate_video_source_devices(GClosure *callback)
++{
++	OwrLocalMediaSource *source;
++	GList *sources = NULL;
++	source = _owr_local_media_source_new_cached(0, "video0",
++		OWR_MEDIA_TYPE_VIDEO, OWR_SOURCE_TYPE_TEST);
++	sources = g_list_prepend(sources, source);
++	sources = g_list_reverse(sources);
++	_owr_utils_call_closure_with_list(callback, sources);
++	g_list_free_full(sources, g_object_unref);
++	return FALSE;
++}
++static gboolean enumerate_audio_source_devices(GClosure *callback)
++{
++	OwrLocalMediaSource *source;
++	GList *sources = NULL;
++	source = _owr_local_media_source_new_cached(0, "audio0",
++		OWR_MEDIA_TYPE_AUDIO, OWR_SOURCE_TYPE_TEST);
++	sources = g_list_prepend(sources, source);
++	sources = g_list_reverse(sources);
++	_owr_utils_call_closure_with_list(callback, sources);
++	g_list_free_full(sources, g_object_unref);
++	return FALSE;
++}
++#endif
+diff --git a/tests/test_client.c b/tests/test_client.c
+index 7348078..1d5d363 100644
+--- a/tests/test_client.c
++++ b/tests/test_client.c
+@@ -792,6 +792,11 @@ gint main(gint argc, gchar **argv)
+     session_id = argv[1];
+     client_id = g_random_int();
+     url = g_strdup_printf(SERVER_URL"/stoc/%s/%u", session_id, client_id);
++	if( argc >=3 )
++	{
++		url = g_strdup_printf("%s/stoc/%s/%u", argv[2],session_id, client_id);
++	}
++
+     owr_init(NULL);
+     owr_get_capture_sources(OWR_MEDIA_TYPE_AUDIO | OWR_MEDIA_TYPE_VIDEO,
+         (OwrCaptureSourcesCallback)got_local_sources, url);
+diff --git a/transport/owr_session.c b/transport/owr_session.c
+index 6d7a3a1..10c84f6 100644
+--- a/transport/owr_session.c
++++ b/transport/owr_session.c
+@@ -60,7 +60,7 @@ GST_DEBUG_CATEGORY_EXTERN(_owrsession_debug);
+ 
+ #define OWR_SESSION_GET_PRIVATE(obj)    (G_TYPE_INSTANCE_GET_PRIVATE((obj), OWR_TYPE_SESSION, OwrSessionPrivate))
+ 
+-static void owr_message_origin_interface_init(OwrMessageOriginInterface *interface);
++static void owr_message_origin_interface_init(OwrMessageOriginInterface *interface_);
+ 
+ G_DEFINE_TYPE_WITH_CODE(OwrSession, owr_session, G_TYPE_OBJECT,
+     G_IMPLEMENT_INTERFACE(OWR_TYPE_MESSAGE_ORIGIN, owr_message_origin_interface_init))
+@@ -322,9 +322,9 @@ static gpointer owr_session_get_bus_set(OwrMessageOrigin *origin)
+     return OWR_SESSION(origin)->priv->message_origin_bus_set;
+ }
+ 
+-static void owr_message_origin_interface_init(OwrMessageOriginInterface *interface)
++static void owr_message_origin_interface_init(OwrMessageOriginInterface *i)
+ {
+-    interface->get_bus_set = owr_session_get_bus_set;
++    i->get_bus_set = owr_session_get_bus_set;
+ }
+ 
+ static void owr_session_init(OwrSession *session)
+diff --git a/transport/owr_transport_agent.c b/transport/owr_transport_agent.c
+index 89d348b..250b669 100644
+--- a/transport/owr_transport_agent.c
++++ b/transport/owr_transport_agent.c
+@@ -92,7 +92,7 @@ static guint next_transport_agent_id = 1;
+ 
+ #define OWR_TRANSPORT_AGENT_GET_PRIVATE(obj)    (G_TYPE_INSTANCE_GET_PRIVATE((obj), OWR_TYPE_TRANSPORT_AGENT, OwrTransportAgentPrivate))
+ 
+-static void owr_message_origin_interface_init(OwrMessageOriginInterface *interface);
++static void owr_message_origin_interface_init(OwrMessageOriginInterface *iface);
+ 
+ G_DEFINE_TYPE_WITH_CODE(OwrTransportAgent, owr_transport_agent, G_TYPE_OBJECT,
+     G_IMPLEMENT_INTERFACE(OWR_TYPE_MESSAGE_ORIGIN, owr_message_origin_interface_init))
+@@ -355,9 +355,9 @@ static gpointer owr_transport_agent_get_bus_set(OwrMessageOrigin *origin)
+     return OWR_TRANSPORT_AGENT(origin)->priv->message_origin_bus_set;
+ }
+ 
+-static void owr_message_origin_interface_init(OwrMessageOriginInterface *interface)
++static void owr_message_origin_interface_init(OwrMessageOriginInterface *iface)
+ {
+-    interface->get_bus_set = owr_transport_agent_get_bus_set;
++    iface->get_bus_set = owr_transport_agent_get_bus_set;
+ }
+ 
+ /* FIXME: Copy from owr/orw.c without any error handling whatsoever */
+@@ -410,7 +410,9 @@ static gboolean bus_call(GstBus *bus, GstMessage *msg, gpointer user_data)
+         /*GST_DEBUG_BIN_TO_DOT_FILE(GST_BIN(pipeline), GST_DEBUG_GRAPH_SHOW_ALL, "pipeline.dot");*/
+ 
+         if (!is_warning) {
++		#ifndef _MSC_VER
+             OWR_POST_ERROR(transport_agent, PROCESSING_ERROR, NULL);
++		#endif
+         }
+ 
+         g_error_free(error);
+-- 
+2.12.0.windows.1
+
