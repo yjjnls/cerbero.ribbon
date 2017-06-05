@@ -1,0 +1,57 @@
+From 1109314766d39a2eb179becc7a16e7041a730385 Mon Sep 17 00:00:00 2001
+From: yjjnls <x-jj@foxmail.com>
+Date: Mon, 5 Jun 2017 16:06:31 +0800
+Subject: [PATCH] AutoCMake adaptation
+
+---
+ CMakelists.txt   | 19 +++++++++++++++++++
+ libuv.pc.cmakein | 11 +++++++++++
+ 2 files changed, 30 insertions(+)
+ create mode 100644 CMakelists.txt
+ create mode 100644 libuv.pc.cmakein
+
+diff --git a/CMakelists.txt b/CMakelists.txt
+new file mode 100644
+index 0000000..e98eca6
+--- /dev/null
++++ b/CMakelists.txt
+@@ -0,0 +1,19 @@
++cmake_minimum_required( VERSION 3.0 )
++
++project( libuv )
++set(VERSION 1.12.0)
++include( AutoCMake )
++
++autocmake_pkgconfig_init()
++
++# include_directories( ${CMAKE_SOURCE_DIR}/owr )
++# include_directories( ${CMAKE_SOURCE_DIR}/gst )
++# include_directories( ${CMAKE_SOURCE_DIR}/local )
++# include_directories( ${CMAKE_SOURCE_DIR}/transport )
++  
++# add_subdirectory( local  )
++# add_subdirectory( transport  )
++# add_subdirectory( gst  )
++# add_subdirectory( owr  ) 
++# add_subdirectory( tests  )
++
+diff --git a/libuv.pc.cmakein b/libuv.pc.cmakein
+new file mode 100644
+index 0000000..4d4f11f
+--- /dev/null
++++ b/libuv.pc.cmakein
+@@ -0,0 +1,11 @@
++prefix=@prefix@
++exec_prefix=${prefix}/bin
++libdir=${prefix}/lib
++includedir=${prefix}/include
++
++Name: libuv
++Version: 1.12.0
++Description: multi-platform support library with a focus on asynchronous I/O.
++
++Libs: -L${libdir} -luv @LIBS@
++Cflags: -I${includedir}
+-- 
+2.13.0.windows.1
+
