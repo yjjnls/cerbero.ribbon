@@ -17,8 +17,8 @@ class Recipe(recipe.Recipe):
     patches = ['libevent/0001-AutoCMake-model.patch',
 	           'libevent/0002-openssl-find-from-pc.patch']
     #
-    #files_libs = ['libz']
-    #files_devel = ['include/zlib.h', 'include/zconf.h', 'lib/pkgconfig/zlib.pc']
+    files_libs = ['event','event_core','event_extra']
+    files_devel = ['include/libevent', 'lib/pkgconfig/libevent.pc','lib/pkgconfig/libevent_core.pc','lib/pkgconfig/libevent_extra.pc']
 
     def prepare(self):
         self.configure_options += " -DEVENT__BUILD_SHARED_LIBRARIES=OFF "
