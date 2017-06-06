@@ -19,7 +19,7 @@ class Recipe(recipe.Recipe):
     patches = ['libwebsockets/0001-AutoCMake-adaptation.patch']
     deps = ['libuv']
     #
-    files_libs = ['websockets_static.lib' 'zlib_internal.lib']
+    files_libs = ['websockets_static', 'zlib_internal']
     files_devel = ['include/libwebsockets', 'lib/pkgconfig/libwebsockets.pc']
 
     def prepare(self):
