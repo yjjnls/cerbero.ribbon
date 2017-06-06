@@ -17,19 +17,20 @@ class Recipe(recipe.Recipe):
     #configure_tpl = "./configure --prefix %(prefix)s "\
     #                "--libdir %(libdir)s %(options)s"
     patches = ['libwebsockets/0001-AutoCMake-adaptation.patch']
-    deps =['libuv']
+    deps = ['libuv']
     #
-    #files_libs = ['libz']
-    #files_devel = ['include/zlib.h', 'include/zconf.h', 'lib/pkgconfig/zlib.pc']
+    files_libs = ['websockets_static.lib' 'zlib_internal.lib']
+    files_devel = ['include/libwebsockets', 'lib/pkgconfig/libwebsockets.pc']
 
     def prepare(self):
         self.configure_options += " -DLWS_OPENSSL_LIBRARIES=%s/lib/ssl.lib " % self.config.prefix
-        self.configure_options += " -DLWS_OPENSSL_INCLUDE_DIRS=%s/include/openssl " % self.config.prefix
+        self.configure_options += " -DLWS_OPENSSL_INCLUDE_DIRS=%s/include" % self.config.prefix
 
         self.configure_options += " -DLWS_WITH_LIBUV=ON "
         self.configure_options += " -DLIBUV_INCLUDE_DIRS=%s/include/libuv " % self.config.prefix
         self.configure_options += " -DLIBUV_LIBRARIES=%s/lib/libuv.lib " % self.config.prefix
 
+        self.configure_options += " -DLWS_WITH_SHARED=OFF "
         self.configure_options += " -DLWS_WITHOUT_TESTAPPS=ON "
         self.configure_options += " -DLWS_WITHOUT_TEST_SERVER=ON "
         self.configure_options += " -DLWS_WITHOUT_TEST_SERVER_EXTPOLL=ON "
