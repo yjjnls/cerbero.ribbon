@@ -67,7 +67,7 @@ index 0000000..ad6a746
 +target_link_libraries( libgstsctp ${this_LIBS} gstsctp-1.0 )
 +
 +
-+install(TARGETS libgstsctp RUNTIME DESTINATION bin )
++install(TARGETS libgstsctp RUNTIME DESTINATION lib/gstreamer-1.0 )
 +add_dependencies( libgstsctp gstsctp-1.0 )
 \ No newline at end of file
 diff --git a/gst-libs/gst/sctp/CMakelists.txt b/gst-libs/gst/sctp/CMakelists.txt
@@ -124,7 +124,7 @@ index 0000000..eb14722
 +add_library ( libgstscream SHARED ${FILE_SOURCES} )
 +target_link_libraries( libgstscream ${this_LIBS}  )
 +                     
-+install(TARGETS libgstscream RUNTIME DESTINATION bin )
++install(TARGETS libgstscream RUNTIME DESTINATION lib/gstreamer-1.0 )
 \ No newline at end of file
 diff --git a/gst/videorepair/CMakelists.txt b/gst/videorepair/CMakelists.txt
 new file mode 100644
@@ -150,7 +150,7 @@ index 0000000..02da7ec
 +add_library ( libgstvideorepair SHARED ${FILE_SOURCES} )
 +target_link_libraries( libgstvideorepair ${this_LIBS}  )
 +                     
-+install(TARGETS libgstvideorepair RUNTIME DESTINATION bin )
++install(TARGETS libgstvideorepair RUNTIME DESTINATION lib/gstreamer-1.0 )
 \ No newline at end of file
 -- 
 2.12.2.windows.1
