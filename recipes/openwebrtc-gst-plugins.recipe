@@ -7,8 +7,16 @@ class Recipe(recipe.Recipe):
     version = '0.3.0-1'
     remotes = {'origin': 'https://github.com/EricssonResearch/openwebrtc-gst-plugins.git'}
     commit = 'ba570daa9a38838ae7a80a01b24e1877f01f6169'
+    deps = ['libusrsctp']
     btype = BuildType.AUTOCMAKE
-	
-    deps =['usrsctp']
-
+    files_libs = ['libgstsctp-1.0']
+    files_plugins_devel = [
+        'include/gstreamer-1.0/gst/sctp',
+        'lib/pkgconfig/gstreamer-sctp-1.0.pc',
+    ]
+    files_plugins_net = [
+        'lib/gstreamer-1.0/libgstvideorepair%(mext)s',
+        'lib/gstreamer-1.0/libgstsctp%(mext)s',
+        'lib/gstreamer-1.0/libgstscream%(mext)s',
+    ]
     patches = ['openwebrtc-gst-plugins/0001-AutoCMake-adaptation.patch']

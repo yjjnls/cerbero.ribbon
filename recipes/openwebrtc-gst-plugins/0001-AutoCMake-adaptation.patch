@@ -43,7 +43,7 @@ index 0000000..ad6a746
 +++ b/ext/sctp/CMakelists.txt
 @@ -0,0 +1,27 @@
 +
-+PROJECT( gstsctp )
++PROJECT( libgstsctp )
 +
 +
 +FILE( GLOB FILE_SOURCES 
@@ -63,12 +63,12 @@ index 0000000..ad6a746
 +link_directories( ${this_LINK_DIRECTORIES} )
 +
 +
-+add_library ( gstsctp SHARED ${FILE_SOURCES} )
-+target_link_libraries( gstsctp ${this_LIBS} gstsctp-1.0 )
++add_library ( libgstsctp SHARED ${FILE_SOURCES} )
++target_link_libraries( libgstsctp ${this_LIBS} gstsctp-1.0 )
 +
 +
-+install(TARGETS gstsctp RUNTIME DESTINATION bin )
-+add_dependencies( gstsctp gstsctp-1.0 )
++install(TARGETS libgstsctp RUNTIME DESTINATION bin )
++add_dependencies( libgstsctp gstsctp-1.0 )
 \ No newline at end of file
 diff --git a/gst-libs/gst/sctp/CMakelists.txt b/gst-libs/gst/sctp/CMakelists.txt
 new file mode 100644
@@ -104,7 +104,7 @@ index 0000000..eb14722
 --- /dev/null
 +++ b/gst/scream/CMakelists.txt
 @@ -0,0 +1,21 @@
-+project( gstscream C )
++project( libgstscream C )
 +
 +
 +
@@ -121,10 +121,10 @@ index 0000000..eb14722
 +include_directories( ${this_INCLUDE_DIRECTORIES} )
 +link_directories( ${this_LINK_DIRECTORIES} )
 +
-+add_library ( gstscream SHARED ${FILE_SOURCES} )
-+target_link_libraries( gstscream ${this_LIBS}  )
++add_library ( libgstscream SHARED ${FILE_SOURCES} )
++target_link_libraries( libgstscream ${this_LIBS}  )
 +                     
-+install(TARGETS gstscream RUNTIME DESTINATION bin )
++install(TARGETS libgstscream RUNTIME DESTINATION bin )
 \ No newline at end of file
 diff --git a/gst/videorepair/CMakelists.txt b/gst/videorepair/CMakelists.txt
 new file mode 100644
@@ -132,7 +132,7 @@ index 0000000..02da7ec
 --- /dev/null
 +++ b/gst/videorepair/CMakelists.txt
 @@ -0,0 +1,19 @@
-+project( gstvideorepair )
++project( libgstvideorepair )
 +
 +
 +file( GLOB FILE_SOURCES 
@@ -147,10 +147,10 @@ index 0000000..02da7ec
 +include_directories( ${this_INCLUDE_DIRECTORIES} )
 +link_directories( ${this_LINK_DIRECTORIES} )
 +
-+add_library ( gstvideorepair SHARED ${FILE_SOURCES} )
-+target_link_libraries( gstvideorepair ${this_LIBS}  )
++add_library ( libgstvideorepair SHARED ${FILE_SOURCES} )
++target_link_libraries( libgstvideorepair ${this_LIBS}  )
 +                     
-+install(TARGETS gstvideorepair RUNTIME DESTINATION bin )
++install(TARGETS libgstvideorepair RUNTIME DESTINATION bin )
 \ No newline at end of file
 -- 
 2.12.2.windows.1
