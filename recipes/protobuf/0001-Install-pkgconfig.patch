@@ -1,0 +1,42 @@
+From c318f4b53775fe782c794042631df6a20181c1d1 Mon Sep 17 00:00:00 2001
+From: yjjnls <x-jj@foxmail.com>
+Date: Tue, 6 Jun 2017 14:47:18 +0800
+Subject: [PATCH] Install pkgconfig
+
+---
+ cmake/install.cmake | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/cmake/install.cmake b/cmake/install.cmake
+index 28dc90d..993689b 100644
+--- a/cmake/install.cmake
++++ b/cmake/install.cmake
+@@ -99,16 +99,16 @@ export(TARGETS libprotobuf-lite libprotobuf libprotoc protoc
+   FILE ${CMAKE_INSTALL_CMAKEDIR}/protobuf-targets.cmake
+ )
+ 
+-install(EXPORT protobuf-targets
+-  DESTINATION "${CMAKE_INSTALL_CMAKEDIR}"
+-  NAMESPACE protobuf::
+-  COMPONENT protobuf-export)
++# install(EXPORT protobuf-targets
++  # DESTINATION "${CMAKE_INSTALL_CMAKEDIR}"
++  # NAMESPACE protobuf::
++  # COMPONENT protobuf-export)
+ 
+-install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/
+-  DESTINATION "${CMAKE_INSTALL_CMAKEDIR}"
+-  COMPONENT protobuf-export
+-  PATTERN protobuf-targets.cmake EXCLUDE
+-)
++# install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/
++  # DESTINATION "${CMAKE_INSTALL_CMAKEDIR}"
++  # COMPONENT protobuf-export
++  # PATTERN protobuf-targets.cmake EXCLUDE
++# )
+ 
+ option(protobuf_INSTALL_EXAMPLES "Install the examples folder" OFF)
+ if(protobuf_INSTALL_EXAMPLES)
+-- 
+2.13.0.windows.1
+
