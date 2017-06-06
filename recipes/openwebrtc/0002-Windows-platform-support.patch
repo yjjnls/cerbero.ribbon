@@ -1,16 +1,18 @@
-From 14aae7af4fd7d38a24036523edfb9eb1c58dce5b Mon Sep 17 00:00:00 2001
+From c83d7ebe3390b945e0e7087d8005eee67c8af756 Mon Sep 17 00:00:00 2001
 From: mingyiz <mingyi.z@outlook.com>
 Date: Sat, 3 Jun 2017 18:08:42 +0800
 Subject: [PATCH 2/2] Windows platform support
 
 fix test
+
+SERVER_URL
 ---
  local/owr_device_list.c         | 26 ++++++++++++++++++++++++++
- tests/test_client.c             |  2 +-
+ tests/test_client.c             |  7 ++++++-
  tests/test_gst_io.c             |  5 +++++
  transport/owr_session.c         |  6 +++---
  transport/owr_transport_agent.c |  8 +++++---
- 5 files changed, 40 insertions(+), 7 deletions(-)
+ 5 files changed, 45 insertions(+), 7 deletions(-)
 
 diff --git a/local/owr_device_list.c b/local/owr_device_list.c
 index 8145381..1372602 100644
@@ -47,18 +49,30 @@ index 8145381..1372602 100644
 +}
 +#endif
 diff --git a/tests/test_client.c b/tests/test_client.c
-index 7348078..bbbb5a5 100644
+index 7348078..c5713d0 100644
 --- a/tests/test_client.c
 +++ b/tests/test_client.c
-@@ -791,7 +791,7 @@ gint main(gint argc, gchar **argv)
+@@ -42,7 +42,7 @@
+ #include <libsoup/soup.h>
+ #include <string.h>
+ 
+-#define SERVER_URL "http://demo.openwebrtc.org"
++#define SERVER_URL "http://127.0.0.1:8080"
+ 
+ #define ENABLE_PCMA TRUE
+ #define ENABLE_PCMU TRUE
+@@ -791,6 +791,11 @@ gint main(gint argc, gchar **argv)
  
      session_id = argv[1];
      client_id = g_random_int();
--    url = g_strdup_printf(SERVER_URL"/stoc/%s/%u", session_id, client_id);
-+    url = g_strdup_printf("%s/stoc/%s/%u", argc >= 3 ? argv[2] :SERVER_URL,  session_id, client_id);
++	
++	//BIG ISSUE !!!! 
++	//if we change g_strdup_printf(SERVER_URL"/stoc/%s/%u", session_id, client_id);
++	//as g_strdup_printf("%s/stoc/%s/%u", SERVER_URL,session_id, client_id);
++	//Failed Send answer to server will be occured
+     url = g_strdup_printf(SERVER_URL"/stoc/%s/%u", session_id, client_id);
      owr_init(NULL);
      owr_get_capture_sources(OWR_MEDIA_TYPE_AUDIO | OWR_MEDIA_TYPE_VIDEO,
-         (OwrCaptureSourcesCallback)got_local_sources, url);
 diff --git a/tests/test_gst_io.c b/tests/test_gst_io.c
 index 2e7597e..0640c79 100644
 --- a/tests/test_gst_io.c
