@@ -1,14 +1,16 @@
-From 3b3ce7bbe94079a3f537df21b5f8805faadc6c0a Mon Sep 17 00:00:00 2001
+From 14aae7af4fd7d38a24036523edfb9eb1c58dce5b Mon Sep 17 00:00:00 2001
 From: mingyiz <mingyi.z@outlook.com>
 Date: Sat, 3 Jun 2017 18:08:42 +0800
 Subject: [PATCH 2/2] Windows platform support
 
+fix test
 ---
  local/owr_device_list.c         | 26 ++++++++++++++++++++++++++
- tests/test_client.c             |  5 +++++
+ tests/test_client.c             |  2 +-
+ tests/test_gst_io.c             |  5 +++++
  transport/owr_session.c         |  6 +++---
  transport/owr_transport_agent.c |  8 +++++---
- 4 files changed, 39 insertions(+), 6 deletions(-)
+ 5 files changed, 40 insertions(+), 7 deletions(-)
 
 diff --git a/local/owr_device_list.c b/local/owr_device_list.c
 index 8145381..1372602 100644
@@ -45,21 +47,36 @@ index 8145381..1372602 100644
 +}
 +#endif
 diff --git a/tests/test_client.c b/tests/test_client.c
-index 7348078..1d5d363 100644
+index 7348078..bbbb5a5 100644
 --- a/tests/test_client.c
 +++ b/tests/test_client.c
-@@ -792,6 +792,11 @@ gint main(gint argc, gchar **argv)
+@@ -791,7 +791,7 @@ gint main(gint argc, gchar **argv)
+ 
      session_id = argv[1];
      client_id = g_random_int();
-     url = g_strdup_printf(SERVER_URL"/stoc/%s/%u", session_id, client_id);
-+	if( argc >=3 )
-+	{
-+		url = g_strdup_printf("%s/stoc/%s/%u", argv[2],session_id, client_id);
-+	}
-+
+-    url = g_strdup_printf(SERVER_URL"/stoc/%s/%u", session_id, client_id);
++    url = g_strdup_printf("%s/stoc/%s/%u", argc >= 3 ? argv[2] :SERVER_URL,  session_id, client_id);
      owr_init(NULL);
      owr_get_capture_sources(OWR_MEDIA_TYPE_AUDIO | OWR_MEDIA_TYPE_VIDEO,
          (OwrCaptureSourcesCallback)got_local_sources, url);
+diff --git a/tests/test_gst_io.c b/tests/test_gst_io.c
+index 2e7597e..0640c79 100644
+--- a/tests/test_gst_io.c
++++ b/tests/test_gst_io.c
+@@ -36,8 +36,13 @@
+ #include "owr_gst_video_renderer.h"
+ #include "owr_gst_media_source.h"
+ 
++#ifdef _MSC_VER
++#define CUSTOM_AUDIO_SINK "autoaudiosink"
++#define CUSTOM_VIDEO_SINK "glimagesink"
++#else
+ #define CUSTOM_AUDIO_SINK "pulsesink"
+ #define CUSTOM_VIDEO_SINK "xvimagesink"
++#endif
+ #define CUSTOM_AUDIO_SOURCE "audiotestsrc wave=10"
+ #define CUSTOM_VIDEO_SOURCE "videotestsrc ! capsfilter caps=\"video/x-raw, width=(int)1280, height=(int)720\" ! videoscale"
+ 
 diff --git a/transport/owr_session.c b/transport/owr_session.c
 index 6d7a3a1..10c84f6 100644
 --- a/transport/owr_session.c
@@ -121,5 +138,5 @@ index 89d348b..250b669 100644
  
          g_error_free(error);
 -- 
-2.12.0.windows.1
+2.12.2.windows.1
 
