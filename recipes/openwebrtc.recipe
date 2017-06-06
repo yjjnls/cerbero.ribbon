@@ -8,6 +8,7 @@ class Recipe(recipe.Recipe):
     remotes = {'origin': 'https://github.com/EricssonResearch/openwebrtc.git'}
     commit = '99537faf8c64ca7cb95aff043cc2d2bf49860d4d'
     btype = BuildType.AUTOCMAKE
+    deps = ['openwebrtc-gst-plugins']
 
     patches = ['openwebrtc/0001-AutoCMake-adaptation.patch',               
                'openwebrtc/0002-Windows-platform-support.patch']
