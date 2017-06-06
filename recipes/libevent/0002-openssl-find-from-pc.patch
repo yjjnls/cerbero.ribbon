@@ -1,16 +1,16 @@
-From 4bbc24d65c71b95465705c20ed6bffbc7bde823d Mon Sep 17 00:00:00 2001
+From 5045bd305450c6213bfe78fb1a27241f73351dce Mon Sep 17 00:00:00 2001
 From: Cerbero <cerbero@gstreamer.freedesktop.org>
 Date: Thu, 1 Jun 2017 15:56:40 +0800
 Subject: [PATCH 2/2] openssl find from pc
 
 ---
- CMakeLists.txt      | 31 ++++++++++++++++++++++++++++++-
+ CMakeLists.txt      | 51 ++++++++++++++++++++++++++++++++++++++++-----------
  libevent.pc.cmakein | 16 ++++++++++++++++
- 2 files changed, 46 insertions(+), 1 deletion(-)
+ 2 files changed, 56 insertions(+), 11 deletions(-)
  create mode 100644 libevent.pc.cmakein
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 67d84b3..94bf109 100644
+index 67d84b3..ee5dc82 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -680,12 +680,36 @@ if(EVENT__HAVE_EVENT_PORTS)
@@ -62,14 +62,43 @@ index 67d84b3..94bf109 100644
  configure_file(${PROJECT_SOURCE_DIR}/libevent_extra.pc.cmakein
                  ${PROJECT_BINARY_DIR}/libevent_extra.pc
                  @ONLY)
-@@ -1427,6 +1455,7 @@ install(FILES
-         COMPONENT dev)
+@@ -1419,14 +1447,15 @@ install(FILES ${HDR_COMPAT}
+     COMPONENT dev)
+ 
+ # Install the configs.
+-install(FILES
+-    ${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/LibeventConfig.cmake
+-    ${PROJECT_BINARY_DIR}/LibeventConfigVersion.cmake
+-    DESTINATION
+-            "${EVENT_INSTALL_CMAKE_DIR}"
+-        COMPONENT dev)
++# install(FILES
++    # ${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/LibeventConfig.cmake
++    # ${PROJECT_BINARY_DIR}/LibeventConfigVersion.cmake
++    # DESTINATION
++            # "${EVENT_INSTALL_CMAKE_DIR}"
++        # COMPONENT dev)
  
  install(FILES
 +	${PROJECT_BINARY_DIR}/libevent.pc
      ${PROJECT_BINARY_DIR}/libevent_extra.pc
  	${PROJECT_BINARY_DIR}/libevent_core.pc
      DESTINATION
+@@ -1434,10 +1463,10 @@ install(FILES
+         COMPONENT dev)
+ 		
+ # Install exports for the install-tree.
+-install(EXPORT LibeventTargets
+-        DESTINATION
+-                    "${EVENT_INSTALL_CMAKE_DIR}"
+-                COMPONENT dev)
++# install(EXPORT LibeventTargets
++        # DESTINATION
++                    # "${EVENT_INSTALL_CMAKE_DIR}"
++                # COMPONENT dev)
+ 
+ set(LIBEVENT_LIBRARIES
+         event
 diff --git a/libevent.pc.cmakein b/libevent.pc.cmakein
 new file mode 100644
 index 0000000..f6e6870
