@@ -13,7 +13,7 @@ class Recipe(recipe.Recipe):
     patches = ['openwebrtc/0001-AutoCMake-adaptation.patch',               
                'openwebrtc/0002-Windows-platform-support.patch']
     #
-    files_libs = ['libopenwebrtc_gst','libopenwebrtc']
+    files_libs = ['libopenwebrtc_gst','libopenwebrtc-0.3']
     files_devel = ['include/owr', 'lib/pkgconfig/openwebrtc-0.3.pc',
                    'lib/pkgconfig/openwebrtc-gst-0.3.pc']
 

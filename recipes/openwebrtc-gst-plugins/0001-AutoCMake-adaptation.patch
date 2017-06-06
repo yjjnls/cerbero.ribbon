@@ -75,7 +75,7 @@ new file mode 100644
 index 0000000..0529729
 --- /dev/null
 +++ b/gst-libs/gst/sctp/CMakelists.txt
-@@ -0,0 +1,21 @@
+@@ -0,0 +1,22 @@
 +project( gstsctp-1.0 C)
 +
 +file( GLOB _SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.c )
@@ -88,15 +88,16 @@ index 0000000..0529729
 +add_library ( gstsctp-1.0 STATIC ${_SOURCES} ${_HEADERS} )
 +autocmake_install_pc(NAME gstreamer-sctp-1.0
 +                     DESCRIPTION "GStreamer SCTP helper functions"
-+                     REQUIRES gstreamer-1.0 
-+					 LIBS gstsctp-1.0 )
++                     REQUIRES gstreamer-1.0
++                     INCLUDEDIR include/gstreamer-1.0
++					  LIBS gstsctp-1.0 )
 +					 
 +install(TARGETS gstsctp-1.0
 +        LIBRARY DESTINATION lib 
 +        ARCHIVE DESTINATION lib
 +		)
 +		
-+install(FILES ${_HEADERS} DESTINATION include/gst/sctp   )
++install(FILES ${_HEADERS} DESTINATION include/gstreamer-1.0/gst/sctp   )
 \ No newline at end of file
 diff --git a/gst/scream/CMakelists.txt b/gst/scream/CMakelists.txt
 new file mode 100644
