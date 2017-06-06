@@ -7,18 +7,36 @@ class Recipe(recipe.Recipe):
     version = '2.2.1'
     stype = SourceType.TARBALL
     btype = BuildType.AUTOCMAKE
-	
-	#tarball_dirname = 'v%s'%version
-    url = 'https://github.com/warmcat/libwebsockets/archive/v%s.tar.gz'%version
+
+    #tarball_dirname = 'v%s'%version
+    url = 'https://github.com/warmcat/libwebsockets/archive/v%s.tar.gz' % version
     licenses = [License.BSD_like]
+
     #add_host_build_target = False
     #can_use_configure_cache = False
     #configure_tpl = "./configure --prefix %(prefix)s "\
     #                "--libdir %(libdir)s %(options)s"
-    #patches = ['theron/0001-add-cmake-build.patch']
+    patches = ['libwebsockets/0001-AutoCMake-adaptation.patch']
+    deps =['libuv']
     #
     #files_libs = ['libz']
     #files_devel = ['include/zlib.h', 'include/zconf.h', 'lib/pkgconfig/zlib.pc']
+
+    def prepare(self):
+        self.configure_options += " -DLWS_OPENSSL_LIBRARIES=%s/lib/ssl.lib " % self.config.prefix
+        self.configure_options += " -DLWS_OPENSSL_INCLUDE_DIRS=%s/include/openssl " % self.config.prefix
+
+        self.configure_options += " -DLWS_WITH_LIBUV=ON "
+        self.configure_options += " -DLIBUV_INCLUDE_DIRS=%s/include/libuv " % self.config.prefix
+        self.configure_options += " -DLIBUV_LIBRARIES=%s/lib/libuv.lib " % self.config.prefix
+
+        self.configure_options += " -DLWS_WITHOUT_TESTAPPS=ON "
+        self.configure_options += " -DLWS_WITHOUT_TEST_SERVER=ON "
+        self.configure_options += " -DLWS_WITHOUT_TEST_SERVER_EXTPOLL=ON "
+        self.configure_options += " -DLWS_WITHOUT_TEST_PING=ON "
+        self.configure_options += " -DLWS_WITHOUT_TEST_ECHO=ON "
+        self.configure_options += " -DLWS_WITHOUT_TEST_CLIENT=ON "
+        self.configure_options += " -DLWS_WITHOUT_TEST_FRAGGLE=ON "
 
 
 #    def prepare(self):
