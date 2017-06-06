@@ -1,14 +1,16 @@
-From 2d929267ec03b5f17e8d2097aa8e83fb4261fbad Mon Sep 17 00:00:00 2001
+From 5045bd305450c6213bfe78fb1a27241f73351dce Mon Sep 17 00:00:00 2001
 From: Cerbero <cerbero@gstreamer.freedesktop.org>
 Date: Thu, 1 Jun 2017 15:56:40 +0800
 Subject: [PATCH 2/2] openssl find from pc
 
 ---
- CMakeLists.txt | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ CMakeLists.txt      | 51 ++++++++++++++++++++++++++++++++++++++++-----------
+ libevent.pc.cmakein | 16 ++++++++++++++++
+ 2 files changed, 56 insertions(+), 11 deletions(-)
+ create mode 100644 libevent.pc.cmakein
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 67d84b3..7444804 100644
+index 67d84b3..ee5dc82 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -680,12 +680,36 @@ if(EVENT__HAVE_EVENT_PORTS)
@@ -49,6 +51,76 @@ index 67d84b3..7444804 100644
  
      include_directories(${OPENSSL_INCLUDE_DIR})
  
+@@ -1390,6 +1414,10 @@ configure_file(${PROJECT_SOURCE_DIR}/cmake/LibeventConfigVersion.cmake.in
+                 ${PROJECT_BINARY_DIR}/LibeventConfigVersion.cmake
+                 @ONLY)
+ 
++configure_file(${PROJECT_SOURCE_DIR}/libevent.pc.cmakein
++                ${PROJECT_BINARY_DIR}/libevent.pc
++                @ONLY)
++				
+ configure_file(${PROJECT_SOURCE_DIR}/libevent_extra.pc.cmakein
+                 ${PROJECT_BINARY_DIR}/libevent_extra.pc
+                 @ONLY)
+@@ -1419,14 +1447,15 @@ install(FILES ${HDR_COMPAT}
+     COMPONENT dev)
+ 
+ # Install the configs.
+-install(FILES
+-    ${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/LibeventConfig.cmake
+-    ${PROJECT_BINARY_DIR}/LibeventConfigVersion.cmake
+-    DESTINATION
+-            "${EVENT_INSTALL_CMAKE_DIR}"
+-        COMPONENT dev)
++# install(FILES
++    # ${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/LibeventConfig.cmake
++    # ${PROJECT_BINARY_DIR}/LibeventConfigVersion.cmake
++    # DESTINATION
++            # "${EVENT_INSTALL_CMAKE_DIR}"
++        # COMPONENT dev)
+ 
+ install(FILES
++	${PROJECT_BINARY_DIR}/libevent.pc
+     ${PROJECT_BINARY_DIR}/libevent_extra.pc
+ 	${PROJECT_BINARY_DIR}/libevent_core.pc
+     DESTINATION
+@@ -1434,10 +1463,10 @@ install(FILES
+         COMPONENT dev)
+ 		
+ # Install exports for the install-tree.
+-install(EXPORT LibeventTargets
+-        DESTINATION
+-                    "${EVENT_INSTALL_CMAKE_DIR}"
+-                COMPONENT dev)
++# install(EXPORT LibeventTargets
++        # DESTINATION
++                    # "${EVENT_INSTALL_CMAKE_DIR}"
++                # COMPONENT dev)
+ 
+ set(LIBEVENT_LIBRARIES
+         event
+diff --git a/libevent.pc.cmakein b/libevent.pc.cmakein
+new file mode 100644
+index 0000000..f6e6870
+--- /dev/null
++++ b/libevent.pc.cmakein
+@@ -0,0 +1,16 @@
++#libevent pkg-config source file
++
++prefix=@prefix@
++exec_prefix=${prefix}/bin
++libdir=${prefix}/lib
++includedir=${prefix}/include
++
++Name: libevent
++Description: libevent is an asynchronous notification event loop library
++Version: @VERSION@
++Requires:
++Conflicts:
++Libs: -L${libdir} -levent
++Libs.private: @LIBS@
++Cflags: -I${includedir}
++
 -- 
-2.12.2.windows.1
+2.13.0.windows.1
 

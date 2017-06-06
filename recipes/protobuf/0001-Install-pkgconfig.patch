@@ -1,0 +1,131 @@
+From c60330f4c5ba520b6fd7db7c1d0a0a50351148ec Mon Sep 17 00:00:00 2001
+From: yjjnls <x-jj@foxmail.com>
+Date: Tue, 6 Jun 2017 14:47:18 +0800
+Subject: [PATCH] Install pkgconfig
+
+---
+ cmake/install.cmake               | 29 ++++++++++++++++++++---------
+ cmake/libprotobuf-lite.pc.cmakein | 11 +++++++++++
+ cmake/libprotobuf.pc.cmakein      | 11 +++++++++++
+ cmake/libprotoc.pc.cmakein        | 11 +++++++++++
+ cmake/protobuf-options.cmake      | 14 +++++++-------
+ 5 files changed, 60 insertions(+), 16 deletions(-)
+ create mode 100644 cmake/libprotobuf-lite.pc.cmakein
+ create mode 100644 cmake/libprotobuf.pc.cmakein
+ create mode 100644 cmake/libprotoc.pc.cmakein
+
+diff --git a/cmake/install.cmake b/cmake/install.cmake
+index 28dc90d..1323f12 100644
+--- a/cmake/install.cmake
++++ b/cmake/install.cmake
+@@ -99,16 +99,27 @@ export(TARGETS libprotobuf-lite libprotobuf libprotoc protoc
+   FILE ${CMAKE_INSTALL_CMAKEDIR}/protobuf-targets.cmake
+ )
+ 
+-install(EXPORT protobuf-targets
+-  DESTINATION "${CMAKE_INSTALL_CMAKEDIR}"
+-  NAMESPACE protobuf::
+-  COMPONENT protobuf-export)
++# install(EXPORT protobuf-targets
++  # DESTINATION "${CMAKE_INSTALL_CMAKEDIR}"
++  # NAMESPACE protobuf::
++  # COMPONENT protobuf-export)
+ 
+-install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/
+-  DESTINATION "${CMAKE_INSTALL_CMAKEDIR}"
+-  COMPONENT protobuf-export
+-  PATTERN protobuf-targets.cmake EXCLUDE
+-)
++# install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/
++  # DESTINATION "${CMAKE_INSTALL_CMAKEDIR}"
++  # COMPONENT protobuf-export
++  # PATTERN protobuf-targets.cmake EXCLUDE
++# )
++set(VERSION 3.3.0)
++set(prefix ${CMAKE_INSTALL_PREFIX})
++configure_file(libprotobuf.pc.cmakein cmake/protobuf.pc @ONLY)
++install( FILES protobuf.pc 
++         DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig )
++configure_file(libprotobuf-lite.pc.cmakein cmake/protobuf-lite.pc @ONLY)
++install( FILES protobuf-lite.pc 
++         DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig )
++configure_file(libprotoc.pc.cmakein cmake/protoc.pc @ONLY)
++install( FILES protoc.pc 
++         DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig )
+ 
+ option(protobuf_INSTALL_EXAMPLES "Install the examples folder" OFF)
+ if(protobuf_INSTALL_EXAMPLES)
+diff --git a/cmake/libprotobuf-lite.pc.cmakein b/cmake/libprotobuf-lite.pc.cmakein
+new file mode 100644
+index 0000000..7b49ccc
+--- /dev/null
++++ b/cmake/libprotobuf-lite.pc.cmakein
+@@ -0,0 +1,11 @@
++prefix=@prefix@
++exec_prefix=@prefix@/bin
++libdir=@prefix@/lib
++includedir=@prefix@/include
++
++Name: libprotobuf-lite
++Version: 3.3.0
++Description: 
++Requires:
++Libs: -L${libdir}  -llibprotobuf-lited
++Cflags: -I${includedir}
+diff --git a/cmake/libprotobuf.pc.cmakein b/cmake/libprotobuf.pc.cmakein
+new file mode 100644
+index 0000000..f851588
+--- /dev/null
++++ b/cmake/libprotobuf.pc.cmakein
+@@ -0,0 +1,11 @@
++prefix=@prefix@
++exec_prefix=@prefix@/bin
++libdir=@prefix@/lib
++includedir=@prefix@/include
++
++Name: libprotobuf
++Version: 3.3.0
++Description: 
++Requires:
++Libs: -L${libdir}  -llibprotobufd
++Cflags: -I${includedir}
+diff --git a/cmake/libprotoc.pc.cmakein b/cmake/libprotoc.pc.cmakein
+new file mode 100644
+index 0000000..ef414e3
+--- /dev/null
++++ b/cmake/libprotoc.pc.cmakein
+@@ -0,0 +1,11 @@
++prefix=@prefix@
++exec_prefix=@prefix@/bin
++libdir=@prefix@/lib
++includedir=@prefix@/include
++
++Name: libprotobuf
++Version: 3.3.0
++Description: 
++Requires:
++Libs: -L${libdir}  -llibprotocd
++Cflags: -I${includedir}
+\ No newline at end of file
+diff --git a/cmake/protobuf-options.cmake b/cmake/protobuf-options.cmake
+index 47fb158..99c85eb 100644
+--- a/cmake/protobuf-options.cmake
++++ b/cmake/protobuf-options.cmake
+@@ -1,7 +1,7 @@
+-# Verbose output
+-option(protobuf_VERBOSE "Enable for verbose output" OFF)
+-mark_as_advanced(protobuf_VERBOSE)
+-
+-# FindProtobuf module compatibel
+-option(protobuf_MODULE_COMPATIBLE "CMake build-in FindProtobuf.cmake module compatible" OFF)
+-mark_as_advanced(protobuf_MODULE_COMPATIBLE)
++# Verbose output
++option(protobuf_VERBOSE "Enable for verbose output" OFF)
++mark_as_advanced(protobuf_VERBOSE)
++
++# FindProtobuf module compatibel
++option(protobuf_MODULE_COMPATIBLE "CMake build-in FindProtobuf.cmake module compatible" OFF)
++mark_as_advanced(protobuf_MODULE_COMPATIBLE)
+-- 
+2.13.0.windows.1
+

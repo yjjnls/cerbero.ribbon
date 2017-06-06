@@ -11,6 +11,8 @@ class Recipe(recipe.Recipe):
     url = 'https://github.com/google/protobuf/archive/v%s.tar.gz'%version
     licenses = [License.BSD_like]
     
+    patches = ['protobuf/0001-Install-pkgconfig.patch']
+
     def prepare(self):
         if self.config.target_platform == Platform.WINDOWS:
             self.configure_options += '-Dprotobuf_BUILD_TESTS=OFF '
