@@ -9,5 +9,4 @@ class Package(custom.DB, package.Package):
     longdesc = 'Database devel component'
     uuid = ''
 
-    files = ['protobuf:libs:bins']
-
+    files = ['protobuf:libs:bins', 'rapidjson']

@@ -7,13 +7,20 @@ class Recipe(recipe.Recipe):
     version = '3.3.0'
     stype = SourceType.TARBALL
     btype = BuildType.AUTOCMAKE
-	
-    url = 'https://github.com/google/protobuf/archive/v%s.tar.gz'%version
+
+    url = 'https://github.com/google/protobuf/archive/v%s.tar.gz' % version
     licenses = [License.BSD_like]
-    
+
     patches = ['protobuf/0001-Install-pkgconfig.patch']
+
+    files_bins = ['protoc']
+    files_libs = ['libprotobuf', 'libprotobuf-lite', 'libprotoc']
+    files_devel = [
+        'include/google', 'lib/pkgconfig/protobuf.pc',
+        'lib/pkgconfig/protobuf-lite.pc', 'lib/pkgconfig/protoc.pc'
+    ]
 
     def prepare(self):
         if self.config.target_platform == Platform.WINDOWS:
-            self.configure_options += '-Dprotobuf_BUILD_TESTS=OFF '
+            self.configure_options += ' -Dprotobuf_BUILD_TESTS=OFF '
             self.configure_options += ' ./cmake '
