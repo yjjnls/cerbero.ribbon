@@ -1,4 +1,4 @@
-From 7a1936c83beb411e277c5e7b8b473aea63abcfcf Mon Sep 17 00:00:00 2001
+From 9df01f7cb865afa1419becd74562bdf159414091 Mon Sep 17 00:00:00 2001
 From: yjjnls <x-jj@foxmail.com>
 Date: Mon, 5 Jun 2017 16:06:31 +0800
 Subject: [PATCH] AutoCMake adaptation
@@ -41,7 +41,7 @@ index 0000000..903c3db
 +
 diff --git a/libuv/CMakelists.txt b/libuv/CMakelists.txt
 new file mode 100644
-index 0000000..e2da82c
+index 0000000..7b021bc
 --- /dev/null
 +++ b/libuv/CMakelists.txt
 @@ -0,0 +1,71 @@
@@ -106,7 +106,7 @@ index 0000000..e2da82c
 +INSTALL(FILES ${_HEADERS}
 +        DESTINATION include/libuv )
 +
-+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/Release/libuv.lib
++INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/libuv.lib
 +        DESTINATION lib )
 +		
 +set(VERSION ${PROJECT_VERSION} )
