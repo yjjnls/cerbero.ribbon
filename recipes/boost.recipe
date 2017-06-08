@@ -1,53 +1,160 @@
 # -*- Mode: Python -*- vi:si:et:sw=4:sts=4:ts=4:syntax=python
 #from cerbero.tools.libtool import LibtoolLibrary
+import os
+
+pc_template = '''
+prefix=%(prefix)s
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: %(module_name)s
+Version: %(version)s
+Description:
+Libs: -L${libdir} -l%(lib_name)s
+Cflags: -I${includedir}
+'''
+
+module_list = ['boost_atomic',
+'boost_chrono',
+'boost_container',
+'boost_context',
+'boost_coroutine',
+'boost_date_time',
+'boost_exception',
+'boost_fiber',
+'boost_filesystem',
+'boost_graph',
+'boost_iostreams',
+'boost_locale',
+'boost_log_setup',
+'boost_log',
+'boost_math_c99f',
+'boost_math_c99l',
+'boost_math_c99',
+'boost_math_tr1f',
+'boost_math_tr1l',
+'boost_math_tr1',
+'boost_prg_exec_monitor',
+'boost_program_options',
+'boost_random',
+'boost_regex',
+'boost_serialization',
+'boost_signals',
+'boost_system',
+'boost_test_exec_monitor',
+'boost_thread',
+'boost_timer',
+'boost_type_erasure',
+'boost_unit_test_framework',
+'boost_wave',
+'boost_wserialization'
+]
 
 
 class Recipe(recipe.Recipe):
     name = 'boost'
     version = '1.64.0'
     stype = SourceType.TARBALL
-    #btype = BuildType.AUTOCMAKE
+    btype = BuildType.CUSTOM
 	tarball_dirname = 'boost_1_64_0'
     url = 'https://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.bz2'
     licenses = [License.BSD_like]
-    #add_host_build_target = False
-    #can_use_configure_cache = False
-    #configure_tpl = "./configure --prefix %(prefix)s "\
-    #                "--libdir %(libdir)s %(options)s"
-    #patches = ['theron/0001-add-cmake-build.patch']
-    #
-    #files_libs = ['libz']
-    #files_devel = ['include/zlib.h', 'include/zconf.h', 'lib/pkgconfig/zlib.pc']
+    srcdir = '.'
+    toolset='msvc-14.0'
+    suffix = ''
+    
+    files_libs = []
+    files_devel = ['include/boost']
 
+    def prepare(self):
+        if self.config.build_type == 'Debug':
+            self.suffix = '-vc140-mt-sgyd-1_64'
+        elif self.config.build_type == 'Release':
+            self.suffix = '-vc140-mt-s-1_64'
+        for module in module_list:
+            self.files_libs.append('lib' + module  + self.suffix)
+            self.files_devel.append('lib/pkgconfig/%s.pc' % module)
 
-#    def prepare(self):
-#        if self.config.target_platform == Platform.WINDOWS:
-#            self.make = 'make -f win32/Makefile.gcc PREFIX=%s- ' % self.config.host
-#            self.make_install = 'make install -f win32/Makefile.gcc '\
-#                                'INCLUDE_PATH=%(prefix)s/include '\
-#                                'LIBRARY_PATH=%(prefix)s/lib ' \
-#                                'BINARY_PATH=%(prefix)s/bin ' % {'prefix':self.config.prefix}
-#            self._remove_steps ([BuildSteps.CONFIGURE])
-#        elif self.config.target_platform == Platform.ANDROID:
-#            if self.config.target_arch == Architecture.X86:
-#                self.configure_options += " --uname=i686-linux-android "
-#            if self.config.target_arch == Architecture.X86_64:
-#                self.configure_options += " --uname=x86_64-linux-android "
-#            else:
-#                self.configure_options += " --uname=arm-linux-androideabi "
-#        elif self.config.target_platform == Platform.LINUX:
-#            if self.config.cross_compiling() and self.config.host:
-#                self.configure_options += " --uname=" + self.config.host
-#
-#    def post_install(self):
-#        libtool_la = LibtoolLibrary('z', 1, 2, 8, self.config.libdir,
-#                self.config.target_platform)
-#        libtool_la.save()
-#        # FIXME This is to workaround a build issue trying to ld to libz.so
-#        if self.config.target_platform == Platform.IOS:
-#            try:
-#                os.symlink(os.path.join (self.config.prefix, 'lib', 'libz.dylib'),
-#                        os.path.join (self.config.prefix, 'lib', 'libz.so'))
-#            except OSError:
-#                pass
-#
+    def compile(self):
+        print '--------------start configure--------------'
+        if self.config.target_platform == Platform.WINDOWS:
+            self.config_sh = '.\/bootstrap.bat'
+        elif self.config.target_platform == Platform.LINUX:
+            self.config_sh = './bootstrap.sh'
+            self.toolset='gcc'
+
+        self.configure_tpl = '%(config-sh)s'
+        self.config_src_dir = os.path.abspath(os.path.join(self.build_dir,
+                                                           self.srcdir))
+        self.make_dir = self.config_src_dir
+        shell.call(self.configure_tpl %{'config-sh': self.config_sh} , self.make_dir)
+
+        print '--------------start build--------------'
+        options = ''
+        if self.config.build_type == 'Debug':
+            options += ' python-debugging=on '
+            self.suffix = '-vc140-mt-sgyd-1_64'
+        if self.config.target_arch == Architecture.X86_64:
+            options += ' address-model=64 '
+
+        self.config_sh = '.\/b2'
+        self.config_src_dir = os.path.abspath(os.path.join(self.build_dir,
+                                                           self.srcdir))
+        self.make_dir = self.config_src_dir
+
+        self.configure_tpl = '%(config-sh)s toolset=%(toolset)s \
+                                --without-mpi \
+                                --without-coroutine2 \
+                                --without-graph_parallel \
+                                --without-python \
+                                --stagedir=%(build_type)s \
+                                link=static \
+                                runtime-link=static \
+                                threading=multi \
+                                variant=%(build_type)s  %(options)s '
+        shell.call(self.configure_tpl %{'config-sh': self.config_sh,
+            'toolset': self.toolset,
+            'build_type': self.config.build_type.lower(),
+            'options': options},
+            self.make_dir)
+
+        
+    def install(self):
+        import shutil
+
+        print '--------------start install headers--------------'
+        dst = os.path.join(self.config.prefix, 'include/boost')
+        incdir = os.path.abspath(os.path.join(self.build_dir,'boost'))
+        shell.copy_dir(incdir, dst)
+
+        print '--------------start install libs--------------'
+        dst = os.path.join(self.config.prefix, 'lib')
+        if not os.path.exists(dst):
+            os.makedirs(dst)
+        libdir = os.path.abspath(os.path.join(self.build_dir,
+                                '%s/lib' % self.config.build_type.lower()))
+        libs = shell.find_files("*.lib", libdir)
+        for file in libs:
+            shutil.copy(file, dst)
+    
+        print '--------------start install pc files--------------'
+        dst = os.path.join(self.config.prefix, 'lib/pkgconfig')
+        if not os.path.exists(dst):
+            os.makedirs(dst)
+        pc_dir = os.path.abspath(os.path.join(self.build_dir,
+                                '%s/pc' % self.config.build_type.lower()))
+        if not os.path.exists(pc_dir):
+            os.makedirs(pc_dir)
+        for file in module_list:
+            libname = 'lib' + file + self.suffix
+            f = open(os.path.join(pc_dir, file + '.pc'), 'w')
+            f.write(pc_template %
+                    {'prefix': self.config.prefix,
+                    'version': self.version,
+                    'module_name': file,
+                    'lib_name': libname})
+            f.close()
+        pcs = shell.find_files("*.pc", pc_dir)
+        for file in pcs:
+            shutil.copy(file, dst)
