@@ -1,0 +1,66 @@
+From 3a2f02f1a25992de6f1e5edad664af991f83820e Mon Sep 17 00:00:00 2001
+From: Mingyi <mingyi.z@outlook.com>
+Date: Fri, 9 Jun 2017 09:55:33 +0800
+Subject: [PATCH] AutoCMake adaptation
+
+---
+ CMakeLists.txt     | 20 +++++++++++++++++---
+ rocksdb.pc.cmakein | 12 ++++++++++++
+ 2 files changed, 29 insertions(+), 3 deletions(-)
+ create mode 100644 rocksdb.pc.cmakein
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c4e84c9..b100c88 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -757,12 +757,26 @@ foreach(sourcefile ${C_TEST_EXES})
+ endforeach(sourcefile ${C_TEST_EXES})
+ add_subdirectory(tools)
+ 
++set(prefix ${CMAKE_INSTALL_PREFIX})
++configure_file("${PROJECT_SOURCE_DIR}/rocksdb.pc.cmakein"
++               "${PROJECT_SOURCE_DIR}/rocksdb.pc"
++			   @ONLY)
++
++install(FILES ${PROJECT_SOURCE_DIR}/rocksdb.pc DESTINATION lib/pkgconfig)
++			   
+ # Installation and packaging for Linux
+ if(NOT WIN32)
+-install(TARGETS ${ROCKSDB_STATIC_LIB} COMPONENT devel ARCHIVE DESTINATION lib64)
+-install(TARGETS ${ROCKSDB_SHARED_LIB} COMPONENT runtime DESTINATION lib64)
++install(TARGETS ${ROCKSDB_STATIC_LIB} COMPONENT devel ARCHIVE DESTINATION lib)
++install(TARGETS ${ROCKSDB_SHARED_LIB} COMPONENT runtime DESTINATION lib)
++install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/rocksdb/"
++        COMPONENT devel
++        DESTINATION include/rocksdb)
++else()
++
++install(TARGETS ${ROCKSDB_IMPORT_LIB} COMPONENT devel ARCHIVE DESTINATION lib)
++install(TARGETS ${ROCKSDB_IMPORT_LIB} COMPONENT runtime DESTINATION bin)
+ install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/rocksdb/"
+         COMPONENT devel
+         DESTINATION include/rocksdb)
+-set(CMAKE_INSTALL_PREFIX /usr)
+ endif()
++
+diff --git a/rocksdb.pc.cmakein b/rocksdb.pc.cmakein
+new file mode 100644
+index 0000000..a9ff918
+--- /dev/null
++++ b/rocksdb.pc.cmakein
+@@ -0,0 +1,12 @@
++# Package Information for pkg-config
++
++prefix=@prefix@
++exec_prefix=${prefix}/bin
++libdir=${prefix}/lib
++includedir=${prefix}/include
++
++Name: rocksdb
++Description: RocksDB a key value database
++Version: 5.4.6
++Libs: -L${libdir} -lrocksdb
++Cflags: -I${includedir}
+-- 
+2.12.2.windows.1
+
