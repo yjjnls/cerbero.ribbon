@@ -30,14 +30,9 @@ class Recipe(recipe.Recipe):
     licenses = [License.GPL]
     patches =['rocksdb/0001-AutoCMake-adaptation.patch']
 
-#    files_libs = ['libmysql']
-#    files_devel = ['include/mysql-connector-c', 'lib/pkgconfig/mysql.pc']#
-
-#    patches=['sqlite3/0001-AutoCMake-adaptation.patch']#
-
 #    def prepare(self):
 #        if self.platform == Platform.WINDOWS:
-#            self.btype = BuildType.AUTOCMAKE#
+#            self.make = 'msbuild.exe rocksdb.sln //p:Configuration=%s'%self.config.build_type
 
 #        
 

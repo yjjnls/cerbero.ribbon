@@ -29,8 +29,8 @@ class Recipe(recipe.Recipe):
     url = 'http://sqlite.org/2017/sqlite-autoconf-3190200.tar.gz'
     licenses = [License.GPL]
 
-    files_libs = ['libmysql']
-    files_devel = ['include/mysql-connector-c', 'lib/pkgconfig/mysql.pc']
+    files_libs = ['libsqlite3']
+    files_devel = ['include/sqlite3.h', 'lib/pkgconfig/sqlite3.pc']
 
     patches=['sqlite3/0001-AutoCMake-adaptation.patch']
 
