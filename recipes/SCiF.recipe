@@ -1,0 +1,7 @@
+class Recipe(recipe.Recipe):
+    name = 'SCiF'
+    version = '0.22.0'
+    stype = SourceType.TARBALL
+    btype = BuildType.AUTOCMAKE
+    # tarball_dirname = 'scif-0.22.0'
+    url = 'http://localhost/scif/scif-0.22.0.zip'

@@ -1,16 +1,16 @@
-From 5045bd305450c6213bfe78fb1a27241f73351dce Mon Sep 17 00:00:00 2001
+From 8b684f06f206582d29fd3bee2695c722d49419be Mon Sep 17 00:00:00 2001
 From: Cerbero <cerbero@gstreamer.freedesktop.org>
 Date: Thu, 1 Jun 2017 15:56:40 +0800
 Subject: [PATCH 2/2] openssl find from pc
 
 ---
- CMakeLists.txt      | 51 ++++++++++++++++++++++++++++++++++++++++-----------
+ CMakeLists.txt      | 55 ++++++++++++++++++++++++++++++++++++++++-------------
  libevent.pc.cmakein | 16 ++++++++++++++++
- 2 files changed, 56 insertions(+), 11 deletions(-)
+ 2 files changed, 58 insertions(+), 13 deletions(-)
  create mode 100644 libevent.pc.cmakein
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 67d84b3..ee5dc82 100644
+index 67d84b3..ffc9dbc 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -680,12 +680,36 @@ if(EVENT__HAVE_EVENT_PORTS)
@@ -51,10 +51,21 @@ index 67d84b3..ee5dc82 100644
  
      include_directories(${OPENSSL_INCLUDE_DIR})
  
-@@ -1390,6 +1414,10 @@ configure_file(${PROJECT_SOURCE_DIR}/cmake/LibeventConfigVersion.cmake.in
+@@ -1332,7 +1356,7 @@ endif()
+ # Allow the user to override installation directories.
+ set(EVENT_INSTALL_LIB_DIR       lib CACHE PATH "Installation directory for libraries")
+ set(EVENT_INSTALL_BIN_DIR       bin CACHE PATH "Installation directory for executables")
+-set(EVENT_INSTALL_INCLUDE_DIR   include CACHE PATH "Installation directory for header files")
++set(EVENT_INSTALL_INCLUDE_DIR   include/libevent CACHE PATH "Installation directory for header files")
+ 
+ if(WIN32 AND NOT CYGWIN)
+   set(DEF_INSTALL_CMAKE_DIR cmake)
+@@ -1389,7 +1413,11 @@ configure_file(${PROJECT_SOURCE_DIR}/cmake/LibeventConfig.cmake.in
+ configure_file(${PROJECT_SOURCE_DIR}/cmake/LibeventConfigVersion.cmake.in
                  ${PROJECT_BINARY_DIR}/LibeventConfigVersion.cmake
                  @ONLY)
- 
+-
++set(prefix ${CMAKE_INSTALL_PREFIX})
 +configure_file(${PROJECT_SOURCE_DIR}/libevent.pc.cmakein
 +                ${PROJECT_BINARY_DIR}/libevent.pc
 +                @ONLY)
@@ -101,7 +112,7 @@ index 67d84b3..ee5dc82 100644
          event
 diff --git a/libevent.pc.cmakein b/libevent.pc.cmakein
 new file mode 100644
-index 0000000..f6e6870
+index 0000000..faaed46
 --- /dev/null
 +++ b/libevent.pc.cmakein
 @@ -0,0 +1,16 @@
@@ -119,7 +130,7 @@ index 0000000..f6e6870
 +Conflicts:
 +Libs: -L${libdir} -levent
 +Libs.private: @LIBS@
-+Cflags: -I${includedir}
++Cflags: -I${includedir} -I${includedir}/libevent
 +
 -- 
 2.13.0.windows.1
