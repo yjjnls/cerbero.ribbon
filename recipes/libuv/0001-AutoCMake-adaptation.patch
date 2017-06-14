@@ -1,4 +1,4 @@
-From 9df01f7cb865afa1419becd74562bdf159414091 Mon Sep 17 00:00:00 2001
+From c6df358b86f51892237c2872d6a48dabd84728fc Mon Sep 17 00:00:00 2001
 From: yjjnls <x-jj@foxmail.com>
 Date: Mon, 5 Jun 2017 16:06:31 +0800
 Subject: [PATCH] AutoCMake adaptation
@@ -118,7 +118,7 @@ index 0000000..7b021bc
 +
 diff --git a/libuv/libuv.pc.cmakein b/libuv/libuv.pc.cmakein
 new file mode 100644
-index 0000000..4d4f11f
+index 0000000..1a9ecdd
 --- /dev/null
 +++ b/libuv/libuv.pc.cmakein
 @@ -0,0 +1,11 @@
@@ -131,8 +131,8 @@ index 0000000..4d4f11f
 +Version: 1.12.0
 +Description: multi-platform support library with a focus on asynchronous I/O.
 +
-+Libs: -L${libdir} -luv @LIBS@
-+Cflags: -I${includedir}
++Libs: -L${libdir} -llibuv @LIBS@
++Cflags: -I${includedir} -I${includedir}/libuv
 -- 
 2.13.0.windows.1
 
