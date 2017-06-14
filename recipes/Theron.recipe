@@ -20,11 +20,11 @@ class Recipe(recipe.Recipe):
     def prepare(self):
         if self.config.target_platform == Platform.WINDOWS:
             btype = BuildType.AUTOCMAKE
-            patches = ['Theron/0001-add-cmake-build.patch']
+            self.patches = ['Theron/0001-add-cmake-build.patch']
         elif self.config.target_platform == Platform.LINUX:
             btype = BuildType.MAKEFILE
             self.make = 'make library mode=%s shared=on'%(self.config.build_type.lower())
-            patches = ['Theron/0001-Theron-Linux.patch']
+            self.patches = ['Theron/0001-Theron-Linux.patch']
             print '----------------x%sxxxxxxx'%(self.build_dir)
 
     def configure(self):
