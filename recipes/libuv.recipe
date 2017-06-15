@@ -27,6 +27,6 @@ class Recipe(recipe.Recipe):
         if self.config.target_platform == Platform.LINUX:
             if not os.path.exists(self.make_dir):
                 os.makedirs(self.make_dir)
-            shell.call('sh autogen.sh', self.make_dir)
+            shell.call('bash autogen.sh', self.make_dir)
         super(recipe.Recipe, self).configure()
 
