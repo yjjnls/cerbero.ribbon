@@ -6,7 +6,10 @@ class Recipe(recipe.Recipe):
     name = 'libwebsockets'
     version = '2.2.1'
     stype = SourceType.TARBALL
-    btype = BuildType.AUTOCMAKE
+    if os.getenv('MSYSTEM'):
+        btype = BuildType.AUTOCMAKE
+    else:
+        btype = BuildType.CMAKE
 
     #tarball_dirname = 'v%s'%version
     url = 'https://github.com/warmcat/libwebsockets/archive/v%s.tar.gz' % version

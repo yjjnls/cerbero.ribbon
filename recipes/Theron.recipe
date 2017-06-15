@@ -6,7 +6,12 @@ class Recipe(recipe.Recipe):
     name = 'Theron'
     version = '6.00.02'
     stype = SourceType.TARBALL
-    url = 'http://daihongjun/sources/foss/%s-%s.zip'%(name,version)
+    if os.getenv('MSYSTEM'):
+        btype = BuildType.AUTOCMAKE
+    else:
+        btype = BuildType.MAKEFILE
+
+    url = 'http://www.ashtonmason.net/wp-content/uploads/2017/01/Theron-6.00.02.zip'
     licenses = [License.BSD_like]
     #add_host_build_target = False
     #can_use_configure_cache = False
@@ -18,11 +23,7 @@ class Recipe(recipe.Recipe):
     files_devel = ['include/Theron', 'lib/pkgconfig/Theron.pc']
 
     def prepare(self):
-        if self.config.target_platform == Platform.WINDOWS:
-            btype = BuildType.AUTOCMAKE
-            
-        elif self.config.target_platform == Platform.LINUX:
-            btype = BuildType.MAKEFILE
+        if self.config.target_platform == Platform.LINUX:
             self.make = 'make library mode=%s shared=on'%(self.config.build_type.lower())
 
     def configure(self):

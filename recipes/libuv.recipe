@@ -1,17 +1,32 @@
 # -*- Mode: Python -*- vi:si:et:sw=4:sts=4:ts=4:syntax=python
 #from cerbero.tools.libtool import LibtoolLibrary
-
+from cerbero.utils import shell
 
 class Recipe(recipe.Recipe):
     name = 'libuv'
     version = '1.12.0'
     stype = SourceType.TARBALL
-    btype = BuildType.AUTOCMAKE
+    if os.getenv('MSYSTEM'):
+        btype = BuildType.AUTOCMAKE
+        patches = ['libuv/0001-AutoCMake-adaptation.patch']
+    else:
+        btype = BuildType.MAKEFILE
+        config_sh = './configure'
+        configure_tpl = "%(config-sh)s --prefix=%(prefix)s --libdir=%(libdir)s %(options)s"
+        
     tarball_dirname = 'libuv-1.12.0'
     url = 'https://github.com/libuv/libuv/archive/v1.12.0.tar.gz'
     licenses = [License.BSD_like]
 
-    patches = ['libuv/0001-AutoCMake-adaptation.patch']
+    
     #
     files_libs = ['libuv']
     files_devel = ['include/libuv', 'lib/pkgconfig/libuv.pc']
+
+    def configure(self):
+        if self.config.target_platform == Platform.LINUX:
+            if not os.path.exists(self.make_dir):
+                os.makedirs(self.make_dir)
+            shell.call('sh autogen.sh', self.make_dir)
+        super(recipe.Recipe, self).configure()
+
