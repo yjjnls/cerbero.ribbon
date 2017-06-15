@@ -4,6 +4,17 @@ enable_testing()
 
 include (CMakeParseArguments)
 
+IF(MSVC)
+	ADD_DEFINITIONS( -D_CRT_SECURE_NO_DEPRECATE  )
+	ADD_DEFINITIONS( -D_CRT_NONSTDC_NO_DEPRECATE )
+	ADD_DEFINITIONS( -D_SCL_SECURE_NO_WARNINGS   )
+	
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4819")
+ELSE()
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+ENDIF()
+
 macro( autocmake_default_set _variable _defalut _value)
    SET( M "dset variable:${_variable} _defalut:${_defalut} value:${_value}<${${_value}}>" )
    
