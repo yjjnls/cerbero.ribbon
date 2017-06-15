@@ -1,19 +1,19 @@
-From 8588a306df24549c129634cf2289b8418026e760 Mon Sep 17 00:00:00 2001
+From 05db295d182c41b2a4763a5b6ab5d257fc23a2b9 Mon Sep 17 00:00:00 2001
 From: Cerbero Build System <cerbero@gstreamer.freedesktop.org>
-Date: Wed, 14 Jun 2017 04:17:36 -0700
-Subject: [PATCH] Theron Linux
+Date: Wed, 14 Jun 2017 21:19:31 -0700
+Subject: [PATCH] makefile shared
 
 ---
- Include/Theron/Detail/Mailboxes/Mailbox.h | 7 ++++++-
+ Include/Theron/Detail/Mailboxes/Mailbox.h | 6 +++++-
  Include/Theron/Framework.h                | 8 ++++++--
  makefile                                  | 7 +++++--
- 3 files changed, 17 insertions(+), 5 deletions(-)
+ 3 files changed, 16 insertions(+), 5 deletions(-)
 
 diff --git a/Include/Theron/Detail/Mailboxes/Mailbox.h b/Include/Theron/Detail/Mailboxes/Mailbox.h
-index c7c291f..016a3aa 100644
+index c7c291f..1832bcd 100644
 --- a/Include/Theron/Detail/Mailboxes/Mailbox.h
 +++ b/Include/Theron/Detail/Mailboxes/Mailbox.h
-@@ -234,7 +234,12 @@ THERON_FORCEINLINE void Mailbox::DeregisterActor()
+@@ -234,7 +234,11 @@ THERON_FORCEINLINE void Mailbox::DeregisterActor()
  {
      // Can't deregister actors while the mailbox is pinned.
      THERON_ASSERT(mPinCount == 0);
@@ -22,7 +22,6 @@ index c7c291f..016a3aa 100644
 +    //to protect from situation that actor subclass data members have been deleted,
 +    //while these data members are being used to process received message 
 +    //in anther Theron thread
-+    //THERON_ASSERT(mActor != 0);
 +    //THERON_ASSERT(mActor != 0);
  
      mActor = 0;
