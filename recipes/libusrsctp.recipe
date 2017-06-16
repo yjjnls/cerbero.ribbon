@@ -12,6 +12,7 @@ class Recipe(recipe.Recipe):
         
     else:
         btype = BuildType.CMAKE
+        make = 'cmake --build .'
 
     patches = ['usrsctp/0001-AutoCmake-adaption.patch', 
                'usrsctp/0001-werror-maybe-uninitialized-fix.patch']

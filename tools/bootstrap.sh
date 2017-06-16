@@ -16,7 +16,7 @@ _MAP=(
    "cerbero-tarball@${CERBERO_REPO}/${VERSION}/cerbero-${VERSION}.tar.xz"
    "cerbero-tarball-sources-1@${CERBERO_REPO}/${VERSION}/cerbero-${VERSION}-sources-1.tar.xz"
      "cerbero-${VERSION}-build_tools-windows@${CERBERO_REPO}/${VERSION}/cerbero-${VERSION}-build_tools-windows.tar.xz"
-   "cerbero-${VERSION}-build_tools-linux@${CERBERO_REPO}/sources/cerbero-${VERSION}-build_tools-linux.tar.xz"
+   "cerbero-build_tools-linux-x86_64-${VERSION}@${CERBERO_REPO}/linux/x86_64/cerbero-build_tools-linux-x86_64-${VERSION}.tar.xz"
    "cerbero-tarball-sources-2@${CERBERO_REPO}/sources/cerbero-${VERSION}-sources-2.tar.xz"	
 )
 
@@ -133,10 +133,10 @@ function _windows(){
 function _gnu_linux(){
       echo "start bootstraping for GNU/Linux..."
 
-      [ ! -d ./sources ] && mkdir ./sources
+      [ ! -d ./build/build-tools ] && mkdir -p ./build/build-tools
 
-      _fetch $(eval map 'cerbero-${VERSION}-build_tools-linux')
-      _tar -xJf cerbero-${VERSION}-build_tools-linux.tar.xz -C ./sources/. --checkpoint=100
+      _fetch $(eval map 'cerbero-build_tools-linux-$(uname -m)-${VERSION}')
+      _tar -xJf cerbero-build_tools-linux-$(uname -m)-${VERSION}.tar.xz -C ./build/build-tools --checkpoint=100
 
       [ $(uname -m) = "x86_64" ] && ./cerbero-uninstalled bootstrap
 
