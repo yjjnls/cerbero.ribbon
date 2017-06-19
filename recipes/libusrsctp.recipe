@@ -1,6 +1,7 @@
 # -*- Mode: Python -*- vi:si:et:sw=4:sts=4:ts=4:syntax=python
 #from cerbero.tools.libtool import LibtoolLibrary
 
+from cerbero.utils import shell
 
 class Recipe(recipe.Recipe):
     name = 'libusrsctp'
@@ -19,3 +20,7 @@ class Recipe(recipe.Recipe):
     
     files_libs = ['libusrsctp']
     files_devel = ['include/usrsctp.h', 'lib/pkgconfig/usrsctp.pc']
+
+    def post_install(self):
+        if self.config.target_platform == Platform.LINUX:
+            shell.call('mv -f usrsctp.pc libusrsctp.pc', '%s/lib/pkgconfig/'%(self.config.install_dir))
