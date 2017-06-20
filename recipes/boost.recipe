@@ -64,14 +64,16 @@ class Recipe(recipe.Recipe):
     toolset='msvc-14.0'
     suffix = ''
     
+	patches = ['boost/0001-fix-macro-confusion.patch']
+			   
     files_libs = []
     files_devel = ['include/boost']
 
     def prepare(self):
         if self.config.build_type == 'Debug':
-            self.suffix = '-vc140-mt-sgyd-1_64'
+            self.suffix = '-vc140-mt-gd-1_64'
         elif self.config.build_type == 'Release':
-            self.suffix = '-vc140-mt-s-1_64'
+            self.suffix = '-vc140-mt-1_64'
         for module in module_list:
             self.files_libs.append('lib' + module  + self.suffix)
             self.files_devel.append('lib/pkgconfig/%s.pc' % module)
@@ -93,8 +95,8 @@ class Recipe(recipe.Recipe):
         print '--------------start build--------------'
         options = ''
         if self.config.build_type == 'Debug':
-            options += ' python-debugging=on '
-            self.suffix = '-vc140-mt-sgyd-1_64'
+            # options += ' python-debugging=on '
+            self.suffix = '-vc140-mt-gd-1_64'
         if self.config.target_arch == Architecture.X86_64:
             options += ' address-model=64 '
 
@@ -110,7 +112,7 @@ class Recipe(recipe.Recipe):
                                 --without-python \
                                 --stagedir=%(build_type)s \
                                 link=static \
-                                runtime-link=static \
+                                runtime-link=shared \
                                 threading=multi \
                                 variant=%(build_type)s  %(options)s '
         shell.call(self.configure_tpl %{'config-sh': self.config_sh,

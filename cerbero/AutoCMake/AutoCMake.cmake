@@ -15,6 +15,25 @@ ELSE()
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 ENDIF()
 
+macro( autocmake_msvc_project_group source_files sgbd_cur_dir)
+    if(MSVC)
+        foreach(sgbd_file ${${source_files}})
+
+            string(REGEX REPLACE ${sgbd_cur_dir}/\(.*\) \\1 sgbd_fpath ${sgbd_file})
+			string(REGEX REPLACE "\(.*\)/.*" \\1 sgbd_group_name ${sgbd_fpath})
+            string(COMPARE EQUAL ${sgbd_fpath} ${sgbd_group_name} sgbd_nogroup)
+            string(REPLACE "/" "\\" sgbd_group_name ${sgbd_group_name})
+			
+            if(sgbd_nogroup)
+                set(sgbd_group_name "\\")
+            endif(sgbd_nogroup)
+			
+            source_group(${sgbd_group_name} FILES ${sgbd_file})
+			
+        endforeach(sgbd_file)
+    endif()
+endmacro()
+
 macro( autocmake_default_set _variable _defalut _value)
    SET( M "dset variable:${_variable} _defalut:${_defalut} value:${_value}<${${_value}}>" )
    
