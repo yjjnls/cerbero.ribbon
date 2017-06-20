@@ -28,6 +28,7 @@ class Recipe(recipe.Recipe):
 
     def configure(self):
         if self.config.target_platform == Platform.LINUX:
+            os.environ['CFLAGS'] += '-pthread'
             if not os.path.exists(self.make_dir):
                 os.makedirs(self.make_dir)
             shell.call('bash autogen.sh', self.make_dir)

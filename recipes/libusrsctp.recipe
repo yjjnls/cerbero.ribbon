@@ -21,6 +21,11 @@ class Recipe(recipe.Recipe):
     files_libs = ['libusrsctp']
     files_devel = ['include/usrsctp.h', 'lib/pkgconfig/usrsctp.pc']
 
+    def configure(self):
+        if self.config.target_platform == Platform.LINUX:
+            os.environ['CFLAGS'] += '-fPIC'
+        super(recipe.Recipe, self).configure()
+
     def post_install(self):
         if self.config.target_platform == Platform.LINUX:
             shell.call('mv -f usrsctp.pc libusrsctp.pc', '%s/lib/pkgconfig/'%(self.config.install_dir))
