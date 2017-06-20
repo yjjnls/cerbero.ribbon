@@ -7,31 +7,31 @@ miss local
 
 def added
 ---
- CMakelists.txt           |  20 +++++++++
- gst/CMakelists.txt       |  24 +++++++++++
+ CMakeLists.txt           |  20 +++++++++
+ gst/CMakeLists.txt       |  24 +++++++++++
  gst/openwebrtc-gst.def   |   8 ++++
- local/CMakelists.txt     |   9 ++++
- owr/CMakelists.txt       |  25 +++++++++++
+ local/CMakeLists.txt     |   9 ++++
+ owr/CMakeLists.txt       |  25 +++++++++++
  owr/openwebrtc.def       | 108 +++++++++++++++++++++++++++++++++++++++++++++++
- tests/CMakelists.txt     |  33 +++++++++++++++
- transport/CMakelists.txt |   9 ++++
+ tests/CMakeLists.txt     |  33 +++++++++++++++
+ transport/CMakeLists.txt |   9 ++++
  8 files changed, 236 insertions(+)
- create mode 100644 CMakelists.txt
- create mode 100644 gst/CMakelists.txt
+ create mode 100644 CMakeLists.txt
+ create mode 100644 gst/CMakeLists.txt
  create mode 100644 gst/openwebrtc-gst.def
- create mode 100644 local/CMakelists.txt
- create mode 100644 owr/CMakelists.txt
+ create mode 100644 local/CMakeLists.txt
+ create mode 100644 owr/CMakeLists.txt
  create mode 100644 owr/openwebrtc.def
- create mode 100644 tests/CMakelists.txt
- create mode 100644 transport/CMakelists.txt
+ create mode 100644 tests/CMakeLists.txt
+ create mode 100644 transport/CMakeLists.txt
 
-diff --git a/CMakelists.txt b/CMakelists.txt
+diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
 index 0000000..4c2fd04
 --- /dev/null
-+++ b/CMakelists.txt
++++ b/CMakeLists.txt
 @@ -0,0 +1,20 @@
-+cmake_minimum_required( VERSION 3.0 )
++cmake_minimum_required( VERSION 2.8 )
 +
 +project( openwebrtc )
 +set(VERSION 0.3.0-1)
@@ -51,11 +51,11 @@ index 0000000..4c2fd04
 +add_subdirectory( owr  ) 
 +add_subdirectory( tests  )
 +
-diff --git a/gst/CMakelists.txt b/gst/CMakelists.txt
+diff --git a/gst/CMakeLists.txt b/gst/CMakeLists.txt
 new file mode 100644
 index 0000000..ffec094
 --- /dev/null
-+++ b/gst/CMakelists.txt
++++ b/gst/CMakeLists.txt
 @@ -0,0 +1,24 @@
 +project(openwebrtc_gst C)
 +
@@ -95,11 +95,11 @@ index 0000000..ff622f6
 +owr_gst_audio_renderer_new                             @4
 +owr_gst_video_renderer_get_type                        @5
 +owr_gst_video_renderer_new                             @6
-diff --git a/local/CMakelists.txt b/local/CMakelists.txt
+diff --git a/local/CMakeLists.txt b/local/CMakeLists.txt
 new file mode 100644
 index 0000000..227fbfc
 --- /dev/null
-+++ b/local/CMakelists.txt
++++ b/local/CMakeLists.txt
 @@ -0,0 +1,9 @@
 +project( openwebrtc_local C)
 +
@@ -107,15 +107,15 @@ index 0000000..227fbfc
 +file( GLOB _HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.h )
 +
 +autocmake_add_library(openwebrtc_local STATIC 
-+                      MODULES gstreamer-1.0
++                      MODULES gstreamer-1.0 
 +					  SOURCES ${_SOURCES} ${_HEADERS}
 +                     )
 \ No newline at end of file
-diff --git a/owr/CMakelists.txt b/owr/CMakelists.txt
+diff --git a/owr/CMakeLists.txt b/owr/CMakeLists.txt
 new file mode 100644
 index 0000000..5b55a03
 --- /dev/null
-+++ b/owr/CMakelists.txt
++++ b/owr/CMakeLists.txt
 @@ -0,0 +1,25 @@
 +project(openwebrtc-${OWR_API_VERSION} C)
 +
@@ -257,11 +257,11 @@ index 0000000..cafd437
 +_owrmediarenderer_debug                                  @105
 +_owraudiorenderer_debug                                  @106
 +_owrvideorenderer_debug                                  @107
-diff --git a/tests/CMakelists.txt b/tests/CMakelists.txt
+diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
 new file mode 100644
 index 0000000..c2d0447
 --- /dev/null
-+++ b/tests/CMakelists.txt
++++ b/tests/CMakeLists.txt
 @@ -0,0 +1,33 @@
 +PROJECT( tests )
 +
@@ -296,11 +296,11 @@ index 0000000..c2d0447
 +_add_test( test-send-receive test_send_receive.c test_utils.c )
 +_add_test( test-client test_client.c )
 +
-diff --git a/transport/CMakelists.txt b/transport/CMakelists.txt
+diff --git a/transport/CMakeLists.txt b/transport/CMakeLists.txt
 new file mode 100644
 index 0000000..92e54a8
 --- /dev/null
-+++ b/transport/CMakelists.txt
++++ b/transport/CMakeLists.txt
 @@ -0,0 +1,9 @@
 +project( openwebrtc_transport C)
 +
