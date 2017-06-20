@@ -21,6 +21,10 @@ class Recipe(recipe.Recipe):
     ]
 
     def prepare(self):
+        if self.config.build_type == 'Debug':
+            files_libs = ['libprotobufd', 'libprotobuf-lited', 'libprotocd']
+               
         if self.config.target_platform == Platform.WINDOWS:
             self.configure_options += ' -Dprotobuf_BUILD_TESTS=OFF '
+            self.configure_options += ' -Dprotobuf_MSVC_STATIC_RUNTIME=OFF '
             self.configure_options += ' ./cmake '
