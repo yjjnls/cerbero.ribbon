@@ -378,6 +378,14 @@ class AutoCMake (MakefilesBase):
 
     @modify_environment
     def configure(self):
+        if self.config.target_platform != Platform.WINDOWS:
+            cc = os.environ.get('CC', 'gcc')
+            cxx = os.environ.get('CXX', 'g++')
+            cflags = os.environ.get('CFLAGS', '')
+            cxxflags = os.environ.get('CXXFLAGS', '')
+            os.environ['PKG_CONFIG_PATH'] = os.path.join(self.config.prefix, 'lib', 'pkgconfig')
+            
+
         # FIXME: CMake doesn't support passing "ccache $CC"
         if self.config.use_ccache:
             cc = cc.replace('ccache', '').strip()

@@ -1,16 +1,12 @@
 {
-
-    "repo":"http://localhost/mms/repo/sdk",
-	"install.dir":"../sdk",
-	
-	"SDK":{
-	
-		
-	    "gstreamer-1.0":{
-			"version":"1.12.0"
-		}
-
-	}
-    
-    
+    "repo":"http://daihongjun",
+    "install.dir":"../sdk",
+    "SDK":{
+        "base-crypto":{
+            "version":"1.12.0"
+        },
+        "gstreamer-1.0":{
+            "version":"1.12.0"
+        }
+    }
 }

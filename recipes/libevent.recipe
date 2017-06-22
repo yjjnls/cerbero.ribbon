@@ -6,16 +6,20 @@ class Recipe(recipe.Recipe):
     name = 'libevent'
     version = '2.1.8'
     stype = SourceType.TARBALL
-    btype = BuildType.AUTOCMAKE
+    if os.getenv('MSYSTEM'):
+        btype = BuildType.AUTOCMAKE
+        patches = ['libevent/0001-AutoCMake-model.patch',
+	               'libevent/0002-openssl-find-from-pc.patch']
+    else:
+        btype = BuildType.CMAKE
 	tarball_dirname = 'libevent-release-2.1.8-stable'
     url = 'https://github.com/libevent/libevent/archive/release-2.1.8-stable.tar.gz'
     licenses = [License.BSD_like]
+    
     #add_host_build_target = False
     #can_use_configure_cache = False
     #configure_tpl = "./configure --prefix %(prefix)s "\
     #                "--libdir %(libdir)s %(options)s"
-    patches = ['libevent/0001-AutoCMake-model.patch',
-	           'libevent/0002-openssl-find-from-pc.patch']
     #
     files_libs = ['event','event_core','event_extra']
     files_devel = ['include/libevent', 'lib/pkgconfig/libevent.pc','lib/pkgconfig/libevent_core.pc','lib/pkgconfig/libevent_extra.pc']
@@ -23,6 +27,8 @@ class Recipe(recipe.Recipe):
     def prepare(self):
         self.configure_options += " -DEVENT__BUILD_SHARED_LIBRARIES=OFF "
         self.configure_options += " -DEVENT__DISABLE_TESTS=ON "
+
+
 #    def prepare(self):
 #        pass
 #        return

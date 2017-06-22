@@ -6,7 +6,10 @@ class Recipe(recipe.Recipe):
     name = 'libwebsockets'
     version = '2.2.1'
     stype = SourceType.TARBALL
-    btype = BuildType.AUTOCMAKE
+    if os.getenv('MSYSTEM'):
+        btype = BuildType.AUTOCMAKE
+    else:
+        btype = BuildType.CMAKE
 
     #tarball_dirname = 'v%s'%version
     url = 'https://github.com/warmcat/libwebsockets/archive/v%s.tar.gz' % version
@@ -16,19 +19,29 @@ class Recipe(recipe.Recipe):
     #can_use_configure_cache = False
     #configure_tpl = "./configure --prefix %(prefix)s "\
     #                "--libdir %(libdir)s %(options)s"
-    patches = ['libwebsockets/0001-AutoCMake-adaptation.patch']
+    if os.getenv('MSYSTEM'):
+        patches = ['libwebsockets/0001-AutoCMake-adaptation.patch']
     deps = ['libuv']
     #
-    files_libs = ['websockets_static', 'zlib_internal']
+    if os.getenv('MSYSTEM'):
+        files_libs = ['websockets_static', 'zlib_internal']
+    else:
+        files_libs = ['libwebsockets']
     files_devel = ['include/libwebsockets', 'lib/pkgconfig/libwebsockets.pc']
 
     def prepare(self):
-        self.configure_options += " -DLWS_OPENSSL_LIBRARIES=%s/lib/ssl.lib " % self.config.prefix
+        if os.getenv('MSYSTEM'):
+            self.configure_options += " -DLWS_OPENSSL_LIBRARIES=%s/lib/ssl.lib " % self.config.prefix
+        else:
+            self.configure_options += " -DLWS_OPENSSL_LIBRARIES=%s/lib/libssl.a " % self.config.prefix
         self.configure_options += " -DLWS_OPENSSL_INCLUDE_DIRS=%s/include" % self.config.prefix
 
         self.configure_options += " -DLWS_WITH_LIBUV=ON "
         self.configure_options += " -DLIBUV_INCLUDE_DIRS=%s/include/libuv " % self.config.prefix
-        self.configure_options += " -DLIBUV_LIBRARIES=%s/lib/libuv.lib " % self.config.prefix
+        if os.getenv('MSYSTEM'):
+            self.configure_options += " -DLIBUV_LIBRARIES=%s/lib/libuv.lib " % self.config.prefix
+        else:
+            self.configure_options += " -DLIBUV_LIBRARIES=%s/lib/libuv.a " % self.config.prefix
 
         self.configure_options += " -DLWS_WITH_SHARED=OFF "
         self.configure_options += " -DLWS_WITHOUT_TESTAPPS=ON "
