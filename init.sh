@@ -47,6 +47,7 @@ _CMAKE_HINT='Please Install 64bit cmake, you can get it from
 	entry=$(reg query ${KEY} //v InstallDir | awk '{ if($2=="REG_SZ") print $0 }')
 	ipath=$(cygpath -u $( echo ${entry#*REG_SZ} | sed 's/^[ \t]*//g' ))
 	PATH=$(echo ${ipath}/bin):$PATH
+	PATH=/c/Perl64/bin/:$PATH
 	
 	cmake_version=$(cmake --version)
 	fail_exit $? "${_CMAKE_HINT}"	

@@ -10,4 +10,7 @@ class Package(custom.WebService, package.Package):
     uuid = ''
     #deps = ['base-libs']
 
-    files = ['theron:libs','log4cplus:libs','libwebsockets','libevent']
+    files = [
+        'theron:libs', 'log4cplus:libs', 'libwebsockets:libs', 'libevent:libs',
+        'libuv:libs'
+    ]

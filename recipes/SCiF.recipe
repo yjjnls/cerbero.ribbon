@@ -5,3 +5,25 @@ class Recipe(recipe.Recipe):
     btype = BuildType.AUTOCMAKE
     # tarball_dirname = 'scif-0.22.0'
     url = 'http://localhost/scif/scif-0.22.0.zip'
+
+    files_libs = [
+        'astypesys', 'asruntime', 'astransport-http-protobuf',
+        'asadapter-http-protobuf', 'asadapter-http-protobuf.json',
+        'astransport-http-protobuf.json', 'asframework', 'sca-proto',
+        'example-calc-proto-interface', 'example-calc-proto-service'
+    ]
+    files_devel = [
+        'include/astypesys', 'include/asruntime', 'include/astransport',
+        'include/asadpter', 'include/asframework', 'include/example',
+        'include/kedacom', 'lib/pkgconfig/astypesys.pc',
+        'lib/pkgconfig/asruntime.pc',
+        'lib/pkgconfig/astransport-http-protobuf.pc',
+        'lib/pkgconfig/astransport-http-protobuf.json.pc',
+        'lib/pkgconfig/asadapter-http-protobuf.pc',
+        'lib/pkgconfig/asadapter-http-protobuf.json.pc',
+        'lib/pkgconfig/asframework.pc', 'lib/pkgconfig/sca-proto.pc',
+        'lib/pkgconfig/example-calc-proto-interface.pc',
+        'lib/pkgconfig/example-calc-proto-service.pc',
+        'lib/pkgconfig/sca-calc.pc', 'lib/pkgconfig/sca-calc-client.pc',
+        'test/SCiF'
+    ]

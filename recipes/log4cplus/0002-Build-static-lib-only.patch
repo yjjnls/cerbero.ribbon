@@ -1,12 +1,11 @@
-From 16cf428799a62dcc797172643c1fbdaae41203a1 Mon Sep 17 00:00:00 2001
+From 396717d784452393b64d5abb180790c9e3982f92 Mon Sep 17 00:00:00 2001
 From: yjjnls <x-jj@foxmail.com>
 Date: Thu, 22 Jun 2017 10:04:51 +0800
 Subject: [PATCH 2/2] Build static lib only
 
 ---
- CMakeLists.txt       | 6 +++---
- log4cplus.pc.cmakein | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ CMakeLists.txt | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 145e4d9..4ae60d5 100644
@@ -33,18 +32,6 @@ index 145e4d9..4ae60d5 100644
  
  if (WIN32)
    set (UNICODE_DEFAULT OFF)
-diff --git a/log4cplus.pc.cmakein b/log4cplus.pc.cmakein
-index 9c0b965..366bcb5 100644
---- a/log4cplus.pc.cmakein
-+++ b/log4cplus.pc.cmakein
-@@ -8,6 +8,6 @@ Name: log4cplus
- Version: @VERSION@
- Description: Simple to use, thread-safe C++ logging API
- Requires:
--Libs: -L${libdir} -llog4cplus
-+Libs: -L${libdir} -llog4cplusS
- Libs.private: @LIBS@
- Cflags: -I${includedir}
 -- 
 2.13.0.windows.1
 
