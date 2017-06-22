@@ -1,0 +1,50 @@
+From 16cf428799a62dcc797172643c1fbdaae41203a1 Mon Sep 17 00:00:00 2001
+From: yjjnls <x-jj@foxmail.com>
+Date: Thu, 22 Jun 2017 10:04:51 +0800
+Subject: [PATCH 2/2] Build static lib only
+
+---
+ CMakeLists.txt       | 6 +++---
+ log4cplus.pc.cmakein | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 145e4d9..4ae60d5 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -24,9 +24,9 @@ message("-- Generating build for Log4cplus version ${log4cplus_version_major}.${
+ set (log4cplus_soversion 0)
+ set (log4cplus_postfix "")
+ 
+-option(LOG4CPLUS_BUILD_TESTING "Build the test suite." ON)
++option(LOG4CPLUS_BUILD_TESTING "Build the test suite." OFF)
+ 
+-option(LOG4CPLUS_BUILD_LOGGINGSERVER "Build the logging server." ON)
++option(LOG4CPLUS_BUILD_LOGGINGSERVER "Build the logging server." OFF)
+ 
+ if(NOT LOG4CPLUS_SINGLE_THREADED)
+   find_package (Threads)
+@@ -37,7 +37,7 @@ if(LOG4CPLUS_SINGLE_THREADED AND LOG4CPLUS_BUILD_LOGGINGSERVER)
+   message (FATAL_ERROR "The logging server requires the multi-thread capability.")
+ endif(LOG4CPLUS_SINGLE_THREADED AND LOG4CPLUS_BUILD_LOGGINGSERVER)
+ 
+-set(BUILD_SHARED_LIBS TRUE CACHE BOOL "If TRUE, log4cplus is built as a shared library, otherwise as a static library")
++set(BUILD_SHARED_LIBS FALSE CACHE BOOL "If TRUE, log4cplus is built as a shared library, otherwise as a static library")
+ 
+ if (WIN32)
+   set (UNICODE_DEFAULT OFF)
+diff --git a/log4cplus.pc.cmakein b/log4cplus.pc.cmakein
+index 9c0b965..366bcb5 100644
+--- a/log4cplus.pc.cmakein
++++ b/log4cplus.pc.cmakein
+@@ -8,6 +8,6 @@ Name: log4cplus
+ Version: @VERSION@
+ Description: Simple to use, thread-safe C++ logging API
+ Requires:
+-Libs: -L${libdir} -llog4cplus
++Libs: -L${libdir} -llog4cplusS
+ Libs.private: @LIBS@
+ Cflags: -I${includedir}
+-- 
+2.13.0.windows.1
+

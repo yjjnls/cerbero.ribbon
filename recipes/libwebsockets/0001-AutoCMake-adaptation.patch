@@ -1,4 +1,4 @@
-From 9110623c500bbe0ec84cee3c80db95734ff46180 Mon Sep 17 00:00:00 2001
+From 7931b8d1ee4b18963d24df3884df165b8732f856 Mon Sep 17 00:00:00 2001
 From: Mingyi <mingyi.z@outlook.com>
 Date: Fri, 5 May 2017 14:05:43 +0800
 Subject: [PATCH] AutoCMake adaptation
@@ -134,7 +134,7 @@ index be757da..cac291c 100644
  set(CPACK_SOURCE_IGNORE_FILES $(CPACK_SOURCE_IGNORE_FILES) ".git" "build" "tgz" "tar.gz")
 diff --git a/libwebsockets.pc.cmakein b/libwebsockets.pc.cmakein
 new file mode 100644
-index 0000000..01e01c2
+index 0000000..b7acae6
 --- /dev/null
 +++ b/libwebsockets.pc.cmakein
 @@ -0,0 +1,11 @@
@@ -147,7 +147,7 @@ index 0000000..01e01c2
 +Version: @VERSION@
 +Description: Websockets server and client library
 +Requires: libuv
-+Libs: -L${libdir} -lwebsockets_static -fzlib_internal -lws2_32.lib -luserenv.lib -lpsapi.lib -liphlpapi.lib
++Libs: -L${libdir} -lwebsockets_static -lzlib_internal -lws2_32.lib -luserenv.lib -lpsapi.lib -liphlpapi.lib
 +Cflags: -I${includedir}
 -- 
 2.13.0.windows.1
