@@ -8,6 +8,7 @@ class Package(custom.WebService, package.Package):
     shortdesc = 'Web Service communication devel component'
     longdesc = 'Web Service communication devel component'
     uuid = ''
+    version = '0.1.0'
     #deps = ['base-libs']
 
     files = [

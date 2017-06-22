@@ -253,7 +253,7 @@ def download(url, destination=None, recursive=False, check_cert=True, overwrite=
         except FatalError, e:
             if os.path.exists(destination):
                 os.remove(destination)
-            raise e
+            return -1
 
 
 def download_curl(url, destination=None, recursive=False, check_cert=True, overwrite=False):

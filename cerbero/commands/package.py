@@ -100,27 +100,15 @@ class Package(Command):
                     '--gen-tarball-desc',
                     action='store_true',
                     default=False,
-                    help=_('Generate package description file')),
-                ArgparseArgument(
-                    '--debug',
-                    action='store_true',
-                    default=False,
-                    help=_('Generate debug package')),
-                ArgparseArgument(
-                    '--release',
-                    action='store_true',
-                    default=False,
-                    help=_('Generate release package')),
+                    help=_('Generate package description file'))
             ])
 
     def run(self, config, args):
         self.store = PackagesStore(config)
         p = self.store.get_package(args.package[0])
-        if args.debug:
-            p.name += '-debug'
+        if config.build_type=='Debug':
+            p.name += '-Debug'
 
-        if args.release:
-            p.name += '-release'
         if args.skip_deps_build and args.only_build_deps:
             raise UsageError(
                 _("Cannot use --skip-deps-build together with "
