@@ -6,7 +6,10 @@ class Recipe(recipe.Recipe):
     name = 'log4cplus'
     version = '1.2.1-rc1'
     stype = SourceType.TARBALL
-    btype = BuildType.AUTOCMAKE
+    if os.getenv('MSYSTEM'):
+        btype = BuildType.AUTOCMAKE
+    else:
+        btype = BuildType.CMAKE
 	tarball_dirname = 'log4cplus-REL_1_2_1-RC1'
     url = 'https://github.com/log4cplus/log4cplus/archive/REL_1_2_1-RC1.tar.gz'
     #licenses = [License.BSD_like]

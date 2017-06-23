@@ -34,10 +34,6 @@ class Recipe(recipe.Recipe):
 
     patches=['sqlite3/0001-AutoCMake-adaptation.patch']
 
-    def prepare(self):
-        if self.platform == Platform.WINDOWS:
-            self.btype = BuildType.AUTOCMAKE
-
         
 
 #        self.configure_options = ' -DINSTALL_INCLUDEDIR=include/mysql '

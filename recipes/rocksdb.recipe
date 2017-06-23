@@ -22,13 +22,18 @@ class Recipe(recipe.Recipe):
     stype = SourceType.TARBALL
     if os.getenv('MSYSTEM'):
         btype = BuildType.AUTOCMAKE
+        patches =['rocksdb/0001-AutoCMake-adaptation.patch']
     else:
-        btype = BuildType.AUTOTOOLS
+        btype = BuildType.CMAKE
+        configure_tpl = '%(config-sh)s . -G\"Unix Makefiles\" '\
+                         '-DCMAKE_INSTALL_PREFIX=%(prefix)s '\
+                         '-DCMAKE_LIBRARY_OUTPUT_PATH=%(libdir)s'
+
 
     #tarball_dirname = 'v%s'%version
     url = 'https://github.com/facebook/rocksdb/archive/v%s.tar.gz'%version
     licenses = [License.GPL]
-    patches =['rocksdb/0001-AutoCMake-adaptation.patch']
+    
 
 #    def prepare(self):
 #        if self.platform == Platform.WINDOWS:

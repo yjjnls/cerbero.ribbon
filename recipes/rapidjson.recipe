@@ -6,7 +6,10 @@ class Recipe(recipe.Recipe):
     name = 'rapidjson'
     version = '1.1.0'
     stype = SourceType.TARBALL
-    btype = BuildType.AUTOCMAKE
+    if os.getenv('MSYSTEM'):
+        btype = BuildType.AUTOCMAKE
+    else:
+        btype = BuildType.CMAKE
     tarball_dirname = 'rapidjson-1.1.0'
     url = 'https://github.com/miloyip/rapidjson/archive/v1.1.0.tar.gz'
     licenses = [License.BSD_like]

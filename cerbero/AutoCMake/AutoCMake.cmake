@@ -127,8 +127,8 @@ endmacro()
 macro( autocmake_pkgconfig_init )
      
 
-	find_package(PkgConfig 0.29.2 REQUIRED)
-    if( $ENV{MSYSTEM} STREQUAL "msys" )
+	find_package(PkgConfig 0.29.1 REQUIRED)
+    if( "$ENV{MSYSTEM}" STREQUAL "msys" )
 		foreach ( _var $ENV{PKG_CONFIG_LIBDIR} $ENV{PKG_CONFIG_PATH} )
 			
 			execute_process(COMMAND cygpath --unix ${_var} 
@@ -142,6 +142,7 @@ macro( autocmake_pkgconfig_init )
 		endforeach()
 		SET(ENV{PKG_CONFIG_PATH} ${_PKG_CONFIG_PATH})
 	endif()
+       
 endmacro()
 
 macro( autocmake_check_modules _prefix )
@@ -150,12 +151,12 @@ macro( autocmake_check_modules _prefix )
 	set( ${_prefix}_INCLUDE_DIRECTORIES)
 
     foreach( _pkg ${ARGN} )
-	    pkg_check_modules( _pc ${_pkg} REQUIRED)
-		list(APPEND ${_prefix}_LINK_DIRECTORIES ${_pc_LIBRARY_DIRS} )
-		list(APPEND ${_prefix}_INCLUDE_DIRECTORIES ${_pc_INCLUDE_DIRS} )
-		#MESSAGE("_pc_inc ${_pc_INCLUDE_DIRS} ")
-		#MESSAGE("_pc_libdir ${_pc_LIBRARY_DIRS} ")
-		list(APPEND ${_prefix}_LIBS ${_pc_LIBRARIES})
+	    pkg_check_modules( ${_pkg} ${_pkg} REQUIRED)
+		list(APPEND ${_prefix}_LINK_DIRECTORIES ${${_pkg}_LIBRARY_DIRS} )
+		list(APPEND ${_prefix}_INCLUDE_DIRECTORIES ${${_pkg}_INCLUDE_DIRS} )
+		#MESSAGE("_pc_inc ${_pkg} : ${${_pkg}_INCLUDE_DIRS} ")
+		#MESSAGE("_pc_libdir ${_pkg}: ${${_pkg}_LIBRARY_DIRS} ")
+		list(APPEND ${_prefix}_LIBS ${${_pkg}_LIBRARIES})
 	endforeach()
 	#MESSAGE("*_LINK_DIRECTORIES*" ${${_prefix}_LINK_DIRECTORIES})
 	#MESSAGE("*_INCLUDE_DIRECTORIES*" ${${_prefix}_INCLUDE_DIRECTORIES})

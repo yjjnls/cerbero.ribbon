@@ -8,7 +8,12 @@ class Recipe(recipe.Recipe):
     remotes = {'origin': 'https://github.com/EricssonResearch/openwebrtc-gst-plugins.git'}
     commit = 'ba570daa9a38838ae7a80a01b24e1877f01f6169'
     deps = ['libusrsctp']
-    btype = BuildType.AUTOCMAKE
+    if os.getenv('MSYSTEM'):
+        btype = BuildType.AUTOCMAKE
+    else:
+        btype = BuildType.MAKEFILE
+        config_sh = './configure'
+        configure_tpl = "%(config-sh)s --prefix=%(prefix)s --libdir=%(libdir)s %(options)s"
     files_libs = ['libgstsctp-1.0']
     files_plugins_devel = [
         'include/gstreamer-1.0/gst/sctp',
@@ -20,3 +25,11 @@ class Recipe(recipe.Recipe):
         'lib/gstreamer-1.0/libgstscream%(mext)s',
     ]
     patches = ['openwebrtc-gst-plugins/0001-AutoCMake-adaptation.patch']
+
+    def configure(self):
+        if self.config.target_platform == Platform.LINUX:
+            os.environ['CFLAGS'] += '-pthread'
+            if not os.path.exists(self.make_dir):
+                os.makedirs(self.make_dir)
+            shell.call('bash autogen.sh', self.make_dir)
+        super(recipe.Recipe, self).configure()
