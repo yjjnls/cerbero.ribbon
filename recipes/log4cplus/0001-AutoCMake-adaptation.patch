@@ -1,20 +1,29 @@
-From c4e0e17d4d36ae0aaaba2d8f262708b4ea3142bb Mon Sep 17 00:00:00 2001
+From 2e177bdc5f8182868de9ab9a51d24d4f33e6ac33 Mon Sep 17 00:00:00 2001
 From: Mingyi <mingyi.z@outlook.com>
 Date: Fri, 5 May 2017 12:00:37 +0800
 Subject: [PATCH] AutoCMake adaptation
 
 remove win32 postfix
 ---
- CMakeLists.txt       |  7 ++++++-
+ CMakeLists.txt       |  9 +++++++--
  log4cplus.pc.cmakein | 13 +++++++++++++
  src/CMakeLists.txt   | 22 +++++++++++-----------
- 3 files changed, 30 insertions(+), 12 deletions(-)
+ 3 files changed, 31 insertions(+), 13 deletions(-)
  create mode 100644 log4cplus.pc.cmakein
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index e4709ab..337eb30 100644
+index e4709ab..145e4d9 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
+@@ -40,7 +40,7 @@ endif(LOG4CPLUS_SINGLE_THREADED AND LOG4CPLUS_BUILD_LOGGINGSERVER)
+ set(BUILD_SHARED_LIBS TRUE CACHE BOOL "If TRUE, log4cplus is built as a shared library, otherwise as a static library")
+ 
+ if (WIN32)
+-  set (UNICODE_DEFAULT ON)
++  set (UNICODE_DEFAULT OFF)
+ else (WIN32)
+   set (UNICODE_DEFAULT OFF)
+ endif (WIN32)
 @@ -86,7 +86,6 @@ if (LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME)
  endif (LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME)
  

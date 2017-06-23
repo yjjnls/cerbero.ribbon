@@ -1,4 +1,4 @@
-From 7a1936c83beb411e277c5e7b8b473aea63abcfcf Mon Sep 17 00:00:00 2001
+From c6df358b86f51892237c2872d6a48dabd84728fc Mon Sep 17 00:00:00 2001
 From: yjjnls <x-jj@foxmail.com>
 Date: Mon, 5 Jun 2017 16:06:31 +0800
 Subject: [PATCH] AutoCMake adaptation
@@ -41,7 +41,7 @@ index 0000000..903c3db
 +
 diff --git a/libuv/CMakelists.txt b/libuv/CMakelists.txt
 new file mode 100644
-index 0000000..e2da82c
+index 0000000..7b021bc
 --- /dev/null
 +++ b/libuv/CMakelists.txt
 @@ -0,0 +1,71 @@
@@ -106,7 +106,7 @@ index 0000000..e2da82c
 +INSTALL(FILES ${_HEADERS}
 +        DESTINATION include/libuv )
 +
-+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/Release/libuv.lib
++INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/libuv.lib
 +        DESTINATION lib )
 +		
 +set(VERSION ${PROJECT_VERSION} )
@@ -118,7 +118,7 @@ index 0000000..e2da82c
 +
 diff --git a/libuv/libuv.pc.cmakein b/libuv/libuv.pc.cmakein
 new file mode 100644
-index 0000000..4d4f11f
+index 0000000..1a9ecdd
 --- /dev/null
 +++ b/libuv/libuv.pc.cmakein
 @@ -0,0 +1,11 @@
@@ -131,8 +131,8 @@ index 0000000..4d4f11f
 +Version: 1.12.0
 +Description: multi-platform support library with a focus on asynchronous I/O.
 +
-+Libs: -L${libdir} -luv @LIBS@
-+Cflags: -I${includedir}
++Libs: -L${libdir} -llibuv @LIBS@
++Cflags: -I${includedir} -I${includedir}/libuv
 -- 
 2.13.0.windows.1
 

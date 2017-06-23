@@ -1,19 +1,55 @@
-From c60330f4c5ba520b6fd7db7c1d0a0a50351148ec Mon Sep 17 00:00:00 2001
+From 7e3754a564ef9ddcd7779b19a863cc498aadffbc Mon Sep 17 00:00:00 2001
 From: yjjnls <x-jj@foxmail.com>
 Date: Tue, 6 Jun 2017 14:47:18 +0800
 Subject: [PATCH] Install pkgconfig
 
 ---
+ cmake/CMakeLists.txt              |  4 ++--
+ cmake/extract_includes.bat.in     |  2 ++
  cmake/install.cmake               | 29 ++++++++++++++++++++---------
  cmake/libprotobuf-lite.pc.cmakein | 11 +++++++++++
  cmake/libprotobuf.pc.cmakein      | 11 +++++++++++
  cmake/libprotoc.pc.cmakein        | 11 +++++++++++
- cmake/protobuf-options.cmake      | 14 +++++++-------
- 5 files changed, 60 insertions(+), 16 deletions(-)
+ 6 files changed, 57 insertions(+), 11 deletions(-)
  create mode 100644 cmake/libprotobuf-lite.pc.cmakein
  create mode 100644 cmake/libprotobuf.pc.cmakein
  create mode 100644 cmake/libprotoc.pc.cmakein
 
+diff --git a/cmake/CMakeLists.txt b/cmake/CMakeLists.txt
+index 7618ba2..218ef97 100644
+--- a/cmake/CMakeLists.txt
++++ b/cmake/CMakeLists.txt
+@@ -29,8 +29,8 @@ else (MSVC)
+   set(protobuf_WITH_ZLIB_DEFAULT ON)
+ endif (MSVC)
+ option(protobuf_WITH_ZLIB "Build with zlib support" ${protobuf_WITH_ZLIB_DEFAULT})
+-set(protobuf_DEBUG_POSTFIX "d"
+-  CACHE STRING "Default debug postfix")
++# set(protobuf_DEBUG_POSTFIX "d"
++  # CACHE STRING "Default debug postfix")
+ mark_as_advanced(protobuf_DEBUG_POSTFIX)
+ # User options
+ include(protobuf-options.cmake)
+diff --git a/cmake/extract_includes.bat.in b/cmake/extract_includes.bat.in
+index 245e917..1278ee8 100644
+--- a/cmake/extract_includes.bat.in
++++ b/cmake/extract_includes.bat.in
+@@ -51,6 +51,7 @@ copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\generated_enum_reflec
+ copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\generated_enum_util.h" include\google\protobuf\generated_enum_util.h
+ copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\generated_message_reflection.h" include\google\protobuf\generated_message_reflection.h
+ copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\generated_message_util.h" include\google\protobuf\generated_message_util.h
++copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\generated_message_table_driven.h" include\google\protobuf\generated_message_table_driven.h
+ copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\has_bits.h" include\google\protobuf\has_bits.h
+ copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\io\coded_stream.h" include\google\protobuf\io\coded_stream.h
+ copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\io\gzip_stream.h" include\google\protobuf\io\gzip_stream.h
+@@ -70,6 +71,7 @@ copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\map_type_handler.h" i
+ copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\message.h" include\google\protobuf\message.h
+ copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\message_lite.h" include\google\protobuf\message_lite.h
+ copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\metadata.h" include\google\protobuf\metadata.h
++copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\metadata_lite.h" include\google\protobuf\metadata_lite.h
+ copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\reflection.h" include\google\protobuf\reflection.h
+ copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\reflection_ops.h" include\google\protobuf\reflection_ops.h
+ copy "${PROTOBUF_SOURCE_WIN32_PATH}\..\src\google\protobuf\repeated_field.h" include\google\protobuf\repeated_field.h
 diff --git a/cmake/install.cmake b/cmake/install.cmake
 index 28dc90d..1323f12 100644
 --- a/cmake/install.cmake
@@ -57,7 +93,7 @@ index 28dc90d..1323f12 100644
  if(protobuf_INSTALL_EXAMPLES)
 diff --git a/cmake/libprotobuf-lite.pc.cmakein b/cmake/libprotobuf-lite.pc.cmakein
 new file mode 100644
-index 0000000..7b49ccc
+index 0000000..c4fd93c
 --- /dev/null
 +++ b/cmake/libprotobuf-lite.pc.cmakein
 @@ -0,0 +1,11 @@
@@ -70,11 +106,11 @@ index 0000000..7b49ccc
 +Version: 3.3.0
 +Description: 
 +Requires:
-+Libs: -L${libdir}  -llibprotobuf-lited
++Libs: -L${libdir}  -llibprotobuf-lite
 +Cflags: -I${includedir}
 diff --git a/cmake/libprotobuf.pc.cmakein b/cmake/libprotobuf.pc.cmakein
 new file mode 100644
-index 0000000..f851588
+index 0000000..90ec1a0
 --- /dev/null
 +++ b/cmake/libprotobuf.pc.cmakein
 @@ -0,0 +1,11 @@
@@ -87,11 +123,11 @@ index 0000000..f851588
 +Version: 3.3.0
 +Description: 
 +Requires:
-+Libs: -L${libdir}  -llibprotobufd
++Libs: -L${libdir}  -llibprotobuf
 +Cflags: -I${includedir}
 diff --git a/cmake/libprotoc.pc.cmakein b/cmake/libprotoc.pc.cmakein
 new file mode 100644
-index 0000000..ef414e3
+index 0000000..9426672
 --- /dev/null
 +++ b/cmake/libprotoc.pc.cmakein
 @@ -0,0 +1,11 @@
@@ -104,28 +140,9 @@ index 0000000..ef414e3
 +Version: 3.3.0
 +Description: 
 +Requires:
-+Libs: -L${libdir}  -llibprotocd
++Libs: -L${libdir}  -llibprotoc
 +Cflags: -I${includedir}
 \ No newline at end of file
-diff --git a/cmake/protobuf-options.cmake b/cmake/protobuf-options.cmake
-index 47fb158..99c85eb 100644
---- a/cmake/protobuf-options.cmake
-+++ b/cmake/protobuf-options.cmake
-@@ -1,7 +1,7 @@
--# Verbose output
--option(protobuf_VERBOSE "Enable for verbose output" OFF)
--mark_as_advanced(protobuf_VERBOSE)
--
--# FindProtobuf module compatibel
--option(protobuf_MODULE_COMPATIBLE "CMake build-in FindProtobuf.cmake module compatible" OFF)
--mark_as_advanced(protobuf_MODULE_COMPATIBLE)
-+# Verbose output
-+option(protobuf_VERBOSE "Enable for verbose output" OFF)
-+mark_as_advanced(protobuf_VERBOSE)
-+
-+# FindProtobuf module compatibel
-+option(protobuf_MODULE_COMPATIBLE "CMake build-in FindProtobuf.cmake module compatible" OFF)
-+mark_as_advanced(protobuf_MODULE_COMPATIBLE)
 -- 
 2.13.0.windows.1
 

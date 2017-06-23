@@ -1,0 +1,47 @@
+From 59c0276991542a20595dc42b24032c1b8fd537fb Mon Sep 17 00:00:00 2001
+From: yjjnls <x-jj@foxmail.com>
+Date: Tue, 20 Jun 2017 09:58:14 +0800
+Subject: [PATCH] fix macro confusion
+
+the struct list_entry is confused with the linux macro
+---
+ boost/thread/win32/condition_variable.hpp | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/boost/thread/win32/condition_variable.hpp b/boost/thread/win32/condition_variable.hpp
+index 23e9e44..0208e22 100644
+--- a/boost/thread/win32/condition_variable.hpp
++++ b/boost/thread/win32/condition_variable.hpp
+@@ -124,9 +124,9 @@ namespace boost
+             long total_count;
+             unsigned active_generation_count;
+ 
+-            typedef basic_cv_list_entry list_entry;
++            typedef basic_cv_list_entry list_entry_boost;
+ 
+-            typedef boost::intrusive_ptr<list_entry> entry_ptr;
++            typedef boost::intrusive_ptr<list_entry_boost> entry_ptr;
+             typedef std::vector<entry_ptr> generation_list;
+ 
+             generation_list generations;
+@@ -177,7 +177,7 @@ namespace boost
+                 detail::interlocked_write_release(&total_count,total_count+1);
+                 if(generations.empty() || generations.back()->is_notified())
+                 {
+-                    entry_ptr new_entry(new list_entry(wake_sem));
++                    entry_ptr new_entry(new list_entry_boost(wake_sem));
+                     generations.push_back(new_entry);
+                     return new_entry;
+                 }
+@@ -204,7 +204,7 @@ namespace boost
+                     entry->remove_waiter();
+                 }
+ 
+-                list_entry* operator->()
++                list_entry_boost* operator->()
+                 {
+                     return entry.get();
+                 }
+-- 
+2.13.0.windows.1
+

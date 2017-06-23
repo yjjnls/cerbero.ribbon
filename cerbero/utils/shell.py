@@ -232,6 +232,9 @@ def download(url, destination=None, recursive=False, check_cert=True, overwrite=
     if not check_cert:
         cmd += " --no-check-certificate"
 
+    if os.path.exists(destination):
+        os.remove(destination)
+        
     if not recursive and not overwrite and os.path.exists(destination):
         if LOGFILE is None:
             logging.info("File %s already downloaded." % destination)
@@ -250,7 +253,7 @@ def download(url, destination=None, recursive=False, check_cert=True, overwrite=
         except FatalError, e:
             if os.path.exists(destination):
                 os.remove(destination)
-            raise e
+            return -1
 
 
 def download_curl(url, destination=None, recursive=False, check_cert=True, overwrite=False):
