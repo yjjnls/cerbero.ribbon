@@ -68,7 +68,12 @@ class Bootstrapper (object):
                 v = None
 
             bs.insert(0, bootstrappers[d][v](config))
-        bs.append(Project(config))
+        
+        #append deploy Bootstrap
+        import hacks
+        deploy = hacks.Deploy()
+        if hasattr( deploy ,'Bootstrap'):
+            bs.append( deploy.Bootstrap( config ) )
 
         return bs
 

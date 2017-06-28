@@ -3,7 +3,7 @@
 from cerbero.utils import shell
 
 class Recipe(recipe.Recipe):
-    name = 'Theron'
+    name = 'theron'
     version = '6.00.02'
     stype = SourceType.TARBALL
     if os.getenv('MSYSTEM'):
@@ -19,8 +19,9 @@ class Recipe(recipe.Recipe):
     #                "--libdir %(libdir)s %(options)s"
     patches = ['Theron/0001-add-cmake-build.patch','Theron/0001-makefile-shared.patch']
     #
-    files_libs = ['Theron']
+    files_libs  = ['Theron']
     files_devel = ['include/Theron', 'lib/pkgconfig/Theron.pc']
+    files_tests = ['test/Theron']
 
     def prepare(self):
         if self.config.target_platform == Platform.LINUX:

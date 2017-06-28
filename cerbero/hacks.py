@@ -170,3 +170,65 @@ if sys.platform.startswith('darwin'):
     import cerbero.utils.shell as cshell
     del cshell.download
     cshell.download = cshell.download_curl
+
+################ CONTINUE HACKS ########################################
+from cerbero.utils import messages as m
+import shutil
+
+_deployer=None
+
+def Deploy():
+    return _deployer
+
+if os.path.isfile( os.path.join( os.getcwd(),'deploy.py') ):
+    m.message('loading deploy %s/deploy.py'%os.getcwd())
+    sys.path.append( os.getcwd())
+    _deployer = __import__( 'deploy' )
+    if hasattr( _deployer, 'prepare' ):
+        _deployer.prepare()
+
+
+
+if _deployer and hasattr(_deployer,'MIRRORS'):
+    import cerbero.utils.shell as cshell
+    cshell._download = cshell.download
+    del cshell.download
+
+    def _mirror_download(url, destination=None, recursive=False, check_cert=True, overwrite=False):
+        '''
+        Downloads a file with wget, but try mirror first
+
+        @param url: url to download
+        @type: str
+        @param destination: destination where the file will be saved
+        @type destination: str
+        '''
+        murl = _deployer.MIRRORS.get( url ,None)
+        if murl is None:
+            part=''
+            for key, value in _deployer.MIRRORS.iteritems():
+                if url.startswith(key):
+                    #find the longest matched
+                    if len(key) > len(part):
+                        part = key
+            if part :
+                murl = url.replace( part , _deployer.MIRRORS[part] )
+
+        if murl :
+            if murl.startswith('http://') or murl.startswith('https://'):
+                try :
+                    m.message('downloading from mirror %s'%murl)
+                    cshell._download( murl ,destination,recursive,check_cert,overwrite)
+                    return
+                except:
+                    m.warning('download mirror %s failed.'%murl)
+            elif os.path.isfile( murl ) :
+                path = os.path.dirname( murl )
+                if destination:
+                    path = destination
+                shutil.copyfile( murl , path )
+                return
+        cshell._download( url ,destination,recursive,check_cert,overwrite)
+
+
+    cshell.download = _mirror_download
