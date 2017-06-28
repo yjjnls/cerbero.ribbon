@@ -2,13 +2,12 @@
 # -*- Mode: Python -*-
 
 
-class Package(custom.WebService, package.Package):
+class Package(custom.Base, package.Package):
 
-    name = 'webservice-comm'
-    shortdesc = 'Web Service communication devel component'
-    longdesc = 'Web Service communication devel component'
+    name = 'expansion-base'
+    shortdesc = 'GStreamer Basic Component Expansion'
+    longdesc = ''
     uuid = ''
-    version = '0.1.0'
     #deps = ['base-libs']
 
     files = [

@@ -2,13 +2,12 @@
 # -*- Mode: Python -*-
 
 
-class Package(custom.DB, package.Package):
+class Package(custom.Base, package.Package):
 
     name = 'webservice-serialize'
     shortdesc = 'Database devel component'
     longdesc = 'Database devel component'
     uuid = ''
-    version = '0.1.0'
 
 
     files = ['protobuf:libs:bins', 'rapidjson']
