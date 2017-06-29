@@ -4,7 +4,7 @@
 
 class Package(custom.Base, package.Package):
 
-    name = 'webservice-serialize'
+    name = 'expansion-serializer'
     shortdesc = 'Database devel component'
     longdesc = 'Database devel component'
     uuid = ''
