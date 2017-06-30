@@ -32,7 +32,6 @@ def prepare():
     '''
     pass
 
-
 from cerbero.bootstrap import BootstrapperBase
 class Bootstrap(BootstrapperBase):
     ''' This planed for user add action at bootstrap step
