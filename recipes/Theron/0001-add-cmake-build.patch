@@ -32,7 +32,7 @@ index 0000000..03b93e3
 +    file(GLOB_RECURSE _sources "${i}/*.cpp")
 +    add_executable( ${i} ${_sources} )
 +	target_link_libraries( ${i} Theron )
-+	install(TARGETS ${i} RUNTIME DESTINATION share/Theron/benchmarks )
++	install(TARGETS ${i} RUNTIME DESTINATION testkits/Theron/benchmarks )
 +
 +endforeach()
 diff --git a/CMakelists.txt b/CMakelists.txt
@@ -90,7 +90,7 @@ index 0000000..6eee73d
 +add_test( tests  ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/tests  )
 +
 +set_tests_properties(tests PROPERTIES PASS_REGULAR_EXPRESSION "PASSED" )
-+install(TARGETS tests RUNTIME DESTINATION share/Theron/tests )
++install(TARGETS tests RUNTIME DESTINATION testkits/Theron/tests )
 \ No newline at end of file
 diff --git a/Tutorial/CMakelists.txt b/Tutorial/CMakelists.txt
 new file mode 100644
@@ -114,7 +114,7 @@ index 0000000..9b91d08
 +    file(GLOB_RECURSE _sources "${i}/*.cpp")
 +    add_executable( ${i} ${_sources} )
 +	target_link_libraries( ${i} Theron )
-+	install(TARGETS ${i} RUNTIME DESTINATION share/Theron/tutorial )
++	install(TARGETS ${i} RUNTIME DESTINATION testkits/Theron/tutorial )
 +
 +endforeach()
 -- 

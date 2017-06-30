@@ -21,7 +21,7 @@ class Recipe(recipe.Recipe):
     #
     files_libs  = ['Theron']
     files_devel = ['include/Theron', 'lib/pkgconfig/Theron.pc']
-    files_tests = ['test/Theron']
+    files_tests = ['testkits/Theron']
 
     def prepare(self):
         if self.config.target_platform == Platform.LINUX:

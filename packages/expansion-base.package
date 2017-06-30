@@ -2,7 +2,7 @@
 # -*- Mode: Python -*-
 
 
-class Package(custom.Base, package.Package):
+class Package(custom.Expansion, package.Package):
 
     name = 'expansion-base'
     shortdesc = 'GStreamer Basic Component Expansion'
@@ -11,6 +11,6 @@ class Package(custom.Base, package.Package):
     #deps = ['base-libs']
 
     files = [
-        'theron:libs', 'log4cplus:libs', 'libwebsockets:libs', 'libevent:libs',
+        'theron:libs:tests', 'log4cplus:libs', 'libwebsockets:libs', 'libevent:libs',
         'libuv:libs'
     ]

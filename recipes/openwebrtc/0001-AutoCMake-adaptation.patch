@@ -282,7 +282,7 @@ index 0000000..c2d0447
 +	add_executable (${_name} ${ARGN})
 +	target_link_libraries(${_name}  ${this_LIBS} openwebrtc-${OWR_API_VERSION} openwebrtc_gst )
 +	install(TARGETS ${_name}
-+			RUNTIME DESTINATION test/openwebrtc	)
++			RUNTIME DESTINATION testkits/openwebrtc	)
 +	add_dependencies(${_name} openwebrtc-${OWR_API_VERSION} openwebrtc_gst )
 +
 +endmacro()

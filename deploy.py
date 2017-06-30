@@ -22,6 +22,7 @@ import shutil
 from cerbero.utils  import shell
 _VERSION='1.12.0' #cerbero version
 _CWD  = os.path.abspath( os.getcwd() )
+_REPO_URL='http://localhost/mms/repo/'
 _MIRROR_BASE='http://localhost/mms/repo/mirror/'
 
 def prepare():
@@ -36,14 +37,14 @@ from cerbero.bootstrap import BootstrapperBase
 class Bootstrap(BootstrapperBase):
     ''' This planed for user add action at bootstrap step
     '''
-    _server = ''
+    _server = _REPO_URL +'sdk/'
     _SDKs ={ 'gstreamer-1.0':{'version':'1.12.0-1'}
     }
     def __init__(self, config):
         BootstrapperBase.__init__(self, config)
              
     def start(self):
-        pass
+        self._install_sdk()
 
     def _install_sdk(self):
 
@@ -75,5 +76,6 @@ class Bootstrap(BootstrapperBase):
                     rc = shell.download(url, destination)
                 if rc == -1:
                     continue
-                installer = install.Installer(self.config.install_dir)
+                from cerbero.tools.sdkmanager import Installer
+                installer = Installer(self.config.install_dir)
                 installer.install(destination)

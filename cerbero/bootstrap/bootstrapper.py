@@ -70,10 +70,12 @@ class Bootstrapper (object):
             bs.insert(0, bootstrappers[d][v](config))
         
         #append deploy Bootstrap
-        import hacks
-        deploy = hacks.Deploy()
+        import cerbero.hacks
+        deploy = cerbero.hacks.Deploy()
         if hasattr( deploy ,'Bootstrap'):
+            print 'append --------------'
             bs.append( deploy.Bootstrap( config ) )
+        print bs
 
         return bs
 

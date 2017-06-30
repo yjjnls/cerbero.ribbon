@@ -2,7 +2,7 @@
 # -*- Mode: Python -*-
 
 
-class Package(custom.Base, package.Package):
+class Package(custom.Expansion, package.Package):
 
     name = 'expansion-serializer'
     shortdesc = 'Database devel component'

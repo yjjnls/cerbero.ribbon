@@ -3,11 +3,11 @@
 from cerbero.packages import package
 from cerbero.enums import License
 
-class Base:
+class Expansion:
 
-    url = "http://vss.kedacom.com"
-    version = '0.2.0'
-    vendor = 'GStreamer Expansions'
+    url = ""
+    version = '0.1.0'
+    #vendor = 'Multimedia Service Project'
     #licenses = [License.LGPL]
     #org = 'webservice.vss.kedacom.com'
 
@@ -15,7 +15,7 @@ class DB:
 
     url = "http://vss.kedacom.com"
     version = '0.1.0'
-    vendor = 'Database Project'
+    #vendor = 'Database Project'
     #licenses = [License.LGPL]
     #org = 'webservice.vss.kedacom.com'
 	

@@ -21,6 +21,8 @@ class Recipe(recipe.Recipe):
     files_libs = ['libopenwebrtc_gst','libopenwebrtc-0.3']
     files_devel = ['include/owr', 'lib/pkgconfig/openwebrtc-0.3.pc',
                    'lib/pkgconfig/openwebrtc-gst-0.3.pc']
+    files_tests = ['testkits/openwebrtc']
+
 
     def configure(self):
         if self.config.target_platform == Platform.LINUX:

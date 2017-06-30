@@ -1,17 +1,19 @@
-From 305ff84b50daa1b381754040e7d68d44850c515a Mon Sep 17 00:00:00 2001
+From 2ca7e117c63e138042f996855b957422e42b6065 Mon Sep 17 00:00:00 2001
 From: Mingyi <mingyi.z@outlook.com>
 Date: Fri, 9 Jun 2017 09:55:33 +0800
 Subject: [PATCH] AutoCMake adaptation
 
 remove tests for release
+
+add test
 ---
- CMakeLists.txt     | 39 ++++++++++++++++++++++++++++++++++++---
+ CMakeLists.txt     | 41 ++++++++++++++++++++++++++++++++++++++---
  rocksdb.pc.cmakein | 12 ++++++++++++
- 2 files changed, 48 insertions(+), 3 deletions(-)
+ 2 files changed, 50 insertions(+), 3 deletions(-)
  create mode 100644 rocksdb.pc.cmakein
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c4e84c9..1abe410 100644
+index c4e84c9..5f3986c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -41,6 +41,15 @@ endif()
@@ -58,9 +60,19 @@ index c4e84c9..1abe410 100644
  # For test util library that is build only in DEBUG mode
  # and linked to tests. Add test only code that is not #ifdefed for Release here.
  set(TESTUTIL_SOURCE
-@@ -755,14 +771,31 @@ foreach(sourcefile ${C_TEST_EXES})
+@@ -736,6 +752,7 @@ foreach(sourcefile ${TEST_EXES})
+       add_test(NAME ${exename} COMMAND ${exename}${ARTIFACT_SUFFIX})
+       add_dependencies(check ${exename}${ARTIFACT_SUFFIX})
+     endif()
++	install(TARGETS ${exename}${ARTIFACT_SUFFIX} COMPONENT runtime DESTINATION testkits/rocksdb)
+ endforeach(sourcefile ${TEST_EXES})
+ 
+ # C executables must link to a shared object
+@@ -754,15 +771,33 @@ foreach(sourcefile ${C_TEST_EXES})
+     target_link_libraries(${exename}${ARTIFACT_SUFFIX} ${ROCKSDB_IMPORT_LIB} testutillib${ARTIFACT_SUFFIX})
      add_test(NAME ${exename} COMMAND ${exename}${ARTIFACT_SUFFIX})
      add_dependencies(check ${exename}${ARTIFACT_SUFFIX})
++	install(TARGETS ${exename}${ARTIFACT_SUFFIX} COMPONENT runtime DESTINATION testkits/rocksdb )	
  endforeach(sourcefile ${C_TEST_EXES})
 +
 +endif( WITH_TESTS )

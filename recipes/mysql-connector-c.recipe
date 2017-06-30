@@ -29,7 +29,7 @@ class Recipe(recipe.Recipe):
     licenses = [License.GPL]
 
     files_libs = ['libmysql']
-    files_devel = ['include/mysql-connector-c', 'lib/pkgconfig/mysql.pc']
+    files_devel = ['include/mysql', 'lib/pkgconfig/mysql.pc']
 
     def prepare(self):
         self.configure_options = ' -DINSTALL_INCLUDEDIR=include/mysql '
