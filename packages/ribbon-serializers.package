@@ -4,7 +4,7 @@
 
 class Package(custom.Ribbon, package.Package):
 
-    name = 'serializers'
+    name = 'ribbon-serializers'
     shortdesc = 'Serialize and Deserialize devel component'
     longdesc = 'Serialize and Deserialize devel component'
 
