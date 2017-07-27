@@ -26,13 +26,12 @@
 # -*- Mode: Python -*-
 
 
-class Package(package.Package):
+class Package(custom.Ribbon, package.Package):
 
-    name = 'openwebrtc-base'
+    name = 'openwebrtc'
     shortdesc = 'OpenWebRTC'
     longdesc = 'OpenWebRTC'
     url = "http://www.openwebrtc.org"
-    version = '0.3.0-1'
     codename = 'Round 3, fight!'
     license = License.LGPL
     vendor = 'Ericsson Research'

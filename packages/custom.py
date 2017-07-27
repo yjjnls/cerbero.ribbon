@@ -3,19 +3,8 @@
 from cerbero.packages import package
 from cerbero.enums import License
 
-class WebService:
+class Ribbon:
 
-    url = "http://vss.kedacom.com"
+    url = "http://www.gnu.org/licenses/licenses.html"
     version = '0.1.0'
-    vendor = 'Multimedia Service Project'
-    #licenses = [License.LGPL]
-    #org = 'webservice.vss.kedacom.com'
-
-class DB:
-
-    url = "http://vss.kedacom.com"
-    version = '0.1.0'
-    vendor = 'Database Project'
-    #licenses = [License.LGPL]
-    #org = 'webservice.vss.kedacom.com'
-	
+    SDKs={'gstreamer-1.0':'1.12.2-1'}

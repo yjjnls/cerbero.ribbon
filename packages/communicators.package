@@ -1,0 +1,16 @@
+# vi:si:et:sw=4:sts=4:ts=4:syntax=python
+# -*- Mode: Python -*-
+
+
+class Package(custom.Ribbon, package.Package):
+
+    name = 'ribbon-communicators'
+    shortdesc = 'Communication devel component'
+    longdesc = 'Communication devel component'
+    deps = ['base-crypto' #in gstreamer-1.0
+	]
+
+    files = [
+        'theron:libs', 'log4cplus:libs', 'libwebsockets:libs', 'libevent:libs',
+        'libuv:libs'
+    ]

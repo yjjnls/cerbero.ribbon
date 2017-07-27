@@ -1,0 +1,12 @@
+# vi:si:et:sw=4:sts=4:ts=4:syntax=python
+# -*- Mode: Python -*-
+
+
+class Package(custom.Ribbon, package.Package):
+
+    name = 'serializers'
+    shortdesc = 'Serialize and Deserialize devel component'
+    longdesc = 'Serialize and Deserialize devel component'
+
+
+    files = ['protobuf:libs:bins', 'rapidjson']
