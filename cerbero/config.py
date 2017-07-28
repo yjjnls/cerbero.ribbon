@@ -92,7 +92,8 @@ class Config (object):
                    'distro_packages_install', 'interactive',
                    'target_arch_flags', 'sysroot', 'isysroot',
                    'extra_lib_path', 'cached_sources', 'tools_prefix',
-                   'ios_min_version', 'build_type']
+				   'build_type',
+                   'ios_min_version']
 
     def __init__(self):
         self._check_uninstalled()

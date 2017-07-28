@@ -23,7 +23,20 @@ import cerbero.utils.messages as m
 from cerbero.utils import _
 from cerbero.errors import UsageError, EmptyPackageError
 from cerbero.packages import PackagerBase, PackageType
-
+from cerbero.packages.packagesstore import PackagesStore
+import hashlib
+INFO_TPL = '''
+Package:       %(package)s
+Name:          %(name)s
+Version:       %(version)s
+Type:          %(type)s
+Homepage:      %(url)s
+Dependencies:  %(deps)s
+Licences:      %(licenses)s
+Filename:      %(filename)s
+MD5sum:        %(md5sum)s
+Description:   %(desc)s
+'''
 
 class DistTarball(PackagerBase):
     ''' Creates a distribution tarball '''
@@ -92,7 +105,54 @@ class DistTarball(PackagerBase):
             tar.add(filepath, os.path.join(package_prefix, f))
         tar.close()
 
+        self._create_tarball_info( output_dir,package_type,filename)
+
         return filename
+
+    def _create_tarball_info(self, output_dir, package_type, filename):
+
+        store = PackagesStore(self.config)
+        p = self.package
+        licenses = [p.license]
+        basename = self._get_name(package_type)
+		
+        d = os.path.join(output_dir,'Packages')
+        if not os.path.exists(d):
+            os.makedirs(d)		
+
+        path = os.path.join(d, p.name + package_type)
+        if os.path.exists(path):
+            os.remove(path)
+        if package_type == PackageType.DEVEL:
+            typename = 'devel'
+        else:
+            typename = 'runtime'
+
+        d = {'package': p.name + package_type,
+             'name': p.name, 'version': p.version, 'url': p.url,
+             'licenses': ' and '.join([l.acronym for l in licenses]),
+             'desc': p.shortdesc,
+             'filename':basename,
+             'md5sum':self._get_md5(filename),
+             'type':typename,
+             'deps': ', '.join([ p.name for p in
+                                store.get_package_deps(p.name, True)])}
+        f =open(path,'w')
+        f.write(INFO_TPL % d)
+        f.close()
+
+    def _get_md5(self,file_path):
+        f = open(file_path,'rb')  
+        md5_obj = hashlib.md5()
+        while True:
+            d = f.read(8096)
+            if not d:
+                break
+            md5_obj.update(d)
+        hash_code = md5_obj.hexdigest()
+        f.close()
+        md5 = str(hash_code).lower()
+        return md5
 
 
 class Packager(object):

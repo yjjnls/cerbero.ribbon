@@ -120,29 +120,3 @@ class VisualStudio(object):
                     env[k]=value
                     break
         return env
-
-#_COMPILE_VARS={}
-#_COMPILE_VAR_NAME=['CFLAGS', 'CXXFLAGS', 'OBJCFLAGS', 'LDFLAGS'
-#'CC', 'CXX', 'LD', 'CPP', 'CXXCPP', 
-#'RANLIB','AR','AS','NM', 'WINDRES','RC','DLLTOOL','LD_LIBRARY_PATH']#
-
-#_CV_RECOVER={}#
-
-#def clear_cv( recover=None):
-#    '''
-#    clear the compile releate enviroment vars
-#    if you plan to recover it set recover param
-#    '''
-#    if recover :
-#        _CV_RECOVER[recover] = {}
-#    for i in _COMPILE_VAR_NAME:
-#        if recover:
-#            _CV_RECOVER[recover][i]=os.environ[i]
-#        os.environ[i]=''#
-
-#def recover_cv( recover ):
-#    r = _CV_RECOVER.get( recover,{})
-#    if not r:
-#        return
-#    for k ,v in r.iteritems():
-        os.environ[i] = v

@@ -60,8 +60,6 @@ class WindowsBootstrapper(BootstrapperBase):
         self.platform = self.config.platform
 
         self.check_dirs()
-        print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
-
 
         return 
         if self.platform == Platform.WINDOWS:
@@ -88,12 +86,9 @@ class WindowsBootstrapper(BootstrapperBase):
         tarball = MINGW_TARBALL_TPL % (self.version, GCC_VERSION,
                 self.platform, self.arch)
 
-        url="%s/%s" % (MINGW_DOWNLOAD_SOURCE, tarball)
-        tarfile=os.path.join( self.config.cached_sources, url.replace('http://',''))
-        if not os.path.isfile(tarfile):
-            tarfile = os.path.join(self.prefix, tarball)
-            tarfile = os.path.abspath(tarfile)
-            shell.download("%s/%s" % (MINGW_DOWNLOAD_SOURCE, tarball), tarfile, check_cert=False)
+        tarfile = os.path.join(self.prefix, tarball)
+        tarfile = os.path.abspath(tarfile)
+        shell.download("%s/%s" % (MINGW_DOWNLOAD_SOURCE, tarball), tarfile, check_cert=False)
         try:
             shell.unpack(tarfile, self.prefix)
         except Exception:
@@ -107,16 +102,12 @@ class WindowsBootstrapper(BootstrapperBase):
 
     def install_python_sdk(self):
         ### FIXME : MOVE OVER REPOSITORY TO STANDARD ROOT
-        cached_root = os.path.join(self.config.cached_sources,'windows-external-sdk')
         old_sdk_git_root = 'git://anongit.freedesktop.org/gstreamer-sdk'
         m.action(_("Installing Python headers"))
-        if os.path.isdir( cached_root ):
-            tmp_dir=self.config.cached_sources
-        else:
-            tmp_dir = tempfile.mkdtemp()
-            shell.call("git clone %s" % os.path.join(old_sdk_git_root,
-                                                    'windows-external-sdk.git'),
-                    tmp_dir)
+        tmp_dir = tempfile.mkdtemp()
+        shell.call("git clone %s" % os.path.join(old_sdk_git_root,
+                                                 'windows-external-sdk.git'),
+                   tmp_dir)
 
         python_headers = os.path.join(self.prefix, 'include', 'Python2.7')
         python_headers = to_unixpath(os.path.abspath(python_headers))
@@ -135,8 +126,7 @@ class WindowsBootstrapper(BootstrapperBase):
         except:
             pass
         shell.call('ln -s python27.dll python.dll', '%s/lib' % self.prefix)
-        if self.config.cached_sources != tmp_dir:
-            shutil.rmtree(tmp_dir)
+        shutil.rmtree(tmp_dir)
 
     def install_mingwget_deps(self):
         for dep in MINGWGET_DEPS:
@@ -149,22 +139,14 @@ class WindowsBootstrapper(BootstrapperBase):
         else:
             inst_path = os.path.join(self.prefix, 'x86_64-w64-mingw32/include/GL/wglext.h')
         gl_header = 'http://www.opengl.org/registry/api/GL/wglext.h'
-        gl_header_cached = os.path.join( self.config.cached_sources, gl_header.replace('http://',''))
-        if os.path.isfile( gl_header_cached):
-            shutil.copy( gl_header_cached, inst_path )
-        else:
-            shell.download(gl_header, inst_path, False, check_cert=False)
+        shell.download(gl_header, inst_path, False, check_cert=False)
 
     def install_bin_deps(self):
         # FIXME: build intltool as part of the build tools bootstrap
         for url in WINDOWS_BIN_DEPS:
             temp = fix_winpath(tempfile.mkdtemp())
             path = os.path.join(temp, 'download.zip')
-            cached_path = os.path.join(self.config.cached_sources, GNOME_FTP.replace('http://',''),url)
-            if os.path.isfile( cached_path ):
-                path = cached_path
-            else:
-                shell.download(GNOME_FTP + url, path)
+            shell.download(GNOME_FTP + url, path)
             shell.unpack(path, self.config.toolchain_prefix)
         # replace /opt/perl/bin/perl in intltool
         files = shell.ls_files(['bin/intltool*'], self.config.toolchain_prefix)
@@ -225,24 +207,7 @@ class WindowsBootstrapper(BootstrapperBase):
             os.remove(strings)
         shutil.copy(p_strings, strings)
 
-    def _install_nasm(self):
-        version='2.13.01'
-        url='http://www.nasm.us/pub/nasm/releasebuilds/{0}/win32/nasm-{0}-win32.zip'.format(version)
 
-        tmp_dir = tempfile.mkdtemp()
-
-        tarball=os.path.join( self.config.cached_sources, url.replace('http://',''))
-        if not os.path.isfile(tarball):
-            shell.download( url, tmp_dir )
-            tarball = os.path.join( tmp_dir, 'nasm-{0}-win32.zip'.format(version))
-        shell.unpack( tarball, tmp_dir )
-        path = os.path.join( tmp_dir, 'nasm-{0}/nasm.exe'.format(version))
-        dstd=os.path.join(self.config.build_tools_prefix,'bin')
-        if not os.path.isdir( dstd ):
-            os.makedirs( dstd )
-
-        shutil.copy( path , os.path.join( dstd, 'nasm.exe' ) )
-        shutil.rmtree( tmp_dir )
         
 
 
