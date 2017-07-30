@@ -72,6 +72,7 @@ class PackagesStore (object):
         @rtype: L{cerbero.packages.package.Package}
         '''
         if name not in self._packages:
+            print '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'		
             raise PackageNotFoundError(name)
         return self._packages[name]
 

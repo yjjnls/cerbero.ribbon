@@ -25,16 +25,17 @@ from cerbero.errors import UsageError, EmptyPackageError
 from cerbero.packages import PackagerBase, PackageType
 from cerbero.packages.packagesstore import PackagesStore
 import hashlib
+from cerbero.utils import shell
 INFO_TPL = '''
-Package:       %(package)s
 Name:          %(name)s
 Version:       %(version)s
 Type:          %(type)s
+Debug:         %(build_type)s
 Homepage:      %(url)s
 Dependencies:  %(deps)s
 Licences:      %(licenses)s
 Filename:      %(filename)s
-MD5sum:        %(md5sum)s
+MD5File:       %(md5file)s
 Description:   %(desc)s
 '''
 
@@ -48,6 +49,13 @@ class DistTarball(PackagerBase):
         self.package_prefix = ''
         if self.config.packages_prefix is not None:
             self.package_prefix = '%s-' % self.config.packages_prefix
+        print package,self.config.packages_prefix
+        print package.name
+        print type(self.package),'<----'
+        import cerbero
+        #from cerbero.packages.package import SDKPackage
+        #print SDKPackage , type(self.package)
+        print isinstance(self.package, cerbero.packages.package.SDKPackage)
 
     def pack(self, output_dir, devel=True, force=False, keep_temp=False,
              split=True, package_prefix=''):
@@ -120,6 +128,9 @@ class DistTarball(PackagerBase):
         if not os.path.exists(d):
             os.makedirs(d)		
 
+        basename = os.path.basename(filename)
+        outdir = os.path.dirname(filename)
+
         path = os.path.join(d, p.name + package_type)
         if os.path.exists(path):
             os.remove(path)
@@ -128,6 +139,15 @@ class DistTarball(PackagerBase):
         else:
             typename = 'runtime'
 
+        shell.call( 'md5sum {0}>{0}.md5'.format(os.path.basename(filename)),
+        os.path.dirname(filename))
+
+        btype = 'Release'
+        
+        if hasattr(self.config,'build_type'):
+            btype=self.config.build_type
+
+
         d = {'package': p.name + package_type,
              'name': p.name, 'version': p.version, 'url': p.url,
              'licenses': ' and '.join([l.acronym for l in licenses]),
@@ -135,11 +155,14 @@ class DistTarball(PackagerBase):
              'filename':basename,
              'md5sum':self._get_md5(filename),
              'type':typename,
+             'build_type':btype,
+             'md5file':'%s.md5'%os.path.basename(filename),
              'deps': ', '.join([ p.name for p in
                                 store.get_package_deps(p.name, True)])}
-        f =open(path,'w')
+        f =open(basename+'.desc','w')
         f.write(INFO_TPL % d)
         f.close()
+
 
     def _get_md5(self,file_path):
         f = open(file_path,'rb')  

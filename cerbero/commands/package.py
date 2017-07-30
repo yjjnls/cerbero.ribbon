@@ -62,9 +62,10 @@ class Package(Command):
 
     def run(self, config, args):
         self.store = PackagesStore(config)
+        print '!',args.package[0]
         p = self.store.get_package(args.package[0])
-        if config.build_type=='Debug':
-            p.name += '-debug'
+        #if config.build_type=='Debug':
+        #    p.name += '-debug'
         if args.skip_deps_build and args.only_build_deps:
             raise UsageError(_("Cannot use --skip-deps-build together with "
                     "--only-build-deps"))
@@ -76,6 +77,7 @@ class Package(Command):
             return
 
         if p is None:
+            print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```'		
             raise PackageNotFoundError(args.package[0])
         if args.tarball:
             pkg = DistTarball(config, p, self.store)

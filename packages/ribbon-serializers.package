@@ -9,4 +9,4 @@ class Package(custom.Ribbon, package.Package):
     longdesc = 'Serialize and Deserialize devel component'
 
 
-    files = ['protobuf:libs:bins', 'rapidjson']
+    files = [ 'rapidjson']

@@ -7,4 +7,4 @@ class Ribbon:
 
     url = "http://www.gnu.org/licenses/licenses.html"
     version = '0.2.0'
-    SDKs={'gstreamer-1.0':'1.12.2-1'}
+    #SDKs={'gstreamer-1.0':'1.12.2-1'}
