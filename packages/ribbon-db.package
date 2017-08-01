@@ -1,0 +1,14 @@
+# vi:si:et:sw=4:sts=4:ts=4:syntax=python
+# -*- Mode: Python -*-
+
+
+class Package(custom.Ribbon, package.Package):
+
+    name = 'ribbon-db'
+    shortdesc = 'Database devel component'
+    longdesc = 'Database devel component'
+    deps = []
+
+    files = [
+        'sqlite3:libs', 'rocksdb:libs'
+    ]

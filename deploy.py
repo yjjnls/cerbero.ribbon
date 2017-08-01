@@ -20,32 +20,6 @@ _MIRROR_BASE='http://vss.kedacom.com/WMS/Mirrors/'
 
 MIRRORS={
 
-    #
-    #
-    'http://gstreamer.freedesktop.org/data/cerbero/toolchain/windows' :
-        _MIRROR_BASE +  'gstreamer.freedesktop.org/data/cerbero/toolchain/windows',
-
-    'http://ftp.gnome.org/pub/gnome/binaries/win32/' :
-        _MIRROR_BASE +  'ftp.gnome.org/pub/gnome/binaries/win32/',
-
-    'https://github.com/Mingyiz/cerbero-archive/raw/master':
-        _MIRROR_BASE + 'github.com/cerbero-archive',
-
-    #https://raw.githubusercontent.com/Mingyiz/cerbero-archive/master/MinGW.zip
-    'http://www.nasm.us/pub/nasm/releasebuilds/':
-        _MIRROR_BASE + 'www.nasm.us/pub/nasm/releasebuilds/',
-
-    'http://www.opengl.org/registry/api/GL/wglext.h':
-        _MIRROR_BASE + 'www.opengl.org/registry/api/GL/wglext.h',
-
-    'http://ftp.gnu.org/pub/gnu/' :
-        _MIRROR_BASE + 'ftp.gnu.org/pub/gnu/',
-
-    'http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz' :
-        _MIRROR_BASE +'www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz',
-		
-	'http://ftp.acc.umu.se/pub/GNOME/sources/glib/' :
-	    _MIRROR_BASE + 'ftp.gnome.org/pub/gnome/sources/glib',
         
     'http://www.openssl.org':
         _MIRROR_BASE + 'www.opengl.org',

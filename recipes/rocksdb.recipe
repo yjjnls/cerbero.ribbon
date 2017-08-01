@@ -35,8 +35,11 @@ class Recipe(recipe.Recipe):
     licenses = [License.GPL]
     
 
-#    def prepare(self):
-#        if self.platform == Platform.WINDOWS:
+    def prepare(self):
+        if self.config.target_platform == Platform.WINDOWS and \
+           self.config.target_arch == Architecture.X86:
+           self._remove_step(self.steps()) #do nothing
+           #not 
 #            self.make = 'msbuild.exe rocksdb.sln //p:Configuration=%s'%self.config.build_type
 
 #        
