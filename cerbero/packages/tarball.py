@@ -93,7 +93,7 @@ class PKGConfig(object):
         for l in self._file.readlines():
             self._lines.append(l)
 
-            m = re.match(PCFile._PATTERN, l)
+            m = re.match(PKGConfig._PATTERN, l)
             if m:
                 if m.group('name') == 'prefix':
                     self._prefix = m.group('value')
@@ -262,7 +262,7 @@ class DB(object):
             if equal(desc['Arch'],arch) and \
                equal(desc['Platform'],platform) and \
                equal(desc['Type'],pkgtype) and \
-               (equal(desc['Build'],'ReleaseOnly') or  orequal( desc['Build'] , build):
+               (equal(desc['Build'],'ReleaseOnly') or  orequal( desc['Build'] , build)):
                return desc
         return None
 

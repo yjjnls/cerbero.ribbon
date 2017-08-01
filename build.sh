@@ -27,7 +27,7 @@ function build(){
 	[ ! -d ${output} ] && mkdir -p ${output}
 	echo -e "
 	SDK:        gstreamer-1.0 
-	Version:    $(version GStreamer)
+	Version:    $(version Ribbon)
 	
 	$(git config user.name)
 	$(git config user.email)
@@ -40,14 +40,14 @@ function build(){
 
 
 if [ "$OS" == "Windows_NT" ]; then
-    outupd="SDKs/Windows/x86-64/gstreamer-1.0"
+    outupd="SDKs/ribbon"
     build  "$output" "win64.cbc"
 	if [  $? -ne 0 ] ; then
 	    echo build Windows 64bits SDK failed
 		exit 1
 	fi
 
-    outupd="SDKs/Windows/x86/gstreamer-1.0"
+    outupd="SDKs/ribbon"
     build  "$output" "win32.cbc"
 	if [  $? -ne 0 ] ; then
 	    echo build Windows 32bits SDK failed
@@ -55,7 +55,7 @@ if [ "$OS" == "Windows_NT" ]; then
 	fi
 
 else
-    outupd="SDKs/linux/x86/gstreamer-1.0/"
+    outupd="SDKs/ribbon"
     build  "$output" "lin-x86-64.cbc"
 	if [  $? -ne 0 ] ; then
 	    echo build Linux 64bits SDK failed

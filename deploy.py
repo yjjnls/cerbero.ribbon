@@ -28,6 +28,8 @@ MIRRORS={
 
 
 from cerbero.bootstrap import BootstrapperBase
+from cerbero.packages  import tarball
+
 class FirstBootstrap(BootstrapperBase):
     ''' This planed for user add action at bootstrap step
     '''
@@ -36,20 +38,16 @@ class FirstBootstrap(BootstrapperBase):
         BootstrapperBase.__init__(self, config)
              
     def start(self):
-        self._load_sources()
+        self._insall_sdk()
 
-    def _load_sources(self):
-        if os.path.isdir( 'sources' ):
-            return
+    def _insall_sdk(self):
+        config ={
+            'repo':'D:/tmp/SDK' ,
+            'SDK':{
+                'gstreamer-1.0':{
+                    'version':'1.12.2-1',
+                }
+            }
+        }
+        tarball.Setup( self.config.prefix,config ,self.config.target_arch,self.config.target_platform)
 
-        url = _MIRROR_BASE + 'gstreamer.freedesktop.org/data/pkg/src/{0}/cerbero-{0}.tar.gz'.format(_VERSION)
-        tarball = os.path.basename( url )
-        tarball = os.path.join( _CWD , tarball )
-        if not os.path.isfile( tarball ):
-            shell.download(url, tarball)
-        if os.path.isdir('~tmp'):
-            shutil.rmtree('~tmp')
-        os.makedirs('~tmp')#
-        shell.unpack( tarball, './~tmp')
-        shutil.move( '~tmp/cerbero-%s/sources'%_VERSION, 'sources' )
-        shutil.rmtree('~tmp')#

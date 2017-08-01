@@ -72,25 +72,11 @@ class VisualStudio(object):
         _CLEAR_COMPILE_VAR_NAME=['CFLAGS', 'CXXFLAGS', 'OBJCFLAGS', 'LDFLAGS',
         'CC', 'CXX', 'LD', 'CPP', 'CXXCPP', 
         'RANLIB','AR','AS','NM', 'WINDRES','RC','DLLTOOL','LD_LIBRARY_PATH']
-        env = self._profile()
+        env = self._probe()
         for i in _CLEAR_COMPILE_VAR_NAME:
             env[i]=None
         return env
     
-
-
-
-
-
-    def _profile(self):
-        profile = ActivePerl._PROFILE.get(self._version,{}).get(self._arch,None)
-        if profile is None:
-            profile = self._probe()
-            vprofile = ActivePerl._PROFILE.get(self._version,{})
-            vprofile[self._arch] = profile
-            ActivePerl._PROFILE[self._version]=profile
-        return profile
-
 
     def _probe( self ):
         

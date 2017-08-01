@@ -58,6 +58,7 @@ class WindowsBootstrapper(BootstrapperBase):
         else:
             self.version = 'w64'
         self.platform = self.config.platform
+        return
 
         self.check_dirs()
         if self.platform == Platform.WINDOWS:
