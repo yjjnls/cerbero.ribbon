@@ -1,0 +1,55 @@
+# -*- Mode: Python -*- vi:si:et:sw=4:sts=4:ts=4:syntax=python
+#from cerbero.tools.libtool import LibtoolLibrary
+
+
+class Recipe(recipe.Recipe):
+    name = 'libwebsockets'
+    version = '2.2.1'
+    stype = SourceType.TARBALL
+    if os.getenv('MSYSTEM'):
+        btype = BuildType.AUTOCMAKE
+    else:
+        btype = BuildType.CMAKE
+
+    #tarball_dirname = 'v%s'%version
+    url = 'https://github.com/warmcat/libwebsockets/archive/v%s.tar.gz' % version
+    licenses = [License.BSD_like]
+
+    #add_host_build_target = False
+    #can_use_configure_cache = False
+    #configure_tpl = "./configure --prefix %(prefix)s "\
+    #                "--libdir %(libdir)s %(options)s"
+    if os.getenv('MSYSTEM'):
+        patches = ['libwebsockets/0001-AutoCMake-adaptation.patch']
+    deps = ['libuv']
+    #
+    if os.getenv('MSYSTEM'):
+        files_libs = ['websockets_static', 'zlib_internal']
+    else:
+        files_libs = ['libwebsockets']
+    files_devel = ['include/libwebsockets', 'lib/pkgconfig/libwebsockets.pc']
+
+    def prepare(self):
+        if os.getenv('MSYSTEM'):
+            self.configure_options += " -DLWS_WITH_SSL=OFF "
+            self.configure_options += " -DLWS_OPENSSL_LIBRARIES=%s/lib/ssl.lib " % self.config.prefix
+        else:
+            self.configure_options += " -DLWS_OPENSSL_LIBRARIES=%s/lib/libssl.a " % self.config.prefix
+        self.configure_options += " -DLWS_OPENSSL_INCLUDE_DIRS=%s/include" % self.config.prefix
+
+        self.configure_options += " -DLWS_WITH_LIBUV=ON "
+        self.configure_options += " -DLIBUV_INCLUDE_DIRS=%s/include/libuv " % self.config.prefix
+        if os.getenv('MSYSTEM'):
+            self.configure_options += " -DLIBUV_LIBRARIES=%s/lib/libuv.lib " % self.config.prefix
+        else:
+            self.configure_options += " -DLIBUV_LIBRARIES=%s/lib/libuv.a " % self.config.prefix
+
+        self.configure_options += " -DLWS_WITH_SHARED=OFF "
+        # self.configure_options += " -DLWS_WITHOUT_TESTAPPS=ON "
+        # self.configure_options += " -DLWS_WITHOUT_TEST_SERVER=ON "
+        # self.configure_options += " -DLWS_WITHOUT_TEST_SERVER_EXTPOLL=ON "
+        # self.configure_options += " -DLWS_WITHOUT_TEST_PING=ON "
+        # self.configure_options += " -DLWS_WITHOUT_TEST_ECHO=ON "
+        # self.configure_options += " -DLWS_WITHOUT_TEST_CLIENT=ON "
+        # self.configure_options += " -DLWS_WITHOUT_TEST_FRAGGLE=ON "
+

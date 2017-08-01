@@ -3,10 +3,10 @@
 from cerbero.packages import package
 from cerbero.enums import License
 
-class GStreamer:
+class Ribbon:
 
-    url = "http://gstreamer.freedesktop.org"
-    version = '1.12.2-2'
-    vendor = 'GStreamer Project'
+    url = ""
+    version = '0.3.0'
+    vendor = 'Ribbon Project'
     licenses = [License.LGPL]
-    org = 'org.freedesktop.gstreamer'
+    org = ''
