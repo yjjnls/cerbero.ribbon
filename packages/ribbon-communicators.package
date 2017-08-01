@@ -7,8 +7,8 @@ class Package(custom.Ribbon, package.Package):
     name = 'ribbon-communicators'
     shortdesc = 'Communication devel component'
     longdesc = 'Communication devel component'
-    deps = ['base-crypto' #in gstreamer-1.0
-	]
+    #deps = ['base-crypto' #in gstreamer-1.0
+	#]
 
     files = [
         'theron:libs', 'log4cplus:libs', 'libwebsockets:libs', 'libevent:libs',

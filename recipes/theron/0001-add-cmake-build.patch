@@ -42,7 +42,7 @@ index 0000000..8c6cd2d
 +++ b/CMakelists.txt
 @@ -0,0 +1,31 @@
 +cmake_minimum_required(VERSION 3.8)
-+project(Theron VERSION 6.00.02 )
++project(theron VERSION 6.00.02 )
 +set(PROJECT_DESCRIPTION "Theron : C++ concurrency library based on the Actor Model")
 +
 +include(AutoCMake)
@@ -52,9 +52,9 @@ index 0000000..8c6cd2d
 +file(GLOB_RECURSE theron_public_SOURCES Theron/*.cpp)
 +
 +include_directories(include)
-+add_library( Theron STATIC ${theron_public_SOURCES} ${theron_public_SOURCES} )
++add_library( theron STATIC ${theron_public_SOURCES} ${theron_public_SOURCES} )
 +
-+install(TARGETS Theron 
++install(TARGETS theron 
 +        ARCHIVE DESTINATION lib
 +		LIBRARY DESTINATION lib )
 +
