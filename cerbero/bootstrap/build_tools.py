@@ -69,6 +69,8 @@ class BuildTools (BootstrapperBase):
             self.BUILD_TOOLS.append('glib-tools')
         self.BUILD_TOOLS += self.config.extra_build_tools
 
+        self.BUILD_TOOLS=[]
+
     def start(self):
         # Use a common prefix for the build tools for all the configurations
         # so that it can be reused
@@ -93,6 +95,8 @@ class BuildTools (BootstrapperBase):
             os.makedirs(config.prefix)
         if not os.path.exists(config.sources):
             os.makedirs(config.sources)
+
+        return
 
         config.do_setup_env()
         cookbook = CookBook(config)

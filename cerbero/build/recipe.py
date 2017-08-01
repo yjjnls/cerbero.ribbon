@@ -121,7 +121,7 @@ class Recipe(FilesProvider):
     deps = list()
     platform_deps = {}
     force = False
-    runtime_dep = False
+    runtime_dep = True
     _default_steps = BuildSteps()
 
     def __init__(self, config):
@@ -137,8 +137,8 @@ class Recipe(FilesProvider):
         self.deps = self.deps or []
         self.platform_deps = self.platform_deps or []
         self._steps = self._default_steps[:]
-        if self.config.target_platform == Platform.WINDOWS:
-            self._steps.append(BuildSteps.GEN_LIBFILES)
+        #if self.config.target_platform == Platform.WINDOWS:
+        #    self._steps.append(BuildSteps.GEN_LIBFILES)
         FilesProvider.__init__(self, config)
         try:
             self.stype.__init__(self)

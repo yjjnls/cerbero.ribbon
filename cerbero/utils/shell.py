@@ -427,9 +427,10 @@ PS1='\[\033[01;32m\][cerbero-%s-%s]\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ 
 
     if PLATFORM == Platform.WINDOWS:
         # $MINGW_PREFIX/home/username
-        msys = os.path.join(os.path.expanduser('~'),
-                            '..', '..', 'msys.bat')
-        subprocess.check_call('%s -noxvrt' % msys)
+        #--msys = os.path.join(os.path.expanduser('~'),
+        #--                    '..', '..', 'msys.bat')
+        #--subprocess.check_call('%s -noxvrt' % msys)
+        subprocess.check_call('bash -i' )
     else:
         shell = os.environ.get('SHELL', '/bin/bash')
         if os.system("%s --rcfile %s -c echo 'test' > /dev/null 2>&1" % (shell, bashrc.name)) == 0:

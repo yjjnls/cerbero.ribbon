@@ -344,9 +344,105 @@ class CMake (MakefilesBase):
         MakefilesBase.configure(self)
 
 
+class AutoCMake (MakefilesBase):
+    '''
+    Build handler for cmake projects
+    '''
+
+    config_sh = 'cmake'
+    configure_tpl = '%(config-sh)s -DCMAKE_INSTALL_PREFIX=%(prefix)s '\
+                    '-DCMAKE_LIBRARY_OUTPUT_PATH=%(libdir)s '\
+                    '-DCMAKE_BUILD_TYPE=%(build_type)s '\
+                    '-DCMAKE_CONFIGURATION_TYPES=%(build_type)s '\
+                    '%(options)s '\
+
+
+
+
+    def __init__(self):
+        MakefilesBase.__init__(self)
+
+        if self.config.target_platform == Platform.WINDOWS:
+            self.make = 'msbuild.exe ALL_BUILD.vcxproj //p:Configuration=%s'%self.config.build_type
+            self.make_install = 'msbuild.exe INSTALL.vcxproj //p:Configuration=%s'%self.config.build_type
+            self.make_check = 'msbuild.exe RUN_TESTS.vcxproj //p:Configuration=%s'%self.config.build_type
+            self.make_clean = 'msbuild.exe //t:clean ALL_BUILD.vcxproj //p:Configuration=%s'%self.config.build_type
+
+    @modify_environment
+    def configure(self):
+        if self.config.target_platform != Platform.WINDOWS:
+            cc = os.environ.get('CC', 'gcc')
+            cxx = os.environ.get('CXX', 'g++')
+            cflags = os.environ.get('CFLAGS', '')
+            cxxflags = os.environ.get('CXXFLAGS', '')
+            os.environ['PKG_CONFIG_PATH'] = os.path.join(self.config.prefix, 'lib', 'pkgconfig')
+            
+
+        # FIXME: CMake doesn't support passing "ccache $CC"
+        if self.config.use_ccache:
+            cc = cc.replace('ccache', '').strip()
+            cxx = cxx.replace('ccache', '').strip()
+
+        if self.config.target_platform == Platform.WINDOWS:
+            if self.config.target_arch == Architecture.X86:
+                self.configure_options += ' -G\\"Visual Studio 14\\" '
+            elif self.config.target_arch == Architecture.X86_64:
+                self.configure_options += ' -G\\"Visual Studio 14 2015 Win64\\" '
+
+        elif self.config.target_platform == Platform.ANDROID:
+            self.configure_options += ' -DCMAKE_SYSTEM_NAME=Linux '
+
+        if self.config_src_dir != self.make_dir:
+            self.configure_options += ' %s '%self.config_src_dir
+
+        _autocmake = os.path.abspath( os.path.dirname(__file__) +'/../AutoCMake' )
+        self.configure_options += '-DCMAKE_MODULE_PATH=%s '%_autocmake
+
+
+
+
+        # FIXME: Maybe export the sysroot properly instead of doing regexp magic
+        if self.config.target_platform in [Platform.DARWIN, Platform.IOS]:
+            r = re.compile(r".*-isysroot ([^ ]+) .*")
+            sysroot = r.match(cflags).group(1)
+            self.configure_options += ' -DCMAKE_OSX_SYSROOT=%s' % sysroot
+
+        if self.config.target_platform != Platform.WINDOWS:
+            self.configure_options += ' -DCMAKE_C_COMPILER=%s ' % cc
+            self.configure_options += ' -DCMAKE_CXX_COMPILER=%s ' % cxx
+            self.configure_options += ' -DCMAKE_C_FLAGS="%s"' % cflags
+            self.configure_options += ' -DCMAKE_CXX_FLAGS="%s"' % cxxflags
+        self.configure_options += ' -DLIB_SUFFIX=%s ' % self.config.lib_suffix
+        
+        cmake_cache = os.path.join(self.build_dir, 'CMakeCache.txt')
+        cmake_files = os.path.join(self.build_dir, 'CMakeFiles')
+        if os.path.exists(cmake_cache):
+            os.remove(cmake_cache)
+        if os.path.exists(cmake_files):
+            shutil.rmtree(cmake_files)
+        #MakefilesBase.configure(self)
+        if not os.path.exists(self.make_dir):
+            os.makedirs(self.make_dir)
+        if self.requires_non_src_build:
+            self.config_sh = '%s .. '%self.config_sh
+
+        shell.call(self.configure_tpl % {'config-sh': self.config_sh,
+            'prefix': to_unixpath(self.config.prefix),
+            'libdir': to_unixpath(self.config.libdir),
+            'host': self.config.host,
+            'target': self.config.target,
+            'build': self.config.build,
+            'build_type': self.config.build_type,
+            'options': self.configure_options},
+            self.make_dir)
+
+
+
+
 class BuildType (object):
 
     CUSTOM = CustomBuild
     MAKEFILE = MakefilesBase
     AUTOTOOLS = Autotools
     CMAKE = CMake
+    AUTOCMAKE = AutoCMake

@@ -92,6 +92,7 @@ class Config (object):
                    'distro_packages_install', 'interactive',
                    'target_arch_flags', 'sysroot', 'isysroot',
                    'extra_lib_path', 'cached_sources', 'tools_prefix',
+				   'build_type',
                    'ios_min_version']
 
     def __init__(self):
@@ -222,6 +223,11 @@ class Config (object):
             # On windows even if perl version is 5.8.8, modules can be
             # installed in 5.8
             perlversionpath = perlversionpath.rsplit('.', 1)[0]
+            pkgconfigbin = os.path.join( 'pkg-config')
+            pkgconfigdatadir = os.path.join(prefix, 'lib', 'pkgconfig')
+            pkgconfigdir = os.path.join(libdir, 'pkgconfig')
+
+
 
         perl5lib = ':'.join(
             [to_unixpath(os.path.join(libdir, 'perl5')),
@@ -291,6 +297,13 @@ class Config (object):
                'GSTREAMER_ROOT': prefix
                }
 
+        if self.target_platform == Platform.WINDOWS:
+            del env['LDFLAGS']
+
+        
+
+
+
         return env
 
     def load_defaults(self):
@@ -339,6 +352,7 @@ class Config (object):
         self.set_property('extra_build_tools', {})
         self.set_property('distro_packages_install', True)
         self.set_property('interactive', True)
+        self.set_property('build_type','Release')
 
     def set_property(self, name, value, force=False):
         if name not in self._properties:
