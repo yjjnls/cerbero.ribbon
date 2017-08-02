@@ -10,5 +10,5 @@ class Package(custom.Ribbon, package.Package):
     deps = []
 
     files = [
-        'sqlite3:libs', 'rocksdb:libs'
+        'sqlite3:libs', 'rocksdb:libs','mysql-connector-c:libs'
     ]

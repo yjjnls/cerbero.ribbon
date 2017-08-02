@@ -11,6 +11,6 @@ class Package(custom.Ribbon, package.Package):
 	#]
 
     files = [
-        'theron:libs', 'log4cplus:libs', 'libwebsockets:libs', 'libevent:libs',
+        'Theron:libs', 'log4cplus:libs', 'libwebsockets:libs:bins', 'libevent:libs',
         'libuv:libs'
     ]

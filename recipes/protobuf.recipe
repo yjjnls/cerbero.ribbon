@@ -6,9 +6,10 @@ class Recipe(recipe.Recipe):
     name = 'protobuf'
     version = '3.3.0'
     stype = SourceType.TARBALL
-
+    requires_non_src_build = False
     if os.getenv('MSYSTEM'):
         btype = BuildType.AUTOCMAKE
+
     else:
         btype = BuildType.MAKEFILE
         config_sh = './configure'
@@ -24,11 +25,12 @@ class Recipe(recipe.Recipe):
     files_libs = ['libprotobuf', 'libprotobuf-lite', 'libprotoc']
     files_devel = [
         'include/google', 'lib/pkgconfig/protobuf.pc',
-        'lib/pkgconfig/protobuf-lite.pc', 'lib/pkgconfig/protoc.pc'
+        'lib/pkgconfig/protobuf-lite.pc'
     ]
 
     def prepare(self):
         if self.config.target_platform == Platform.WINDOWS:
+            
             self.configure_options += ' -Dprotobuf_BUILD_TESTS=OFF '
             self.configure_options += ' -Dprotobuf_MSVC_STATIC_RUNTIME=OFF '
             self.configure_options += ' ./cmake '

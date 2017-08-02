@@ -1,33 +1,36 @@
-From 0a4902377c67a574fec63236c47a82e69eb4d4d8 Mon Sep 17 00:00:00 2001
+From 133f196d75f933f54aff24d8832c301bdeaec772 Mon Sep 17 00:00:00 2001
 From: Mingyi <mingyi.z@outlook.com>
 Date: Thu, 27 Apr 2017 13:57:53 +0800
 Subject: [PATCH] add cmake build
 
+add include dir for tests
 ---
- Benchmarks/CMakelists.txt | 15 +++++++++++++++
- CMakelists.txt            | 31 +++++++++++++++++++++++++++++++
- Tests/CMakelists.txt      | 13 +++++++++++++
- Tutorial/CMakelists.txt   | 19 +++++++++++++++++++
- 4 files changed, 78 insertions(+)
- create mode 100644 Benchmarks/CMakelists.txt
- create mode 100644 CMakelists.txt
- create mode 100644 Tests/CMakelists.txt
- create mode 100644 Tutorial/CMakelists.txt
+ Benchmarks/CMakeLists.txt | 17 +++++++++++++++++
+ CMakeLists.txt            | 31 +++++++++++++++++++++++++++++++
+ Tests/CMakeLists.txt      | 15 +++++++++++++++
+ Tutorial/CMakeLists.txt   | 21 +++++++++++++++++++++
+ 4 files changed, 84 insertions(+)
+ create mode 100644 Benchmarks/CMakeLists.txt
+ create mode 100644 CMakeLists.txt
+ create mode 100644 Tests/CMakeLists.txt
+ create mode 100644 Tutorial/CMakeLists.txt
 
-diff --git a/Benchmarks/CMakelists.txt b/Benchmarks/CMakelists.txt
+diff --git a/Benchmarks/CMakeLists.txt b/Benchmarks/CMakeLists.txt
 new file mode 100644
-index 0000000..03b93e3
+index 0000000..80dd752
 --- /dev/null
-+++ b/Benchmarks/CMakelists.txt
-@@ -0,0 +1,15 @@
-+cmake_minimum_required(VERSION 3.8)
++++ b/Benchmarks/CMakeLists.txt
+@@ -0,0 +1,17 @@
++cmake_minimum_required(VERSION 3.2)
 +project(benchmarks)
 +
 +set( _list   ParallelThreadRing 
 +					PingPong 
 +					PrimeFactors 
 +					ThreadRing)
-+include_directories(Common)
++#include_directories(Common)
++include_directories(${CMAKE_CURRENT_SOURCE_DIR})
++
 +foreach( i ${_list} )
 +    file(GLOB_RECURSE _sources "${i}/*.cpp")
 +    add_executable( ${i} ${_sources} )
@@ -35,13 +38,13 @@ index 0000000..03b93e3
 +	install(TARGETS ${i} RUNTIME DESTINATION share/Theron/benchmarks )
 +
 +endforeach()
-diff --git a/CMakelists.txt b/CMakelists.txt
+diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
-index 0000000..8c6cd2d
+index 0000000..2c2f32c
 --- /dev/null
-+++ b/CMakelists.txt
++++ b/CMakeLists.txt
 @@ -0,0 +1,31 @@
-+cmake_minimum_required(VERSION 3.8)
++cmake_minimum_required(VERSION 3.2)
 +project(theron VERSION 6.00.02 )
 +set(PROJECT_DESCRIPTION "Theron : C++ concurrency library based on the Actor Model")
 +
@@ -51,7 +54,7 @@ index 0000000..8c6cd2d
 +file(GLOB_RECURSE theron_public_HEADERS include/*.h)
 +file(GLOB_RECURSE theron_public_SOURCES Theron/*.cpp)
 +
-+include_directories(include)
++include_directories(Include)
 +add_library( theron STATIC ${theron_public_SOURCES} ${theron_public_SOURCES} )
 +
 +install(TARGETS theron 
@@ -61,9 +64,9 @@ index 0000000..8c6cd2d
 +install(DIRECTORY include/Theron DESTINATION include)
 +
 +
-+add_subdirectory( tests )
-+add_subdirectory( tutorial )
-+add_subdirectory( benchmarks )
++add_subdirectory( Tests )
++add_subdirectory( Tutorial )
++add_subdirectory( Benchmarks )
 +
 +autocmake_install_pc(NAME theron
 +					 VERSION 6.00.02
@@ -72,17 +75,19 @@ index 0000000..8c6cd2d
 +					 LIBS theron )
 +
 +
-diff --git a/Tests/CMakelists.txt b/Tests/CMakelists.txt
+diff --git a/Tests/CMakeLists.txt b/Tests/CMakeLists.txt
 new file mode 100644
-index 0000000..6eee73d
+index 0000000..16e5fb4
 --- /dev/null
-+++ b/Tests/CMakelists.txt
-@@ -0,0 +1,13 @@
-+cmake_minimum_required(VERSION 3.8)
++++ b/Tests/CMakeLists.txt
+@@ -0,0 +1,15 @@
++cmake_minimum_required(VERSION 3.2)
 +project(tests)
 +
 +file(GLOB_RECURSE tests_private_HEADERS "(TestSuite|TestFramework)/*.h")
 +file(GLOB_RECURSE tests_public_SOURCES  Tests.cpp)
++
++include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 +
 +add_executable( tests ${tests_private_HEADERS} ${tests_public_SOURCES} )
 +
@@ -92,13 +97,13 @@ index 0000000..6eee73d
 +set_tests_properties(tests PROPERTIES PASS_REGULAR_EXPRESSION "PASSED" )
 +install(TARGETS tests RUNTIME DESTINATION share/Theron/tests )
 \ No newline at end of file
-diff --git a/Tutorial/CMakelists.txt b/Tutorial/CMakelists.txt
+diff --git a/Tutorial/CMakeLists.txt b/Tutorial/CMakeLists.txt
 new file mode 100644
-index 0000000..9b91d08
+index 0000000..ec8ff72
 --- /dev/null
-+++ b/Tutorial/CMakelists.txt
-@@ -0,0 +1,19 @@
-+cmake_minimum_required(VERSION 3.8)
++++ b/Tutorial/CMakeLists.txt
+@@ -0,0 +1,21 @@
++cmake_minimum_required(VERSION 3.2)
 +project(tutorial)
 +
 +set( _list  Alignment 
@@ -110,6 +115,8 @@ index 0000000..9b91d08
 +            Server
 +            UnhandledMessages)
 +
++include_directories(${CMAKE_CURRENT_SOURCE_DIR})
++
 +foreach( i ${_list} )
 +    file(GLOB_RECURSE _sources "${i}/*.cpp")
 +    add_executable( ${i} ${_sources} )
@@ -118,5 +125,5 @@ index 0000000..9b91d08
 +
 +endforeach()
 -- 
-2.13.0.windows.1
+2.13.2.windows.1
 
