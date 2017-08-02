@@ -11,6 +11,7 @@ Platform:      %(Platform)s
 Arch:          %(Arch)s
 Type:          %(Type)s
 Build:         %(Build)s
+Filename:      %(Filename)s
 Homepage:      %(Homepage)s
 Dependencies:  %(Dependencies)s
 Licences:      %(Licences)s
@@ -183,7 +184,6 @@ class SDKPackage(object):
     def _detar(self, tar):
         if self._desc['Type'] == 'devel':
             for fname in tar.getnames():
-                print '~~~~',fname
                 path = os.path.join( self._prefix, fname )
                 d = os.path.dirname( path )
                 if not os.path.isdir( d):
@@ -301,12 +301,15 @@ def Setup(prefix , config, arch,platform, build='Release'):
             desc = pi.get(platform,arch,pkgtype,build)
             url = os.path.join( urlbase, desc['Filename'])
             path = os.path.join(infod,desc['Filename'])
+            print 'download ...',url
             download( url, path)
             md5sum=get_md5(path)
             assert desc['MD5Sum'] == md5sum,'<%s> != <%s>'%(desc['MD5Sum'] , md5sum)
+            print 'installing to ',prefix
 
             p = SDKPackage(prefix,desc)
             p.setup( path )
+            print 'install done!'
 
 
 

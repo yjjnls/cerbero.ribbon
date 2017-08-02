@@ -3,26 +3,22 @@ import os
 import sys
 import shutil
 from cerbero.utils  import shell
-_VERSION='1.12.2' #cerbero version
+
 _CWD  = os.path.abspath( os.getcwd() )
-_MIRROR_BASE='http://vss.kedacom.com/WMS/Mirrors/'
+
+_BASE='http://vss.kedacom.com/WMS'
+_SDK='%s/SDK'%_BASE
 
 
 
-
-
-#shell.download('http://vss.kedacom.com/rd/sca/FOSS/Theron-6.00.02.zip','./theron.zip')
-
-'http://gstreamer.freedesktop.org/data/cerbero/toolchain/windows'
-"mingw-%s-gcc-%s-%s-%s.tar.xz"
-
+def version(klass):
+    sys.path.append('packages')
+    import custom
+    sdk = getattr(custom,klass)
+    return sdk.version
 
 
 MIRRORS={
-
-        
-    'http://www.openssl.org':
-        _MIRROR_BASE + 'www.opengl.org',
 
 }
 
@@ -41,13 +37,14 @@ class FirstBootstrap(BootstrapperBase):
         self._insall_sdk()
 
     def _insall_sdk(self):
+        sys.path.append('packages')
+        import custom
+        sdk = getattr(custom,'Ribbon')
         config ={
-            'repo':'D:/tmp/SDK' ,
-            'SDK':{
-                'gstreamer-1.0':{
-                    'version':'1.12.2-1',
-                }
-            }
+            'repo':_SDK ,
+            'SDK': sdk.requires
+            
         }
+        print self.config.prefix,'<--'
         tarball.Setup( self.config.prefix,config ,self.config.target_arch,self.config.target_platform)
 

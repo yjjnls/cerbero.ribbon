@@ -35,6 +35,7 @@ Platform:      %(Platform)s
 Arch:          %(Arch)s
 Type:          %(Type)s
 Build:         %(Build)s
+Filename:      %(Filename)s
 Homepage:      %(Homepage)s
 Dependencies:  %(Dependencies)s
 Licences:      %(Licences)s
@@ -54,7 +55,7 @@ class DistTarball(PackagerBase):
             self.package_prefix = '%s-' % self.config.packages_prefix
 
     def pack(self, output_dir, devel=True, force=False, keep_temp=False,
-             split=True, package_prefix=''):
+             split=True, package_prefix='',algorithm='bz2'):
         try:
             dist_files = self.files_list(PackageType.RUNTIME, force)
         except EmptyPackageError:
@@ -132,8 +133,10 @@ class DistTarball(PackagerBase):
             build=self.config.build_type
 
         d = {
-             'Name': p.name, 'version': p.version, 'url': p.url,
-             'Licenses': ' and '.join([l.acronym for l in licenses]),
+             'Name': p.name, 
+             'Version': p.version, 
+             'Homepage': p.url,
+             'Licences': ' and '.join([l.acronym for l in licenses]),
              'Description': p.shortdesc,
              'Filename':basename,
              'MD5Sum':self._get_md5(filename),

@@ -67,8 +67,6 @@ class DebianBootstrapper (UnixBootstrapper):
         DistroVersion.DEBIAN_JESSIE: ['libgdk-pixbuf2.0-dev'],
         DistroVersion.UBUNTU_ONEIRIC: ['libgdk-pixbuf2.0-dev'],
         DistroVersion.UBUNTU_PRECISE: ['libgdk-pixbuf2.0-dev'],
-        DistroVersion.UBUNTU_XENIAL: ['libgdk-pixbuf2.0-dev',
-        'nasm','libtool','libtool-bin','m4']
     }
 
     def __init__(self, config):
@@ -106,7 +104,6 @@ class RedHatBootstrapper (UnixBootstrapper):
 
     packages = ['gcc', 'gcc-c++', 'automake', 'autoconf', 'libtool',
                 'gettext-devel', 'make', 'cmake', 'bison', 'flex', 'yasm',
-				'nasm',
                 'pkgconfig', 'gtk-doc', 'curl', 'doxygen', 'texinfo',
                 'texinfo-tex', 'texlive-dvips', 'docbook-style-xsl',
                 'transfig', 'intltool', 'rpm-build', 'redhat-rpm-config',

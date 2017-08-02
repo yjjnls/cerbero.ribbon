@@ -10,3 +10,8 @@ class Ribbon:
     vendor = 'Ribbon Project'
     licenses = [License.LGPL]
     org = ''
+    requires={
+        'gstreamer-1.0':{
+            'version':'1.12.2-2'
+        }
+    }

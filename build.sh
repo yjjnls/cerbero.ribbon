@@ -13,50 +13,41 @@ print g.version;\
 	"
 }
 function build(){
-    output=$1
-	config=$2
-	name=$(git config user.name)
-	if [ "$name" == "" ]; then
-	    git config user.name  cerbero.gstreamer
-	fi
-	email=$(git config user.email)
-	if [ "$email" == "" ]; then
-		git config user.email cerbero@gstreamer.freedesktop.org
-	fi
+	config=$1
+	
+    git config --global user.name  Mingyi Zhang
+	git config --global user.email mingyi.z@outlook.com
 
 	[ ! -d ${output} ] && mkdir -p ${output}
 	echo -e "
-	SDK:        gstreamer-1.0 
+	SDK:        Ribbon
 	Version:    $(version Ribbon)
 	
 	$(git config user.name)
 	$(git config user.email)
 	"
-	exit 1
+	output="SDK/ribbon/$(version Ribbon)"
+	[ ! -d ${output} ] && mkdir -p $output
 
 	./cerbero-uninstalled -c config/${config} bootstrap
-    ./cerbero-uninstalled -c config/${config} package gstreamer-1.0 --tarball -o "${output}"
+    ./cerbero-uninstalled -c config/${config} package ribbon --tarball -a gz -o "${output}"
 }
 
 
 if [ "$OS" == "Windows_NT" ]; then
-    outupd="SDKs/ribbon"
-    build  "$output" "win64.cbc"
-	if [  $? -ne 0 ] ; then
-	    echo build Windows 64bits SDK failed
-		exit 1
-	fi
-
-    outupd="SDKs/ribbon"
-    build  "$output" "win32.cbc"
-	if [  $? -ne 0 ] ; then
-	    echo build Windows 32bits SDK failed
-		exit 1
-	fi
+    for conf in win64d win64 win32d win32
+	do
+	    echo "    ====== build $conf ======="
+		build ${conf}.cbc
+		if [  $? -ne 0 ] ; then
+			echo build $conf SDK failed
+			exit 1
+		fi
+	done
 
 else
-    outupd="SDKs/ribbon"
-    build  "$output" "lin-x86-64.cbc"
+	echo "    ====== build Linux x86_64 ======="
+    build  linux-x86-64.cbc
 	if [  $? -ne 0 ] ; then
 	    echo build Linux 64bits SDK failed
 		exit 1
