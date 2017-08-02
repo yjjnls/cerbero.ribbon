@@ -17,10 +17,10 @@ class Recipe(recipe.Recipe):
     #can_use_configure_cache = False
     #configure_tpl = "./configure --prefix %(prefix)s "\
     #                "--libdir %(libdir)s %(options)s"
-    patches = ['Theron/0001-add-cmake-build.patch','Theron/0001-makefile-shared.patch']
+    patches = ['theron/0001-add-cmake-build.patch','theron/0001-makefile-shared.patch']
     #
-    files_libs = ['Theron']
-    files_devel = ['include/Theron', 'lib/pkgconfig/Theron.pc']
+    files_libs = ['theron']
+    files_devel = ['include/Theron', 'lib/pkgconfig/theron.pc']
 
     def prepare(self):
         if self.config.target_platform == Platform.LINUX:
