@@ -35,11 +35,11 @@ class Recipe(recipe.Recipe):
         if os.getenv('MSYSTEM'):
             self.configure_options += " -DLWS_OPENSSL_LIBRARIES={0}/lib/ssl.lib;{0}/lib/crypto.lib ".format( self.config.prefix)
         else:
-            self.configure_options += " -DLWS_OPENSSL_LIBRARIES={0}/lib/libssl.so;{0}/lib/libcrypto.so ".format( self.config.prefix)
-        self.configure_options += " -DLWS_OPENSSL_INCLUDE_DIRS=%s/include" % self.config.prefix
+            #self.configure_options += " -DLWS_OPENSSL_LIBRARIES={0}/lib/libssl.so;{0}/lib/libcrypto.so ".format( self.config.prefix)
+            #self.configure_options += " -DLWS_OPENSSL_INCLUDE_DIRS=%s/include" % self.config.prefix
 
-        self.configure_options += " -DLWS_WITH_LIBUV=ON "
-        self.configure_options += " -DLIBUV_INCLUDE_DIRS=%s/include/libuv " % self.config.prefix
+            self.configure_options += " -DLWS_WITH_LIBUV=ON "
+            self.configure_options += " -DLIBUV_INCLUDE_DIRS=%s/include/libuv " % self.config.prefix
         if os.getenv('MSYSTEM'):
             self.configure_options += " -DLIBUV_LIBRARIES=%s/lib/libuv.lib " % self.config.prefix
         else:
