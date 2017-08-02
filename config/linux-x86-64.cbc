@@ -1,4 +1,4 @@
-home_dir='/home/cerbero.build'
+home_dir='/home/cerbero.ribbon.build'
 #prefix='/home/wms/local'  #os.path.abspath(os.path.dirname(__file__)+'/../local')
 from cerbero.config import Architecture
 arch = Architecture.X86_64
