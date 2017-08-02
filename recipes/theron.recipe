@@ -3,7 +3,7 @@
 from cerbero.utils import shell
 
 class Recipe(recipe.Recipe):
-    name = 'theron'
+    name = 'Theron'
     version = '6.00.02'
     stype = SourceType.TARBALL
     if os.getenv('MSYSTEM'):
@@ -11,7 +11,7 @@ class Recipe(recipe.Recipe):
     else:
         btype = BuildType.MAKEFILE
 
-    url = 'http://www.ashtonmason.net/wp-content/uploads/2017/01/Theron-6.00.02.zip'
+    url = 'http://www.ashtonmason.net/wp-content/uploads/2017/01/theron-6.00.02.zip'
     licenses = [License.BSD_like]
     #add_host_build_target = False
     #can_use_configure_cache = False
