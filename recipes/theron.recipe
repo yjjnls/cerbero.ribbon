@@ -11,7 +11,7 @@ includedir=${prefix}/include
 
 Name: theron
 Description: a lightweight C++ concurrency library based on the Actor Model
-Version: %(version}s
+Version: %(version)s
 Requires: 
 
 Requires:
