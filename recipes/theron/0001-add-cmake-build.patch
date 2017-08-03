@@ -4,15 +4,15 @@ Date: Thu, 27 Apr 2017 13:57:53 +0800
 Subject: [PATCH] add cmake build
 
 ---
- Benchmarks/CMakelists.txt | 15 +++++++++++++++
- CMakelists.txt            | 31 +++++++++++++++++++++++++++++++
- Tests/CMakelists.txt      | 13 +++++++++++++
- Tutorial/CMakelists.txt   | 19 +++++++++++++++++++
+ Benchmarks/CMakeLists.txt | 15 +++++++++++++++
+ CMakeLists.txt            | 31 +++++++++++++++++++++++++++++++
+ Tests/CMakeLists.txt      | 13 +++++++++++++
+ Tutorial/CMakeLists.txt   | 19 +++++++++++++++++++
  4 files changed, 78 insertions(+)
- create mode 100644 Benchmarks/CMakelists.txt
- create mode 100644 CMakelists.txt
- create mode 100644 Tests/CMakelists.txt
- create mode 100644 Tutorial/CMakelists.txt
+ create mode 100644 Benchmarks/CMakeLists.txt
+ create mode 100644 CMakeLists.txt
+ create mode 100644 Tests/CMakeLists.txt
+ create mode 100644 Tutorial/CMakeLists.txt
 
 diff --git a/Benchmarks/CMakeLists.txt b/Benchmarks/CMakeLists.txt
 new file mode 100644
@@ -20,7 +20,7 @@ index 0000000..03b93e3
 --- /dev/null
 +++ b/Benchmarks/CMakeLists.txt
 @@ -0,0 +1,15 @@
-+cmake_minimum_required(VERSION 2.8)
++cmake_minimum_required(VERSION 3.2)
 +project(benchmarks)
 +
 +set( _list   ParallelThreadRing 
@@ -41,7 +41,7 @@ index 0000000..8c6cd2d
 --- /dev/null
 +++ b/CMakeLists.txt
 @@ -0,0 +1,31 @@
-+cmake_minimum_required(VERSION 2.8)
++cmake_minimum_required(VERSION 3.2)
 +project(theron VERSION 6.00.02 )
 +set(PROJECT_DESCRIPTION "Theron : C++ concurrency library based on the Actor Model")
 +
@@ -78,7 +78,7 @@ index 0000000..6eee73d
 --- /dev/null
 +++ b/Tests/CMakeLists.txt
 @@ -0,0 +1,13 @@
-+cmake_minimum_required(VERSION 2.8)
++cmake_minimum_required(VERSION 3.2)
 +project(tests)
 +
 +file(GLOB_RECURSE tests_private_HEADERS "(TestSuite|TestFramework)/*.h")
@@ -98,7 +98,7 @@ index 0000000..9b91d08
 --- /dev/null
 +++ b/Tutorial/CMakeLists.txt
 @@ -0,0 +1,19 @@
-+cmake_minimum_required(VERSION 2.8)
++cmake_minimum_required(VERSION 3.2)
 +project(tutorial)
 +
 +set( _list  Alignment 
