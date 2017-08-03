@@ -17,7 +17,7 @@ class Recipe(recipe.Recipe):
     #can_use_configure_cache = False
     #configure_tpl = "./configure --prefix %(prefix)s "\
     #                "--libdir %(libdir)s %(options)s"
-    patches = ['theron/0001-add-cmake-build.patch','theron/0001-makefile-shared.patch']
+    patches = ['theron/0001-add-cmake-build.patch']
     #
     files_libs = ['theron']
     files_devel = ['include/Theron', 'lib/pkgconfig/theron.pc']

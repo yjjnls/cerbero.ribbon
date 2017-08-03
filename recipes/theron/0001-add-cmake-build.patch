@@ -14,11 +14,11 @@ Subject: [PATCH] add cmake build
  create mode 100644 Tests/CMakelists.txt
  create mode 100644 Tutorial/CMakelists.txt
 
-diff --git a/Benchmarks/CMakelists.txt b/Benchmarks/CMakelists.txt
+diff --git a/Benchmarks/CMakeLists.txt b/Benchmarks/CMakeLists.txt
 new file mode 100644
 index 0000000..03b93e3
 --- /dev/null
-+++ b/Benchmarks/CMakelists.txt
++++ b/Benchmarks/CMakeLists.txt
 @@ -0,0 +1,15 @@
 +cmake_minimum_required(VERSION 3.8)
 +project(benchmarks)
@@ -35,11 +35,11 @@ index 0000000..03b93e3
 +	install(TARGETS ${i} RUNTIME DESTINATION share/Theron/benchmarks )
 +
 +endforeach()
-diff --git a/CMakelists.txt b/CMakelists.txt
+diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
 index 0000000..8c6cd2d
 --- /dev/null
-+++ b/CMakelists.txt
++++ b/CMakeLists.txt
 @@ -0,0 +1,31 @@
 +cmake_minimum_required(VERSION 3.8)
 +project(theron VERSION 6.00.02 )
@@ -72,11 +72,11 @@ index 0000000..8c6cd2d
 +					 LIBS theron )
 +
 +
-diff --git a/Tests/CMakelists.txt b/Tests/CMakelists.txt
+diff --git a/Tests/CMakeLists.txt b/Tests/CMakeLists.txt
 new file mode 100644
 index 0000000..6eee73d
 --- /dev/null
-+++ b/Tests/CMakelists.txt
++++ b/Tests/CMakeLists.txt
 @@ -0,0 +1,13 @@
 +cmake_minimum_required(VERSION 3.8)
 +project(tests)
@@ -92,11 +92,11 @@ index 0000000..6eee73d
 +set_tests_properties(tests PROPERTIES PASS_REGULAR_EXPRESSION "PASSED" )
 +install(TARGETS tests RUNTIME DESTINATION share/Theron/tests )
 \ No newline at end of file
-diff --git a/Tutorial/CMakelists.txt b/Tutorial/CMakelists.txt
+diff --git a/Tutorial/CMakeLists.txt b/Tutorial/CMakeLists.txt
 new file mode 100644
 index 0000000..9b91d08
 --- /dev/null
-+++ b/Tutorial/CMakelists.txt
++++ b/Tutorial/CMakeLists.txt
 @@ -0,0 +1,19 @@
 +cmake_minimum_required(VERSION 3.8)
 +project(tutorial)
