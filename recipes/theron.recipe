@@ -22,9 +22,9 @@ class Recipe(recipe.Recipe):
     files_libs = ['theron']
     files_devel = ['include/Theron', 'lib/pkgconfig/theron.pc']
 
-    def prepare(self):
-        if self.config.target_platform == Platform.LINUX:
-            self.make = 'make library mode=%s shared=on'%(self.config.build_type.lower())
+    #def prepare(self):
+        #if self.config.target_platform == Platform.LINUX:
+        #    self.make = 'make library mode=%s shared=on'%(self.config.build_type.lower())
 
     #def configure(self):
     #    if self.config.target_platform == Platform.WINDOWS:
