@@ -28,12 +28,18 @@ class Recipe(recipe.Recipe):
     else:
         files_libs = ['libwebsockets']
     files_devel = ['include/libwebsockets', 'lib/pkgconfig/libwebsockets.pc']
-
+    files_bins  = ['libwebsockets-test-client',
+                    'libwebsockets-test-echo',
+                    'libwebsockets-test-fraggle',
+                    'libwebsockets-test-ping',
+                    'libwebsockets-test-server-extpoll',
+                    'libwebsockets-test-server']
     def prepare(self):
         self.configure_options += " -DLWS_WITH_SSL=OFF "
 
+
         if os.getenv('MSYSTEM'):
-            self.configure_options += " -DLWS_OPENSSL_LIBRARIES={0}/lib/ssl.lib;{0}/lib/crypto.lib ".format( self.config.prefix)
+            pass #self.configure_options += " -DLWS_OPENSSL_LIBRARIES={0}/lib/ssl.lib;{0}/lib/crypto.lib ".format( self.config.prefix)
         else:
             #self.configure_options += " -DLWS_OPENSSL_LIBRARIES={0}/lib/libssl.so;{0}/lib/libcrypto.so ".format( self.config.prefix)
             #self.configure_options += " -DLWS_OPENSSL_INCLUDE_DIRS=%s/include" % self.config.prefix
