@@ -6,10 +6,10 @@ class Recipe(recipe.Recipe):
     name = 'Theron'
     version = '6.00.02'
     stype = SourceType.TARBALL
-    #if os.getenv('MSYSTEM'):
-    btype = BuildType.AUTOCMAKE
-    #else:
-    #    btype = BuildType.MAKEFILE
+    if os.getenv('MSYSTEM'):
+        btype = BuildType.AUTOCMAKE
+    else:
+        btype = BuildType.MAKEFILE
 
     url = 'http://www.ashtonmason.net/wp-content/uploads/2017/01/Theron-6.00.02.zip'
     licenses = [License.BSD_like]
@@ -17,27 +17,27 @@ class Recipe(recipe.Recipe):
     #can_use_configure_cache = False
     #configure_tpl = "./configure --prefix %(prefix)s "\
     #                "--libdir %(libdir)s %(options)s"
-    patches = ['theron/0001-add-cmake-build.patch']
+    patches = ['theron/0001-add-cmake-build.patch','theron/0001-makefile-shared.patch']
     #
     files_libs = ['theron']
     files_devel = ['include/Theron', 'lib/pkgconfig/theron.pc']
 
-    #def prepare(self):
-        #if self.config.target_platform == Platform.LINUX:
-        #    self.make = 'make library mode=%s shared=on'%(self.config.build_type.lower())
+    def prepare(self):
+        if self.config.target_platform == Platform.LINUX:
+            self.make = 'make library mode=%s shared=on'%(self.config.build_type.lower())
 
-    #def configure(self):
-    #    if self.config.target_platform == Platform.WINDOWS:
-    #        super(recipe.Recipe, self).configure()
-    #    elif self.config.target_platform == Platform.LINUX:
-    #        pass
-#
-    #def install(self):
-    #    if self.config.target_platform == Platform.WINDOWS:
-    #        super(recipe.Recipe, self).install()
-    #    elif self.config.target_platform == Platform.LINUX:
-    #        shell.copy_dir('%s/Include'%(self.make_dir), '%s/include/%s'%(self.config.install_dir, Recipe.name))
-    #        shell.copy_dir('%s/Lib'%(self.make_dir), '%s/lib'%(self.config.install_dir))
+    def configure(self):
+        if self.config.target_platform == Platform.WINDOWS:
+            super(recipe.Recipe, self).configure()
+        elif self.config.target_platform == Platform.LINUX:
+            pass
+
+    def install(self):
+        if self.config.target_platform == Platform.WINDOWS:
+            super(recipe.Recipe, self).install()
+        elif self.config.target_platform == Platform.LINUX:
+            shell.copy_dir('%s/Include'%(self.make_dir), '%s/include/%s'%(self.config.install_dir, Recipe.name))
+            shell.copy_dir('%s/Lib'%(self.make_dir), '%s/lib'%(self.config.install_dir))
 
 #    def prepare(self):
 #        if self.config.target_platform == Platform.WINDOWS:
