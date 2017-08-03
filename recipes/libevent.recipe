@@ -6,12 +6,16 @@ class Recipe(recipe.Recipe):
     name = 'libevent'
     version = '2.1.8'
     stype = SourceType.TARBALL
-    if os.getenv('MSYSTEM'):
-        btype = BuildType.AUTOCMAKE
-        patches = ['libevent/0001-AutoCMake-model.patch',
-	               'libevent/0002-openssl-find-from-pc.patch']
-    else:
-        btype = BuildType.CMAKE
+    btype = BuildType.AUTOCMAKE
+    patches = ['libevent/0001-AutoCMake-model.patch',
+    	       'libevent/0002-openssl-find-from-pc.patch']
+
+    #if os.getenv('MSYSTEM'):
+    #    btype = BuildType.AUTOCMAKE
+    #    patches = ['libevent/0001-AutoCMake-model.patch',
+	#               'libevent/0002-openssl-find-from-pc.patch']
+    #else:
+    #    btype = BuildType.CMAKE
 	tarball_dirname = 'libevent-release-2.1.8-stable'
     url = 'https://github.com/libevent/libevent/archive/release-2.1.8-stable.tar.gz'
     licenses = [License.BSD_like]
