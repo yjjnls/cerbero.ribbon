@@ -21,7 +21,7 @@ index 67d84b3..ffc9dbc 100644
 +
 +    find_package(PkgConfig REQUIRED)
 +
-+    if( "$ENV{MSYSTEM}" STREQUAL "msys" )
++    if( $ENV{MSYSTEM})
 +		foreach ( _var $ENV{PKG_CONFIG_LIBDIR} $ENV{PKG_CONFIG_PATH} )
 +			
 +			execute_process(COMMAND cygpath --unix ${_var} 
