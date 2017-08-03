@@ -28,6 +28,6 @@ class Recipe(recipe.Recipe):
             if not os.path.exists(self.make_dir):
                 os.makedirs(self.make_dir)
             shell.call('bash autogen.sh', self.make_dir)
-        self.configure_options += ' --includedir=%s/include/libuv '%self.conifg.prefix
+        self.configure_options += ' --includedir=%s/include/libuv '%self.config.prefix
         super(recipe.Recipe, self).configure()
 
