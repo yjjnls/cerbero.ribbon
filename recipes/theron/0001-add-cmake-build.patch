@@ -1,14 +1,15 @@
-From 0a4902377c67a574fec63236c47a82e69eb4d4d8 Mon Sep 17 00:00:00 2001
+From 133f196d75f933f54aff24d8832c301bdeaec772 Mon Sep 17 00:00:00 2001
 From: Mingyi <mingyi.z@outlook.com>
 Date: Thu, 27 Apr 2017 13:57:53 +0800
 Subject: [PATCH] add cmake build
 
+add include dir for tests
 ---
- Benchmarks/CMakeLists.txt | 15 +++++++++++++++
+ Benchmarks/CMakeLists.txt | 17 +++++++++++++++++
  CMakeLists.txt            | 31 +++++++++++++++++++++++++++++++
- Tests/CMakeLists.txt      | 13 +++++++++++++
- Tutorial/CMakeLists.txt   | 19 +++++++++++++++++++
- 4 files changed, 78 insertions(+)
+ Tests/CMakeLists.txt      | 15 +++++++++++++++
+ Tutorial/CMakeLists.txt   | 21 +++++++++++++++++++++
+ 4 files changed, 84 insertions(+)
  create mode 100644 Benchmarks/CMakeLists.txt
  create mode 100644 CMakeLists.txt
  create mode 100644 Tests/CMakeLists.txt
@@ -16,10 +17,10 @@ Subject: [PATCH] add cmake build
 
 diff --git a/Benchmarks/CMakeLists.txt b/Benchmarks/CMakeLists.txt
 new file mode 100644
-index 0000000..03b93e3
+index 0000000..80dd752
 --- /dev/null
 +++ b/Benchmarks/CMakeLists.txt
-@@ -0,0 +1,15 @@
+@@ -0,0 +1,17 @@
 +cmake_minimum_required(VERSION 3.2)
 +project(benchmarks)
 +
@@ -27,7 +28,9 @@ index 0000000..03b93e3
 +					PingPong 
 +					PrimeFactors 
 +					ThreadRing)
-+include_directories(Common)
++#include_directories(Common)
++include_directories(${CMAKE_CURRENT_SOURCE_DIR})
++
 +foreach( i ${_list} )
 +    file(GLOB_RECURSE _sources "${i}/*.cpp")
 +    add_executable( ${i} ${_sources} )
@@ -37,7 +40,7 @@ index 0000000..03b93e3
 +endforeach()
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
-index 0000000..8c6cd2d
+index 0000000..2c2f32c
 --- /dev/null
 +++ b/CMakeLists.txt
 @@ -0,0 +1,31 @@
@@ -74,15 +77,17 @@ index 0000000..8c6cd2d
 +
 diff --git a/Tests/CMakeLists.txt b/Tests/CMakeLists.txt
 new file mode 100644
-index 0000000..6eee73d
+index 0000000..16e5fb4
 --- /dev/null
 +++ b/Tests/CMakeLists.txt
-@@ -0,0 +1,13 @@
+@@ -0,0 +1,15 @@
 +cmake_minimum_required(VERSION 3.2)
 +project(tests)
 +
 +file(GLOB_RECURSE tests_private_HEADERS "(TestSuite|TestFramework)/*.h")
 +file(GLOB_RECURSE tests_public_SOURCES  Tests.cpp)
++
++include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 +
 +add_executable( tests ${tests_private_HEADERS} ${tests_public_SOURCES} )
 +
@@ -94,10 +99,10 @@ index 0000000..6eee73d
 \ No newline at end of file
 diff --git a/Tutorial/CMakeLists.txt b/Tutorial/CMakeLists.txt
 new file mode 100644
-index 0000000..9b91d08
+index 0000000..ec8ff72
 --- /dev/null
 +++ b/Tutorial/CMakeLists.txt
-@@ -0,0 +1,19 @@
+@@ -0,0 +1,21 @@
 +cmake_minimum_required(VERSION 3.2)
 +project(tutorial)
 +
@@ -110,6 +115,8 @@ index 0000000..9b91d08
 +            Server
 +            UnhandledMessages)
 +
++include_directories(${CMAKE_CURRENT_SOURCE_DIR})
++
 +foreach( i ${_list} )
 +    file(GLOB_RECURSE _sources "${i}/*.cpp")
 +    add_executable( ${i} ${_sources} )
@@ -118,5 +125,5 @@ index 0000000..9b91d08
 +
 +endforeach()
 -- 
-2.13.0.windows.1
+2.13.2.windows.1
 
