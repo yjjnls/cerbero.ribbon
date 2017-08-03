@@ -61,9 +61,9 @@ index 0000000..8c6cd2d
 +install(DIRECTORY include/Theron DESTINATION include)
 +
 +
-+add_subdirectory( tests )
-+add_subdirectory( tutorial )
-+add_subdirectory( benchmarks )
++add_subdirectory( Tests )
++add_subdirectory( Tutorial )
++add_subdirectory( Benchmarks )
 +
 +autocmake_install_pc(NAME theron
 +					 VERSION 6.00.02
