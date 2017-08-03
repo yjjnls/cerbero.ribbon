@@ -51,7 +51,7 @@ index 0000000..8c6cd2d
 +file(GLOB_RECURSE theron_public_HEADERS include/*.h)
 +file(GLOB_RECURSE theron_public_SOURCES Theron/*.cpp)
 +
-+include_directories(include)
++include_directories(Include)
 +add_library( theron STATIC ${theron_public_SOURCES} ${theron_public_SOURCES} )
 +
 +install(TARGETS theron 
