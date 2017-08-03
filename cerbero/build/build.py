@@ -225,6 +225,7 @@ class Autotools (MakefilesBase):
     can_use_configure_cache = True
     supports_cache_variables = True
     disable_introspection = False
+    requires_non_src_build = True
 
     def configure(self):
         # Only use --disable-maintainer mode for real autotools based projects
