@@ -46,7 +46,7 @@ class Recipe(recipe.Recipe):
             libssl='\\"{0}/lib/crypto.lib;{0}/lib/ssl.lib\\"'.format(self.config.prefix)
         else:
             libuv='%s/lib/libuv.so'%self.config.prefix
-            libssl='\\"{0}/lib/libcrypto.so;{0}/lib/libssl.so\\"'.format(self.config.prefix)
+            libssl='\\"{0}/lib/libcrypto.a;{0}/lib/libssl.a\\"'.format(self.config.prefix)
 
         self.configure_options += " -DLWS_INSTALL_LIB_DIR=%(prefix)s/lib "\
                                   " -DLWS_INSTALL_BIN_DIR=%(prefix)s/bin "\
