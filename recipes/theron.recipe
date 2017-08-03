@@ -2,6 +2,22 @@
 #from cerbero.tools.libtool import LibtoolLibrary
 from cerbero.utils import shell
 
+PC_TMPL="""
+prefix=%(prefix)s
+exec_prefix=${prefix}/bin
+libdir=${prefix}/lib
+sharedlibdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: theron
+Description: a lightweight C++ concurrency library based on the Actor Model
+Version: %(version}s
+Requires: 
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -ltheron 
+Cflags: -I${includedir} 
+"""
 class Recipe(recipe.Recipe):
     name = 'Theron'
     version = '6.00.02'
@@ -38,6 +54,13 @@ class Recipe(recipe.Recipe):
         elif self.config.target_platform == Platform.LINUX:
             shell.copy_dir('%s/Include'%(self.make_dir), '%s/include/%s'%(self.config.install_dir, Recipe.name))
             shell.copy_dir('%s/Lib'%(self.make_dir), '%s/lib'%(self.config.install_dir))
+            filename = "{0}/lib/pkgconfig/theron.pc".format(self.config.install_dir)
+            f = open(filename,'w')
+            f.write(PC_TMPL%{
+                'version':self.version,
+                'prefix':self.config.install_dir
+            })
+            f.close()
 
 #    def prepare(self):
 #        if self.config.target_platform == Platform.WINDOWS:
