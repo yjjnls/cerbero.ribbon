@@ -354,6 +354,7 @@ class AutoCMake (MakefilesBase):
                     '-DCMAKE_LIBRARY_OUTPUT_PATH=%(libdir)s '\
                     '-DCMAKE_BUILD_TYPE=%(build_type)s '\
                     '-DCMAKE_CONFIGURATION_TYPES=%(build_type)s '\
+                    '-D__AUTOCMAKE__=ON '\
                     '%(options)s '\
 
     requires_non_src_build = True
