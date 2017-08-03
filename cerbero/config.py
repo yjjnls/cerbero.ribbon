@@ -223,9 +223,9 @@ class Config (object):
             # On windows even if perl version is 5.8.8, modules can be
             # installed in 5.8
             perlversionpath = perlversionpath.rsplit('.', 1)[0]
-            pkgconfigbin = os.path.join( 'pkg-config')
-            pkgconfigdatadir = os.path.join(prefix, 'lib', 'pkgconfig')
-            pkgconfigdir = os.path.join(libdir, 'pkgconfig')
+        pkgconfigbin = os.path.join( 'pkg-config')
+        pkgconfigdatadir = os.path.join(prefix, 'lib', 'pkgconfig')
+        pkgconfigdir = os.path.join(libdir, 'pkgconfig')
 
 
 
