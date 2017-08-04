@@ -25,7 +25,7 @@ class Recipe(recipe.Recipe):
     files_libs = ['libprotobuf', 'libprotobuf-lite', 'libprotoc']
     files_devel = [
         'include/google', 'lib/pkgconfig/protobuf.pc',
-        'lib/pkgconfig/protobuf-lite.pc', 'lib/pkgconfig/protoc.pc'
+        'lib/pkgconfig/protobuf-lite.pc'
     ]
 
     def prepare(self):
