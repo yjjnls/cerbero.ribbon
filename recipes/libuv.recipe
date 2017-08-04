@@ -43,6 +43,7 @@ class Recipe(recipe.Recipe):
 
             self.make = 'echo ./vcbuild.bat shared %s %s '%(build,arch)
             self.config_sh='echo '
+            self.make_install='echo '
             self.make = 'ls . && ./vcbuild.bat shared %s %s '%(build,arch)
 
 

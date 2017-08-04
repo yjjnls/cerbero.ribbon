@@ -54,6 +54,10 @@ class Recipe(recipe.Recipe):
         elif self.config.target_platform == Platform.LINUX:
             shell.copy_dir('%s/Include'%(self.make_dir), '%s/include/%s'%(self.config.install_dir, Recipe.name))
             shell.copy_dir('%s/Lib'%(self.make_dir), '%s/lib'%(self.config.install_dir))
+            d="{0}/lib/pkgconfig".format(self.config.install_dir)
+            if not os.path.exists(d):
+                os.makedirs(d)
+                
             filename = "{0}/lib/pkgconfig/theron.pc".format(self.config.install_dir)
             f = open(filename,'w')
             f.write(PC_TMPL%{
