@@ -103,7 +103,7 @@ class Recipe(recipe.Recipe):
             if not os.path.exists(d ):
                 os.makedirs( d )
 
-            filename = os.path.join(self.config.prefix,'libuv.pc')
+            filename = os.path.join(d,'libuv.pc')
             f = open(filename,'w')
             f.write(PC_TMPL%{
                 'prefix':self.config.prefix,
