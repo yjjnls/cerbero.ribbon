@@ -12,7 +12,7 @@ class Recipe(recipe.Recipe):
     if os.getenv('MSYSTEM'):
         deps = ['openwebrtc-gst-plugins']
     else:
-        deps = ['openwebrtc-gst-plugins', 'libpulse-mainloop-glib', 'libpulse']
+        deps = ['openwebrtc-gst-plugins', 'pulseaudio']#'libpulse-mainloop-glib', 'libpulse']
     
     patches = ['openwebrtc/0001-AutoCMake-adaptation.patch',               
                'openwebrtc/0002-Windows-platform-support.patch',
