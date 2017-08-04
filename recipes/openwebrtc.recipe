@@ -8,16 +8,16 @@ class Recipe(recipe.Recipe):
     remotes = {'origin': 'https://github.com/EricssonResearch/openwebrtc.git'}
     commit = '99537faf8c64ca7cb95aff043cc2d2bf49860d4d'
     btype = BuildType.AUTOCMAKE
-    deps = ['openwebrtc-gst-plugins']
-    #if os.getenv('MSYSTEM'):
-    #    deps = ['openwebrtc-gst-plugins']
-    #else:
-    #    deps = ['openwebrtc-gst-plugins', 'libpulse-mainloop-glib', 'libpulse']
-    #
-    #patches = ['openwebrtc/0001-AutoCMake-adaptation.patch',               
-    #           'openwebrtc/0002-Windows-platform-support.patch',
-    #           'openwebrtc/0001-pulseaudio-support-for-openwebrtc-test.patch']
-    #
+    
+    if os.getenv('MSYSTEM'):
+        deps = ['openwebrtc-gst-plugins']
+    else:
+        deps = ['openwebrtc-gst-plugins', 'libpulse-mainloop-glib', 'libpulse']
+    
+    patches = ['openwebrtc/0001-AutoCMake-adaptation.patch',               
+               'openwebrtc/0002-Windows-platform-support.patch',
+               'openwebrtc/0001-pulseaudio-support-for-openwebrtc-test.patch']
+    
     files_libs = ['libopenwebrtc_gst','libopenwebrtc-0.3']
     files_devel = ['include/owr', 'lib/pkgconfig/openwebrtc-0.3.pc',
                    'lib/pkgconfig/openwebrtc-gst-0.3.pc']
