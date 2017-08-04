@@ -43,8 +43,6 @@ class Recipe(recipe.Recipe):
 
             self.make = 'echo ./vcbuild.bat shared %s %s '%(build,arch)
             self.config_sh='echo '
-            self.make_install = 'echo INSTALL-----------------'
-            
             self.make = 'ls . && ./vcbuild.bat shared %s %s '%(build,arch)
 
 
@@ -100,7 +98,11 @@ class Recipe(recipe.Recipe):
                 dst = os.path.join(d, p+'.exe')
                 shutil.copy(src,dst)
 
-            filename = os.path.join(self.config.prefix,'lib/pkgconfig/libuv.pc')
+            d = os.path.join(self.config.prefix,'lib/pkgconfig')
+            if not os.path.exists(d ):
+                os.makedirs( d )
+
+            filename = os.path.join(self.config.prefix,'libuv.pc')
             f = open(filename,'w')
             f.write(PC_TMPL%{
                 'prefix':self.config.prefix,
