@@ -19,24 +19,24 @@ index 67d84b3..ffc9dbc 100644
  if (NOT EVENT__DISABLE_OPENSSL)
 -    find_package(OpenSSL REQUIRED)
 +
-+    find_package(PkgConfig REQUIRED)
-+
-+#		foreach ( _var $ENV{PKG_CONFIG_LIBDIR} $ENV{PKG_CONFIG_PATH} )
-+#			
-+#   if( $ENV{MSYSTEM})
-+#			execute_process(COMMAND cygpath --unix ${_var} 
-+#			OUTPUT_VARIABLE upath 
-+#			OUTPUT_STRIP_TRAILING_WHITESPACE)
-+#	endif()
-+#			if( NOT _PKG_CONFIG_PATH )
-+#				SET( _PKG_CONFIG_PATH ${upath})
-+#			else()
-+#				SET( _PKG_CONFIG_PATH ${upath}:${_PKG_CONFIG_PATH} )
-+#			endif()
-+#		endforeach()
-+#		SET(ENV{PKG_CONFIG_PATH} ${_PKG_CONFIG_PATH})
-+#
-+	pkg_check_modules(OpenSSL   REQUIRED)
++   find_package(PkgConfig REQUIRED)
++   if( MSVC )
++MESSAGE("!!!PKG_CONFIG_PATH<$ENV{PKG_CONFIG_PATH}>")
++		foreach ( _var $ENV{PKG_CONFIG_LIBDIR} $ENV{PKG_CONFIG_PATH} )
++			
++			execute_process(COMMAND cygpath --unix ${_var} 
++			OUTPUT_VARIABLE upath 
++			OUTPUT_STRIP_TRAILING_WHITESPACE)
++			if( NOT _PKG_CONFIG_PATH )
++				SET( _PKG_CONFIG_PATH ${upath})
++			else()
++				SET( _PKG_CONFIG_PATH ${upath}:${_PKG_CONFIG_PATH} )
++			endif()
++		endforeach()
++		SET(ENV{PKG_CONFIG_PATH} ${_PKG_CONFIG_PATH})
++	endif()
++   MESSAGE("($ENV{MSYSTEM})PKG_CONFIG_PATH<$ENV{PKG_CONFIG_PATH}>")
++	pkg_check_modules(OPENSSL REQUIRED OpenSSL)
 +	
 +	set(OPENSSL_INCLUDE_DIR ${OPENSSL_INCLUDEDIR})#find_package(OpenSSL REQUIRED)
  
