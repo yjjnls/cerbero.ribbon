@@ -291,7 +291,7 @@ index 0000000..c2d0447
 +_add_test( test-bus test_bus.c )
 +_add_test( test-uri test_uri.c test_utils.c )
 +_add_test( test-gst-io test_gst_io.c )
-+_add_test( test-list-devices list_devices.c )
++#_add_test( test-list-devices list_devices.c )
 +_add_test( test-self-view test_self_view.c test_utils.c )
 +_add_test( test-send-receive test_send_receive.c test_utils.c )
 +_add_test( test-client test_client.c )
