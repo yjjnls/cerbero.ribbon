@@ -46,7 +46,7 @@ index 5b55a03..37be76a 100644
 +
 +include_directories( ${this_INCLUDE_DIRECTORIES} )
 +link_directories( ${this_LINK_DIRECTORIES} )
-+add_library (openwebrtc-${OWR_API_VERSION} SHARED ${ARGN})
++add_library (openwebrtc-${OWR_API_VERSION} SHARED ${_SOURCES} ${_HEADERS} openwebrtc.def)
 +target_link_libraries(openwebrtc-${OWR_API_VERSION}  openwebrtc_transport openwebrtc_local ${this_LIBS}  )
 +
 +
