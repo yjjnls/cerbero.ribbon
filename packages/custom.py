@@ -6,12 +6,12 @@ from cerbero.enums import License
 class Ribbon:
 
     url = ""
-    version = '0.3.0'
+    version = '0.3.1'
     vendor = 'Ribbon Project'
     licenses = [License.LGPL]
     org = ''
     requires={
         'gstreamer-1.0':{
-            'version':'1.12.2-2'
+            'version':'1.12.2-3'
         }
     }
