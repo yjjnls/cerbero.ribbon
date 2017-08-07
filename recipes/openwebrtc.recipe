@@ -75,12 +75,13 @@ class Recipe(recipe.Recipe):
 
     def prepare(self):
         self.configure_options += ' --disable-gtk-doc'
-        if self.config.variants.owr_bridge:
-            self.deps += ['seed']
-            self.files_libs += ['libopenwebrtc_bridge']
-            self.files_devel.insert(self.files_devel.index('include/owr'), 'lib/pkgconfig/openwebrtc-bridge-' + self._api_version + '.pc')
-        else:
-            self.configure_options += ' --disable-bridge '
+        #if self.config.variants.owr_bridge:
+        #    self.deps += ['seed']
+        #    self.files_libs += ['libopenwebrtc_bridge']
+        #    self.files_devel.insert(self.files_devel.index('include/owr'), 'lib/pkgconfig/openwebrtc-bridge-' + self._api_version + '.pc')
+        #else:
+        #    self.configure_options += ' --disable-bridge '
+        self.configure_options += ' --disable-bridge '
         if self.config.target_platform in (Platform.IOS, Platform.ANDROID):
             # Building tests is useless while cross-compiling
             self.configure_options += ' --enable-static \
