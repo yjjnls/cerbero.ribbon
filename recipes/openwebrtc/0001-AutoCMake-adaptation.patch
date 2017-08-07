@@ -278,7 +278,7 @@ index 0000000..c2d0447
 +link_directories( ${this_LINK_DIRECTORIES} )
 +
 +macro( _add_test _name )
-+
++   MESSAGE("-----\t${name}\t------\n${this_LIBS}--------\n")
 +	add_executable (${_name} ${ARGN})
 +	target_link_libraries(${_name}  ${this_LIBS} openwebrtc-${OWR_API_VERSION} openwebrtc_gst )
 +	install(TARGETS ${_name}
