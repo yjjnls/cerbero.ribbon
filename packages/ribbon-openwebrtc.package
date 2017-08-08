@@ -39,7 +39,7 @@ class Package(custom.Ribbon, package.Package):
     uuid = 'cf9531c5-f936-4f56-9cea-8cf1f61398d1'
     #deps = ['gstreamer-1.0-core', 'base-system-1.0',]
 
-    files = ['openwebrtc', 'openwebrtc-gst-plugins',
+    files = ['openwebrtc-lite', 'openwebrtc-gst-plugins',
              'libusrsctp:libs']
     #files_devel = ['openwebrtc-gst-plugins-static',]
 
