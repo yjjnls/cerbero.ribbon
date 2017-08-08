@@ -1,0 +1,35 @@
+# -*- Mode: Python -*- vi:si:et:sw=4:sts=4:ts=4:syntax=python
+#from cerbero.tools.libtool import LibtoolLibrary
+
+
+class Recipe(recipe.Recipe):
+    name = 'openwebrtc-gst-plugins'
+    version = '0.3.0-1'
+    remotes = {'origin': 'https://github.com/EricssonResearch/openwebrtc-gst-plugins.git'}
+    commit = 'ba570daa9a38838ae7a80a01b24e1877f01f6169'
+    deps = ['libusrsctp']
+    if os.getenv('MSYSTEM'):
+        btype = BuildType.AUTOCMAKE
+    else:
+        btype = BuildType.MAKEFILE
+        config_sh = './configure'
+        configure_tpl = "%(config-sh)s --prefix=%(prefix)s --libdir=%(libdir)s %(options)s"
+    files_libs = ['libgstsctp-1.0']
+    files_plugins_devel = [
+        'include/gstreamer-1.0/gst/sctp',
+        'lib/pkgconfig/gstreamer-sctp-1.0.pc',
+    ]
+    files_plugins_net = [
+        'lib/gstreamer-1.0/libgstvideorepair%(mext)s',
+        'lib/gstreamer-1.0/libgstsctp%(mext)s',
+        'lib/gstreamer-1.0/libgstscream%(mext)s',
+    ]
+    patches = ['openwebrtc-gst-plugins/0001-AutoCMake-adaptation.patch']
+
+    def configure(self):
+        if self.config.target_platform == Platform.LINUX:
+            os.environ['CFLAGS'] += '-pthread'
+            if not os.path.exists(self.make_dir):
+                os.makedirs(self.make_dir)
+            shell.call('bash autogen.sh', self.make_dir)
+        super(recipe.Recipe, self).configure()

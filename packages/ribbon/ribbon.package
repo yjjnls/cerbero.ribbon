@@ -1,0 +1,21 @@
+# -*- Mode: Python -*- vi:si:et:sw=4:sts=4:ts=4:syntax=python
+
+
+class SDKPackage(custom.Ribbon, package.SDKPackage):
+
+    name = "ribbon"
+    shortdesc = "Ribbon"
+    longdesc = "Ribbon"
+    title = "Ribbon"
+    sdk_version = '0.3'
+    uuid = ''
+    ignore_package_prefix = True
+    packages =[
+               # (name, required, selected)
+               ('ribbon-communicators', True, True),
+               ('ribbon-openwebrtc', True, True),
+               ('ribbon-serializers', True, True),
+			   ('ribbon-db', True, True),
+
+              ]
+			  
