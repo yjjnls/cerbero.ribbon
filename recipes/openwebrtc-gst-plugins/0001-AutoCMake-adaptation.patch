@@ -57,7 +57,7 @@ index 0000000..ad6a746
 +include_directories( ${CMAKE_HOME_DIRECTORY}/gst-libs )
 +autocmake_check_modules(this gstreamer-1.0
 +                      gstreamer-base-1.0 
-+					  usrsctp)
++					  libusrsctp)
 +
 +include_directories( ${this_INCLUDE_DIRECTORIES} )
 +link_directories( ${this_LINK_DIRECTORIES} )
