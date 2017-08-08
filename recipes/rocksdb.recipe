@@ -44,7 +44,7 @@ class Recipe(recipe.Recipe):
 
 #        
 
-#        self.configure_options = ' -DINSTALL_INCLUDEDIR=include/mysql '
+        self.configure_options = ' -DFAIL_ON_WARNINGS=OFF '
 # 
 #   def post_install(self):
 #       libname = 'msql'
