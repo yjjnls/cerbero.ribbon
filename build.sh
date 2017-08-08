@@ -28,8 +28,11 @@ function build(){
 	"
 	output="SDK/ribbon/$(version Ribbon)"
 	[ ! -d ${output} ] && mkdir -p $output
-
-	./cerbero-uninstalled -c config/${config} bootstrap
+	
+	if [ ! -f ${config}.bootstrap ] ; then
+		./cerbero-uninstalled -c config/${config} bootstrap
+		[ $? -eq 0 ] &&  touch ${config}.bootstrap
+	fi
     ./cerbero-uninstalled -c config/${config} package ribbon --tarball -a gz -o "${output}"
 }
 
