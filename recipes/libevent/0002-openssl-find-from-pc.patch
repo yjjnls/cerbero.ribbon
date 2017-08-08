@@ -21,7 +21,7 @@ index 67d84b3..ffc9dbc 100644
 +
 +   find_package(PkgConfig REQUIRED)
 +   if( MSVC )
-+MESSAGE("!!!PKG_CONFIG_PATH<$ENV{PKG_CONFIG_PATH}>")
++
 +		foreach ( _var $ENV{PKG_CONFIG_LIBDIR} $ENV{PKG_CONFIG_PATH} )
 +			
 +			execute_process(COMMAND cygpath --unix ${_var} 
@@ -35,8 +35,8 @@ index 67d84b3..ffc9dbc 100644
 +		endforeach()
 +		SET(ENV{PKG_CONFIG_PATH} ${_PKG_CONFIG_PATH})
 +	endif()
-+   MESSAGE("($ENV{MSYSTEM})PKG_CONFIG_PATH<$ENV{PKG_CONFIG_PATH}>")
-+	pkg_check_modules(OPENSSL REQUIRED OpenSSL)
++   
++	pkg_check_modules(OPENSSL REQUIRED openssl)
 +	
 +	set(OPENSSL_INCLUDE_DIR ${OPENSSL_INCLUDEDIR})#find_package(OpenSSL REQUIRED)
  
