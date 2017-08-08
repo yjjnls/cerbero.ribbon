@@ -21,7 +21,7 @@ class Recipe(recipe.Recipe):
     #
     files_libs = ['libopenwebrtc_gst-lite','libopenwebrtc-lite-0.3']
     files_devel = ['include/owr', 'lib/pkgconfig/openwebrtc-lite-0.3.pc',
-                   'lib/pkgconfig/openwebrtc-gst-lite.pc']
+                   'lib/pkgconfig/openwebrtc-gst-lite-0.3.pc']
 
     def configure(self):
         if self.config.target_platform == Platform.LINUX:
