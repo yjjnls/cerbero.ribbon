@@ -91,7 +91,7 @@ class Recipe(recipe.Recipe):
             dst = os.path.join(d,'libuv.dll')
             shutil.copy(src,dst)
         
-            d = os.path.join(self.config.prefix,'testkit')
+            d = os.path.join(self.config.prefix,'testkits')
             if not os.path.exists(d ):
                 os.makedirs( d )
             for p in [ 'run-benchmarks', 'run-tests']:
