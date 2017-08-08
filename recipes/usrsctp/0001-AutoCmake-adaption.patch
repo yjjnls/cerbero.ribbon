@@ -37,7 +37,7 @@ index 51e3a9e..daffbaf 100644
  )
  
 +configure_file(${CMAKE_HOME_DIRECTORY}/usrsctp.pc.cmakein
-+               ${PROJECT_BINARY_DIR}/usrsctp.pc
++               ${PROJECT_BINARY_DIR}/libusrsctp.pc
 +               @ONLY)
 +
  add_library(usrsctp SHARED ${usrsctp_SOURCES} ${usrsctp_HEADERS})
@@ -50,7 +50,7 @@ index 51e3a9e..daffbaf 100644
 -install(TARGETS usrsctp usrsctp-static DESTINATION ${CMAKE_INSTALL_LIBDIR})
 +install(TARGETS usrsctp-static DESTINATION ${CMAKE_INSTALL_LIBDIR})
  install(FILES usrsctp.h DESTINATION include)
-+install(FILES ${PROJECT_BINARY_DIR}/usrsctp.pc
++install(FILES ${PROJECT_BINARY_DIR}/libusrsctp.pc
 +        DESTINATION lib/pkgconfig
 +        COMPONENT dev)
 \ No newline at end of file
