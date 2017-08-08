@@ -3,7 +3,7 @@
 
 import platform
 class Recipe(recipe.Recipe):
-    name = 'openwebrtc'
+    name = 'openwebrtc-lite'
     version = '0.3.0-1'
     remotes = {'origin': 'git@github.com:Mingyiz/openwebrtc.git'}
     commit = 'origin/0.3'
@@ -19,9 +19,9 @@ class Recipe(recipe.Recipe):
     #           'openwebrtc/0001-pulseaudio-support-for-openwebrtc-test.patch',
 	#		   'openwebrtc/0001-add-fix.patch']
     #
-    files_libs = ['libopenwebrtc_gst','libopenwebrtc-0.3']
-    files_devel = ['include/owr', 'lib/pkgconfig/openwebrtc-0.3.pc',
-                   'lib/pkgconfig/openwebrtc-gst-0.3.pc']
+    files_libs = ['libopenwebrtc_gst-lite','libopenwebrtc-lite-0.3']
+    files_devel = ['include/owr', 'lib/pkgconfig/openwebrtc-lite-0.3.pc',
+                   'lib/pkgconfig/openwebrtc-gst-lite-0.3.pc']
 
     def configure(self):
         if self.config.target_platform == Platform.LINUX:
