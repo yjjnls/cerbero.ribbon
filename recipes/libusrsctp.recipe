@@ -19,7 +19,7 @@ class Recipe(recipe.Recipe):
                'usrsctp/0001-werror-maybe-uninitialized-fix.patch']
     
     files_libs = ['libusrsctp']
-    files_devel = ['include/usrsctp.h', 'lib/pkgconfig/usrsctp.pc']
+    files_devel = ['include/usrsctp.h', 'lib/pkgconfig/libusrsctp.pc']
 
     def configure(self):
         if self.config.target_platform == Platform.LINUX:
