@@ -12,3 +12,9 @@ class Package(custom.Ribbon, package.Package):
     files = [
         'sqlite3:libs', 'rocksdb:libs','mysql-connector-c:libs'
     ]
+
+
+    def prepare(self):
+        if self.config.target_platform == Platform.WINDOWS and \
+           self.config.target_arch == Architecture.X86:
+           self.files.remove( 'rocksdb:libs')

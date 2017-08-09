@@ -38,7 +38,7 @@ function build(){
 
 
 if [ "$OS" == "Windows_NT" ]; then
-    for conf in win64d win64 win32d win32
+    for conf in  win32d win32
 	do
 	    echo "    ====== build $conf ======="
 		build ${conf}.cbc
