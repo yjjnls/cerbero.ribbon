@@ -21,8 +21,7 @@ class Recipe(recipe.Recipe):
     version = '1.12.0'
     stype = SourceType.TARBALL
     btype = BuildType.MAKEFILE
-        #patches = ['libuv/0001-AutoCMake-adaptation.patch']
-    patches = ['libuv/0001-use-install-gyp-and-vs2015-only.patch']
+    patches = ['libuv/0001-msvs-2015-build.patch']
     config_sh = './configure'
     configure_tpl = "%(config-sh)s --prefix=%(prefix)s --libdir=%(libdir)s %(options)s"
         
@@ -41,10 +40,11 @@ class Recipe(recipe.Recipe):
             arch = {Architecture.X86_64:'x64',Architecture.X86:'x86'}[self.config.target_arch]
             build = self.config.build_type.lower()
 
-            self.make = 'echo ./vcbuild.bat shared %s %s '%(build,arch)
-            self.config_sh='echo '
+
             self.make_install='echo '
-            self.make = 'ls . && ./vcbuild.bat shared %s %s '%(build,arch)
+            self.config_sh = 'echo libuv configure && ./msvs-build.bat shared nobuild %s %s '%(build,arch)
+            self.configure_tpl = "%(config-sh)s"
+            self.make = 'echo libuv build msvs 2015 && ./msvs-build.bat shared noprojgen %s %s '%(build,arch)
 
 
     def configure(self):
@@ -53,7 +53,13 @@ class Recipe(recipe.Recipe):
                 os.makedirs(self.make_dir)
             shell.call('bash autogen.sh', self.make_dir)
             self.configure_options += ' --includedir=%s/include/libuv '%self.config.prefix
-            super(recipe.Recipe, self).configure()
+            
+        if self.config.target_platform == Platform.WINDOWS:
+            pass
+
+
+        super(recipe.Recipe, self).configure()
+
 
     #def compile(self):
     #    super(recipe.Recipe, self).compile()
