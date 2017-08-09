@@ -90,7 +90,10 @@ class DistTarball(PackagerBase):
         return filenames
 
     def _get_name(self, package_type, ext='tar.bz2'):
-        return "%s%s-%s-%s-%s%s.%s" % (self.package_prefix, self.package.name,
+        dsuffix=''
+        if self.config.build_type == 'Debug':
+            dsuffix='-debug'
+        return "%s%s-%s-%s-%s%s.%s" % (self.package_prefix, self.package.name +dsuffix,
                 self.config.target_platform, self.config.target_arch,
                 self.package.version, package_type, ext)
 
@@ -145,8 +148,8 @@ class DistTarball(PackagerBase):
              'Platform':self.config.target_platform,
              'Arch':self.config.target_arch,
              'Dependencies': ''}
-             
-        f =open(basename+'.desc','w')
+         
+        f =open(filename+'.desc','w')
         
         f.write(DESC_TPL % d)
         f.close()
