@@ -64,6 +64,6 @@ class Recipe(recipe.Recipe):
                         '-Wno-error'})
         super(recipe.Recipe, self).configure()
 
-    #def post_install(self):
-    #    if self.config.target_platform == Platform.LINUX:
-    #        shell.call('mv -f usrsctp.pc libusrsctp.pc', '%s/lib/pkgconfig/'%(self.config.install_dir))
+    def post_install(self):
+        if self.config.target_platform == Platform.LINUX:
+            shell.call('mv -f usrsctp.pc libusrsctp.pc', '%s/lib/pkgconfig/'%(self.config.install_dir))

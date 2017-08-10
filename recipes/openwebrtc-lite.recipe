@@ -25,7 +25,7 @@ class Recipe(recipe.Recipe):
 
     def configure(self):
         if self.config.target_platform == Platform.LINUX:
-             os.environ['CFLAGS'] += '-fPIC'
+             os.environ['CFLAGS'] += ' -fPIC '
         super(recipe.Recipe, self).configure()
 #    def prepare(self):
 #        if self.config.target_platform == Platform.WINDOWS:
