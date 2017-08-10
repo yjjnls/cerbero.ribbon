@@ -2,6 +2,7 @@
 #from cerbero.tools.libtool import LibtoolLibrary
 
 from cerbero.utils import shell
+import platform
 
 class Recipe(recipe.Recipe):
     name = 'libusrsctp'
