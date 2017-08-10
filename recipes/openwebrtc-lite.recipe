@@ -24,8 +24,8 @@ class Recipe(recipe.Recipe):
                    'lib/pkgconfig/openwebrtc-gst-lite-0.3.pc']
 
     def configure(self):
-        #if self.config.target_platform == Platform.LINUX:
-        #     os.environ['CFLAGS'] += '-fPIC'
+        if self.config.target_platform == Platform.LINUX:
+             os.environ['CFLAGS'] += '-fPIC'
         super(recipe.Recipe, self).configure()
 #    def prepare(self):
 #        if self.config.target_platform == Platform.WINDOWS:
