@@ -30,11 +30,7 @@ class Recipe(recipe.Recipe):
         
     else:
         btype = BuildType.MAKEFILE
-        os.environ['CFLAGS']   = ' -Wall -g -O2'
-        os.environ['CXXFLAGS'] = ' -Wall -g -O2'
-        os.environ['OBJCFLAGS'] = ' -Wall -g -O2'
-        os.environ['CCASFLAGS'] = ' -Wall -g -O2'
-        os.environ['LDFLAGS'] = ''
+
         configure_tpl = "./configure"
         make = 'make dep && make clean && make'
 
@@ -76,4 +72,11 @@ class Recipe(recipe.Recipe):
             #./pjsip/lib/pjsip-ua-x86_64-x64-vc14-Debug.lib
             #./pjsip/lib/pjsua-lib-x86_64-x64-vc14-Debug.lib
             #./pjsip/lib/pjsua2-lib-x86_64-x64-vc14-Debug.lib
+    def configure(self):
+        os.environ['CFLAGS']   = ' -Wall -g -O2'
+        os.environ['CXXFLAGS'] = ' -Wall -g -O2'
+        os.environ['OBJCFLAGS'] = ' -Wall -g -O2'
+        os.environ['CCASFLAGS'] = ' -Wall -g -O2'
+        os.environ['LDFLAGS'] = ''
+
 
