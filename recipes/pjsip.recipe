@@ -30,6 +30,9 @@ class Recipe(recipe.Recipe):
         
     else:
         btype = BuildType.MAKEFILE
+        config_sh = ''
+        configure_tpl='./configure'
+        make = 'make dep && make clean && make'
 
     url = 'http://www.pjsip.org/release/2.6/pjproject-2.6.tar.bz2'
     
