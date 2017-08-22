@@ -5,8 +5,8 @@ import platform
 class Recipe(recipe.Recipe):
     name = 'openwebrtc-lite'
     version = '0.3.0-1'
-    remotes = {'origin': 'git@github.com:Mingyiz/openwebrtc.git'}
-    commit = 'origin/lite'
+    remotes = {'origin': 'git@github.com:Mingyiz/openwebrtc-lite.git'}
+    commit = 'origin/0.3'
     btype = BuildType.AUTOCMAKE
     
 

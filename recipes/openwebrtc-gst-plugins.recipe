@@ -39,6 +39,7 @@ class Recipe(recipe.Recipe):
         configure_options = ''
 
     deps = ['libusrsctp']
+    patches = ['openwebrtc-gst-plugins/0001-AutoCMake-adaptation.patch']
     files_libs = ['libgstsctp-1.0']
     files_plugins_devel = [
         'include/gstreamer-1.0/gst/sctp',
@@ -68,6 +69,8 @@ class Recipe(recipe.Recipe):
     }
 
     def prepare(self):
+        if self.config.target_platform == Platform.WINDOWS:
+            return
         # Don't build ercolorspace because we use videoconvert everywhere now
         self.configure_options = ' \
             --enable-shared \
