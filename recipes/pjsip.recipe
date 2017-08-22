@@ -29,9 +29,9 @@ class Recipe(recipe.Recipe):
         requires_non_src_build = False
         
     else:
-        btype = BuildType.MAKEFILE
+        btype = BuildType.AUTOTOOLS
+        autoreconf = True
 
-        configure_tpl = "export LDFLAGS='' &&  export CFLAGS=' -Wall -g -O2' && ./configure"
         make = 'make dep && make clean && make'
 
     url = 'http://www.pjsip.org/release/2.6/pjproject-2.6.tar.bz2'
