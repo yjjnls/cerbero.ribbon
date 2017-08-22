@@ -29,7 +29,8 @@ class Recipe(recipe.Recipe):
         requires_non_src_build = False
         
     else:
-        btype = BuildType.AUTOTOOLS
+        btype = BuildType.MAKEFILE
+        configure_tpl = "./configure"
         make = 'make dep && make clean && make'
 
     url = 'http://www.pjsip.org/release/2.6/pjproject-2.6.tar.bz2'
