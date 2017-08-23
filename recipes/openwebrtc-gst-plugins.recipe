@@ -72,7 +72,7 @@ class Recipe(recipe.Recipe):
 
     def prepare(self):
         if self.config.target_platform == Platform.LINUX:
-             os.environ['CFLAGS'] += ' -fPIC '
+            self.make = 'export CFLAGS="$CFLAGS -fPIC" && ' + self.make
 
         return
         if self.config.target_platform == Platform.WINDOWS:
