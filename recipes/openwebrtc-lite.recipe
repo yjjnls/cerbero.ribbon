@@ -23,10 +23,10 @@ class Recipe(recipe.Recipe):
     files_devel = ['include/owr', 'lib/pkgconfig/openwebrtc-lite-0.3.pc',
                    'lib/pkgconfig/openwebrtc-gst-lite-0.3.pc']
 
-    def configure(self):
-        if self.config.target_platform == Platform.LINUX:
-             os.environ['CFLAGS'] += ' -fPIC '
-        super(recipe.Recipe, self).configure()
+#    def configure(self):
+#        if self.config.target_platform == Platform.LINUX:
+#             os.environ['CFLAGS'] += ' -fPIC '
+#        super(recipe.Recipe, self).configure()
 #    def prepare(self):
 #        if self.config.target_platform == Platform.WINDOWS:
 #            self.make = 'make -f win32/Makefile.gcc PREFIX=%s- ' % self.config.host

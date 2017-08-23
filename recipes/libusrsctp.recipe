@@ -18,8 +18,8 @@ class Recipe(recipe.Recipe):
     #else:
     #    autoreconf = True
     #    configure_options = '--disable-debug --enable-static --enable-shared'
-    if platform.system() == 'Linux':
-        os.environ['CFLAGS'] += ' -fPIC '
+    #if platform.system() == 'Linux':
+    #    os.environ['CFLAGS'] += ' -fPIC '
 
 
     patches = ['usrsctp/0001-AutoCmake-adaption.patch', 
