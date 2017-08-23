@@ -70,37 +70,37 @@ class Recipe(recipe.Recipe):
     #    Platform.IOS: ['lib/gstreamer-1.0/libgstercolorspace.a', 'lib/gstreamer-1.0/libgstercolorspace.la'],
     #}
 
-    def prepare(self):
-        if self.config.target_platform == Platform.LINUX:
-            self.configure_options = ' -DCMAKE_C_FLAGS="$CFLAGS -fPIC "
-
-        return
-        if self.config.target_platform == Platform.WINDOWS:
-            return
-        # Don't build ercolorspace because we use videoconvert everywhere now
-        self.configure_options = ' \
-            --enable-shared \
-            --enable-static \
-            --enable-static-plugins \
-            --disable-erdtls \
-            --disable-debug \
-            --disable-android-plugins \
-            --disable-osx-plugins \
-            --disable-linux-plugins'
-        if self.config.target_platform == Platform.IOS:
-            self.configure_options += ' --enable-colorspace-converter'
-        else:
-            self.configure_options += ' --disable-colorspace-converter'
-
-        if self.config.target_platform == Platform.ANDROID:
-            android_dx_path = os.path.join(self.config.build_tools_prefix,
-                                           'opt', 'android-sdk', 'build-tools',
-                                           'android-4.4W', 'dx')
-            self.configure_options += ' --enable-android-plugins \
-                DX="{0}"'.format(android_dx_path)
-        elif self.config.target_platform == Platform.DARWIN:
-            # No-op right now
-            self.configure_options += ' --enable-osx-plugins'
-        elif self.config.target_platform == Platform.LINUX:
-            # No-op right now
-            self.configure_options += ' --enable-linux-plugins'
+    #def prepare(self):
+    #    if self.config.target_platform == Platform.LINUX:
+    #        self.configure_options = ' -DCMAKE_C_FLAGS="$CFLAGS -fPIC "
+#
+    #    return
+    #    if self.config.target_platform == Platform.WINDOWS:
+    #        return
+    #    # Don't build ercolorspace because we use videoconvert everywhere now
+    #    self.configure_options = ' \
+    #        --enable-shared \
+    #        --enable-static \
+    #        --enable-static-plugins \
+    #        --disable-erdtls \
+    #        --disable-debug \
+    #        --disable-android-plugins \
+    #        --disable-osx-plugins \
+    #        --disable-linux-plugins'
+    #    if self.config.target_platform == Platform.IOS:
+    #        self.configure_options += ' --enable-colorspace-converter'
+    #    else:
+    #        self.configure_options += ' --disable-colorspace-converter'
+#
+    #    if self.config.target_platform == Platform.ANDROID:
+    #        android_dx_path = os.path.join(self.config.build_tools_prefix,
+    #                                       'opt', 'android-sdk', 'build-tools',
+    #                                       'android-4.4W', 'dx')
+    #        self.configure_options += ' --enable-android-plugins \
+    #            DX="{0}"'.format(android_dx_path)
+    #    elif self.config.target_platform == Platform.DARWIN:
+    #        # No-op right now
+    #        self.configure_options += ' --enable-osx-plugins'
+    #    elif self.config.target_platform == Platform.LINUX:
+    #        # No-op right now
+    #        self.configure_options += ' --enable-linux-plugins'
