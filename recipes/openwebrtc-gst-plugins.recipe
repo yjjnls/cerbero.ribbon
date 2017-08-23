@@ -34,6 +34,7 @@ class Recipe(recipe.Recipe):
     if platform.system() == 'Windows':
         btype = BuildType.AUTOCMAKE
     else:
+        btype = BuildType.AUTOTOOLS
         autoreconf = True
         autoreconf_sh = 'mkdir -p m4 && autoreconf -fiv'
         configure_options = ''
@@ -69,6 +70,7 @@ class Recipe(recipe.Recipe):
     }
 
     def prepare(self):
+        return
         if self.config.target_platform == Platform.WINDOWS:
             return
         # Don't build ercolorspace because we use videoconvert everywhere now
