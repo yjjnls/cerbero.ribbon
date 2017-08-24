@@ -194,12 +194,12 @@ if os.path.isfile( os.path.join( os.getcwd(),'deploy.py') ):
 
 
 
-if _deployer and hasattr(_deployer,'MIRRORS'):
-    import cerbero.utils.shell as cshell
-    cshell._download = cshell.download
-    del cshell.download
-
-    def _mirror_download(url, destination=None, recursive=False, check_cert=True, overwrite=False):
+#if _deployer and hasattr(_deployer,'MIRRORS'):
+#    import cerbero.utils.shell as cshell
+#    cshell._download = cshell.download
+#    #del cshell.download
+#
+#    def _mirror_download(url, destination=None, recursive=False, check_cert=True, overwrite=False):
         '''
         Downloads a file with wget, but try mirror first
 
@@ -236,4 +236,4 @@ if _deployer and hasattr(_deployer,'MIRRORS'):
         cshell._download( url ,destination,recursive,check_cert,overwrite)
 
 
-    #cshell.download = _mirror_download
+#    #cshell.download = _mirror_download
