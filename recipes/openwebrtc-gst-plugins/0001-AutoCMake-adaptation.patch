@@ -64,7 +64,7 @@ index 0000000..ad6a746
 +
 +
 +add_library ( libgstsctp SHARED ${FILE_SOURCES} )
-+set_target_properties( libgstsctp PROPERTIES PREFIX "" SUFFIX "") 
++set_target_properties( libgstsctp PROPERTIES PREFIX "" ) 
 +target_link_libraries( libgstsctp ${this_LIBS} gstsctp-1.0 )
 +
 +install(TARGETS libgstsctp RUNTIME DESTINATION lib/gstreamer-1.0/  LIBRARY DESTINATION lib/gstreamer-1.0/ )
@@ -123,7 +123,7 @@ index 0000000..eb14722
 +link_directories( ${this_LINK_DIRECTORIES} )
 +
 +add_library ( libgstscream SHARED ${FILE_SOURCES} )
-+set_target_properties( libgstscream PROPERTIES PREFIX "" SUFFIX "")
++set_target_properties( libgstscream PROPERTIES PREFIX "" )
 +target_link_libraries( libgstscream ${this_LIBS}  )
 +install(TARGETS libgstscream RUNTIME DESTINATION lib/gstreamer-1.0 LIBRARY DESTINATION lib/gstreamer-1.0 )
 \ No newline at end of file
@@ -149,7 +149,7 @@ index 0000000..02da7ec
 +link_directories( ${this_LINK_DIRECTORIES} )
 +
 +add_library ( libgstvideorepair SHARED ${FILE_SOURCES} )
-+set_target_properties( libgstvideorepair PROPERTIES PREFIX "" SUFFIX "")
++set_target_properties( libgstvideorepair PROPERTIES PREFIX "" )
 +target_link_libraries( libgstvideorepair ${this_LIBS}  )             
 +install(TARGETS libgstvideorepair RUNTIME DESTINATION lib/gstreamer-1.0  LIBRARY DESTINATION lib/gstreamer-1.0 )
 \ No newline at end of file
