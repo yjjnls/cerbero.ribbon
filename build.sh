@@ -33,12 +33,15 @@ function build(){
 		./cerbero-uninstalled -c config/${config} bootstrap
 		[ $? -eq 0 ] &&  touch ${config}.bootstrap
 	fi
-    ./cerbero-uninstalled -c config/${config} package ribbon --tarball -a gz -o "${output}"
+	if [ ! -f ${config}.built ] ; then
+		./cerbero-uninstalled -c config/${config} package ribbon --tarball -a gz -o "${output}"
+		[ $? -eq 0 ] &&  touch ${config}.built
+	fi
 }
 
 
 if [ "$OS" == "Windows_NT" ]; then
-    for conf in  win32d win32
+    for conf in  win32d win32 win64d win64
 	do
 	    echo "    ====== build $conf ======="
 		build ${conf}.cbc
