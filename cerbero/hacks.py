@@ -175,6 +175,14 @@ if sys.platform.startswith('darwin'):
 from cerbero.utils import messages as m
 import shutil
 
+
+#default mirror
+mirror = os.environ.get('CERBERO_TARBALL_MIRROR')
+if mirror:
+    import cerbero.build.source as source
+    source.TARBALL_MIRROR = mirror
+
+
 _deployer=None
 
 def Deploy():
@@ -228,4 +236,4 @@ if _deployer and hasattr(_deployer,'MIRRORS'):
         cshell._download( url ,destination,recursive,check_cert,overwrite)
 
 
-    cshell.download = _mirror_download
+    #cshell.download = _mirror_download
