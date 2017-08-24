@@ -4,6 +4,8 @@ enable_testing()
 
 include (CMakeParseArguments)
 
+option(GCC_OPTION_PIC "GCC generate code with -fPIC" ON  )
+
 IF(MSVC)
 	ADD_DEFINITIONS( -D_CRT_SECURE_NO_DEPRECATE  )
 	ADD_DEFINITIONS( -D_CRT_NONSTDC_NO_DEPRECATE )
@@ -13,6 +15,12 @@ IF(MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4819")
 ELSE()
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+	
+	if( GCC_OPTION_PIC )
+		SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+		SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+	endif()
+	
 ENDIF()
 
 
