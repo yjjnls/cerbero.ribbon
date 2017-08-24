@@ -6,7 +6,7 @@ from cerbero.enums import License
 class Ribbon:
 
     url = ""
-    version = '0.3.3'
+    version = '0.3.4'
     vendor = 'Ribbon Project'
     licenses = [License.LGPL]
     org = ''
