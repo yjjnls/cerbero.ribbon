@@ -175,57 +175,100 @@ if sys.platform.startswith('darwin'):
 from cerbero.utils import messages as m
 import shutil
 
-_deployer=None
 
-def Deploy():
-    return _deployer
+#default mirror
+_mirror = os.environ.get('CERBERO_TARBALL_MIRROR')
+if _mirror:
+    import cerbero.build.source as source
+    source.TARBALL_MIRROR = _mirror
 
-if os.path.isfile( os.path.join( os.getcwd(),'deploy.py') ):
+if os.path.isfile( os.path.join( os.getcwd(),'bootstrap.py') ):
     sys.path.append( os.getcwd())
-    _deployer = __import__( 'deploy' )
+    bs = __import__('bootstrap')
+    if hasattr( bs, 'pre_bootstrap') or hasattr(bs, 'post_bootstrap'):
+        import cerbero.commands.bootstrap
+        Bootstrap = cerbero.commands.bootstrap.Bootstrap
+        print '=>',Bootstrap
+        Bootstrap._run = Bootstrap.run
 
 
+        def _run(self, config, args):
+            print '==========RUN======='
+            if hasattr( bs, 'pre_bootstrap'):
+                bs.pre_bootstrap( config )
+            Bootstrap._run(self,config,args )
+            if hasattr( bs, 'post_bootstrap'):
+                bs.post_bootstrap( config )
+        cerbero.commands.bootstrap.Bootstrap.run = _run
 
-if _deployer and hasattr(_deployer,'MIRRORS'):
-    import cerbero.utils.shell as cshell
-    cshell._download = cshell.download
-    del cshell.download
+#        print '=>',cerbero.commands.bootstrap.Bootstrap
 
-    def _mirror_download(url, destination=None, recursive=False, check_cert=True, overwrite=False):
-        '''
-        Downloads a file with wget, but try mirror first
+#
+#
+#
+#
+#        def _run(self, config, args):
+#
+#        bootstrappers = Bootstrapper(config, args.build_tools_only)
+#        for bootstrapper in bootstrappers:
+#            bootstrapper.start()
+#
+#    import cerbero.commands.bootstrap.Bootstrap as bootstrap
+#    
+#
+#
+#
+#_deployer=None
+#
+#def Deploy():
+#    return _deployer
+#
+#if os.path.isfile( os.path.join( os.getcwd(),'deploy.py') ):
+#    sys.path.append( os.getcwd())
+#    _deployer = __import__( 'deploy' )
+#
+#
+#
+#if _deployer and hasattr(_deployer,'MIRRORS'):
+#    import cerbero.utils.shell as cshell
+#    cshell._download = cshell.download
+#    #del cshell.download
+#
+#    def _mirror_download(url, destination=None, recursive=False, check_cert=True, overwrite=False):
+#        '''
+#        Downloads a file with wget, but try mirror first#
 
-        @param url: url to download
-        @type: str
-        @param destination: destination where the file will be saved
-        @type destination: str
-        '''
-        murl = _deployer.MIRRORS.get( url ,None)
-        if murl is None:
-            part=''
-            for key, value in _deployer.MIRRORS.iteritems():
-                if url.startswith(key):
-                    #find the longest matched
-                    if len(key) > len(part):
-                        part = key
-            if part :
-                murl = url.replace( part , _deployer.MIRRORS[part] )
-
-        if murl :
-            if murl.startswith('http://') or murl.startswith('https://'):
-                try :
-                    m.message('downloading from mirror %s'%murl)
-                    cshell._download( murl ,destination,recursive,check_cert,overwrite)
-                    return
-                except:
-                    m.warning('download mirror %s failed.'%murl)
-            elif os.path.isfile( murl ) :
-                path = os.path.dirname( murl )
-                if destination:
-                    path = destination
-                shutil.copyfile( murl , path )
-                return
-        cshell._download( url ,destination,recursive,check_cert,overwrite)
-
-
-    cshell.download = _mirror_download
+#        @param url: url to download
+#        @type: str
+#        @param destination: destination where the file will be saved
+#        @type destination: str
+#        '''
+#        murl = _deployer.MIRRORS.get( url ,None)
+#        if murl is None:
+#            part=''
+#            for key, value in _deployer.MIRRORS.iteritems():
+#                if url.startswith(key):
+#                    #find the longest matched
+#                    if len(key) > len(part):
+#                        part = key
+#            if part :
+#                murl = url.replace( part , _deployer.MIRRORS[part] )#
+#
+#        if murl :
+#            if murl.startswith('http://') or murl.startswith('https://'):
+#                try :
+#                    m.message('downloading from mirror %s'%murl)
+#                    cshell._download( murl ,destination,recursive,check_cert,overwrite)
+#                    return
+#                except:
+#                    m.warning('download mirror %s failed.'%murl)
+#            elif os.path.isfile( murl ) :
+#                path = os.path.dirname( murl )
+#                if destination:
+#                    path = destination
+#                shutil.copyfile( murl , path )
+#                return
+#        cshell._download( url ,destination,recursive,check_cert,overwrite)#
+#
+#
+#    #cshell.download = _mirror_download

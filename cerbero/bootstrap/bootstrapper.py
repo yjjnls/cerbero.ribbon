@@ -69,13 +69,14 @@ class Bootstrapper (object):
             bs.insert(0, bootstrappers[d][v](config))
         
         #append deploy Bootstrap
-        import cerbero.hacks
-        deploy = cerbero.hacks.Deploy()
-        if hasattr( deploy ,'FirstBootstrap'):
-            bs.insert(0, deploy.FirstBootstrap( config ))
+        #import cerbero.hacks
+        #deploy = cerbero.hacks.Deploy()
+        #if hasattr( deploy ,'FirstBootstrap'):
+        #    bs.insert(0, deploy.FirstBootstrap( config ))
+        print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
 
-        if hasattr( deploy ,'LastBootstrap'):
-            bs.append( deploy.LastBootstrap( config ) )
+        #if hasattr( deploy ,'LastBootstrap'):
+        #    bs.append( deploy.LastBootstrap( config ) )
         return bs
 
 from cerbero.bootstrap import linux, windows, android, osx, ios

@@ -6,7 +6,7 @@ from cerbero.utils  import shell
 
 _CWD  = os.path.abspath( os.getcwd() )
 
-_BASE='http://vss.kedacom.com/WMS'
+_BASE='http://172.16.0.119/WMS'
 _SDK='%s/SDK'%_BASE
 
 

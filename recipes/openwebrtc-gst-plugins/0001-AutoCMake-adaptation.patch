@@ -4,23 +4,23 @@ Date: Fri, 2 Jun 2017 13:25:47 +0800
 Subject: [PATCH] AutoCMake-adaptation
 
 ---
- CMakelists.txt                   | 14 ++++++++++++++
- ext/sctp/CMakelists.txt          | 27 +++++++++++++++++++++++++++
- gst-libs/gst/sctp/CMakelists.txt | 21 +++++++++++++++++++++
- gst/scream/CMakelists.txt        | 21 +++++++++++++++++++++
- gst/videorepair/CMakelists.txt   | 19 +++++++++++++++++++
+ CMakeLists.txt                   | 14 ++++++++++++++
+ ext/sctp/CMakeLists.txt          | 27 +++++++++++++++++++++++++++
+ gst-libs/gst/sctp/CMakeLists.txt | 21 +++++++++++++++++++++
+ gst/scream/CMakeLists.txt        | 21 +++++++++++++++++++++
+ gst/videorepair/CMakeLists.txt   | 19 +++++++++++++++++++
  5 files changed, 102 insertions(+)
- create mode 100644 CMakelists.txt
- create mode 100644 ext/sctp/CMakelists.txt
- create mode 100644 gst-libs/gst/sctp/CMakelists.txt
- create mode 100644 gst/scream/CMakelists.txt
- create mode 100644 gst/videorepair/CMakelists.txt
+ create mode 100644 CMakeLists.txt
+ create mode 100644 ext/sctp/CMakeLists.txt
+ create mode 100644 gst-libs/gst/sctp/CMakeLists.txt
+ create mode 100644 gst/scream/CMakeLists.txt
+ create mode 100644 gst/videorepair/CMakeLists.txt
 
-diff --git a/CMakelists.txt b/CMakelists.txt
+diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
 index 0000000..eb7d83f
 --- /dev/null
-+++ b/CMakelists.txt
++++ b/CMakeLists.txt
 @@ -0,0 +1,14 @@
 +cmake_minimum_required( VERSION 3.0 )
 +
@@ -36,11 +36,11 @@ index 0000000..eb7d83f
 +add_subdirectory( gst/scream         )
 +add_subdirectory( gst/videorepair    )  
 +add_subdirectory( ext/sctp           )
-diff --git a/ext/sctp/CMakelists.txt b/ext/sctp/CMakelists.txt
+diff --git a/ext/sctp/CMakeLists.txt b/ext/sctp/CMakeLists.txt
 new file mode 100644
 index 0000000..ad6a746
 --- /dev/null
-+++ b/ext/sctp/CMakelists.txt
++++ b/ext/sctp/CMakeLists.txt
 @@ -0,0 +1,27 @@
 +
 +PROJECT( libgstsctp )
@@ -57,24 +57,24 @@ index 0000000..ad6a746
 +include_directories( ${CMAKE_HOME_DIRECTORY}/gst-libs )
 +autocmake_check_modules(this gstreamer-1.0
 +                      gstreamer-base-1.0 
-+					  usrsctp)
++					  libusrsctp)
 +
 +include_directories( ${this_INCLUDE_DIRECTORIES} )
 +link_directories( ${this_LINK_DIRECTORIES} )
 +
 +
 +add_library ( libgstsctp SHARED ${FILE_SOURCES} )
++set_target_properties( libgstsctp PROPERTIES PREFIX "" ) 
 +target_link_libraries( libgstsctp ${this_LIBS} gstsctp-1.0 )
 +
-+
-+install(TARGETS libgstsctp RUNTIME DESTINATION lib/gstreamer-1.0 )
++install(TARGETS libgstsctp RUNTIME DESTINATION lib/gstreamer-1.0/  LIBRARY DESTINATION lib/gstreamer-1.0/ )
 +add_dependencies( libgstsctp gstsctp-1.0 )
 \ No newline at end of file
-diff --git a/gst-libs/gst/sctp/CMakelists.txt b/gst-libs/gst/sctp/CMakelists.txt
+diff --git a/gst-libs/gst/sctp/CMakeLists.txt b/gst-libs/gst/sctp/CMakeLists.txt
 new file mode 100644
 index 0000000..0529729
 --- /dev/null
-+++ b/gst-libs/gst/sctp/CMakelists.txt
++++ b/gst-libs/gst/sctp/CMakeLists.txt
 @@ -0,0 +1,22 @@
 +project( gstsctp-1.0 C)
 +
@@ -99,11 +99,11 @@ index 0000000..0529729
 +		
 +install(FILES ${_HEADERS} DESTINATION include/gstreamer-1.0/gst/sctp   )
 \ No newline at end of file
-diff --git a/gst/scream/CMakelists.txt b/gst/scream/CMakelists.txt
+diff --git a/gst/scream/CMakeLists.txt b/gst/scream/CMakeLists.txt
 new file mode 100644
 index 0000000..eb14722
 --- /dev/null
-+++ b/gst/scream/CMakelists.txt
++++ b/gst/scream/CMakeLists.txt
 @@ -0,0 +1,21 @@
 +project( libgstscream C )
 +
@@ -123,15 +123,15 @@ index 0000000..eb14722
 +link_directories( ${this_LINK_DIRECTORIES} )
 +
 +add_library ( libgstscream SHARED ${FILE_SOURCES} )
++set_target_properties( libgstscream PROPERTIES PREFIX "" )
 +target_link_libraries( libgstscream ${this_LIBS}  )
-+                     
-+install(TARGETS libgstscream RUNTIME DESTINATION lib/gstreamer-1.0 )
++install(TARGETS libgstscream RUNTIME DESTINATION lib/gstreamer-1.0 LIBRARY DESTINATION lib/gstreamer-1.0 )
 \ No newline at end of file
-diff --git a/gst/videorepair/CMakelists.txt b/gst/videorepair/CMakelists.txt
+diff --git a/gst/videorepair/CMakeLists.txt b/gst/videorepair/CMakeLists.txt
 new file mode 100644
 index 0000000..02da7ec
 --- /dev/null
-+++ b/gst/videorepair/CMakelists.txt
++++ b/gst/videorepair/CMakeLists.txt
 @@ -0,0 +1,19 @@
 +project( libgstvideorepair )
 +
@@ -149,9 +149,9 @@ index 0000000..02da7ec
 +link_directories( ${this_LINK_DIRECTORIES} )
 +
 +add_library ( libgstvideorepair SHARED ${FILE_SOURCES} )
-+target_link_libraries( libgstvideorepair ${this_LIBS}  )
-+                     
-+install(TARGETS libgstvideorepair RUNTIME DESTINATION lib/gstreamer-1.0 )
++set_target_properties( libgstvideorepair PROPERTIES PREFIX "" )
++target_link_libraries( libgstvideorepair ${this_LIBS}  )             
++install(TARGETS libgstvideorepair RUNTIME DESTINATION lib/gstreamer-1.0  LIBRARY DESTINATION lib/gstreamer-1.0 )
 \ No newline at end of file
 -- 
 2.12.2.windows.1

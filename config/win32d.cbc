@@ -1,0 +1,7 @@
+from cerbero.config import Architecture
+arch = Architecture.X86
+target_arch = Architecture.X86
+build_type='Debug'
+home_dir=os.path.abspath( os.getcwd()+ '/build/debug')
+prefix=os.path.abspath( home_dir + '/local/x86')
+
