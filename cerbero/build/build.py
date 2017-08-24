@@ -379,7 +379,7 @@ class AutoCMake (MakefilesBase):
             cxxflags = os.environ.get('CXXFLAGS', '')
             os.environ['PKG_CONFIG_PATH'] = os.path.join(self.config.prefix, 'lib', 'pkgconfig')
             
-            if gcc_position_independent_code:
+            if self.gcc_position_independent_code:
                 cflags += " -fPIC "
                 cxxflags += " -fPIC "
 
