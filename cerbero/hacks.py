@@ -200,40 +200,40 @@ if os.path.isfile( os.path.join( os.getcwd(),'deploy.py') ):
 #    #del cshell.download
 #
 #    def _mirror_download(url, destination=None, recursive=False, check_cert=True, overwrite=False):
-        '''
-        Downloads a file with wget, but try mirror first
+#        '''
+#        Downloads a file with wget, but try mirror first#
 
-        @param url: url to download
-        @type: str
-        @param destination: destination where the file will be saved
-        @type destination: str
-        '''
-        murl = _deployer.MIRRORS.get( url ,None)
-        if murl is None:
-            part=''
-            for key, value in _deployer.MIRRORS.iteritems():
-                if url.startswith(key):
-                    #find the longest matched
-                    if len(key) > len(part):
-                        part = key
-            if part :
-                murl = url.replace( part , _deployer.MIRRORS[part] )
-
-        if murl :
-            if murl.startswith('http://') or murl.startswith('https://'):
-                try :
-                    m.message('downloading from mirror %s'%murl)
-                    cshell._download( murl ,destination,recursive,check_cert,overwrite)
-                    return
-                except:
-                    m.warning('download mirror %s failed.'%murl)
-            elif os.path.isfile( murl ) :
-                path = os.path.dirname( murl )
-                if destination:
-                    path = destination
-                shutil.copyfile( murl , path )
-                return
-        cshell._download( url ,destination,recursive,check_cert,overwrite)
-
-
+#        @param url: url to download
+#        @type: str
+#        @param destination: destination where the file will be saved
+#        @type destination: str
+#        '''
+#        murl = _deployer.MIRRORS.get( url ,None)
+#        if murl is None:
+#            part=''
+#            for key, value in _deployer.MIRRORS.iteritems():
+#                if url.startswith(key):
+#                    #find the longest matched
+#                    if len(key) > len(part):
+#                        part = key
+#            if part :
+#                murl = url.replace( part , _deployer.MIRRORS[part] )#
+#
+#        if murl :
+#            if murl.startswith('http://') or murl.startswith('https://'):
+#                try :
+#                    m.message('downloading from mirror %s'%murl)
+#                    cshell._download( murl ,destination,recursive,check_cert,overwrite)
+#                    return
+#                except:
+#                    m.warning('download mirror %s failed.'%murl)
+#            elif os.path.isfile( murl ) :
+#                path = os.path.dirname( murl )
+#                if destination:
+#                    path = destination
+#                shutil.copyfile( murl , path )
+#                return
+#        cshell._download( url ,destination,recursive,check_cert,overwrite)#
+#
+#
 #    #cshell.download = _mirror_download
