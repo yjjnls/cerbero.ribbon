@@ -358,6 +358,7 @@ class AutoCMake (MakefilesBase):
                     '%(options)s '\
 
     requires_non_src_build = True
+    gcc_position_independent_code = True
 
 
     def __init__(self):
@@ -378,6 +379,9 @@ class AutoCMake (MakefilesBase):
             cxxflags = os.environ.get('CXXFLAGS', '')
             os.environ['PKG_CONFIG_PATH'] = os.path.join(self.config.prefix, 'lib', 'pkgconfig')
             
+            if gcc_position_independent_code:
+                cflags += " -fPIC "
+                cxxflags += " -fPIC "
 
         # FIXME: CMake doesn't support passing "ccache $CC"
         if self.config.use_ccache:
@@ -411,7 +415,7 @@ class AutoCMake (MakefilesBase):
         if self.config.target_platform != Platform.WINDOWS:
             self.configure_options += ' -DCMAKE_C_COMPILER=%s ' % cc
             self.configure_options += ' -DCMAKE_CXX_COMPILER=%s ' % cxx
-            self.configure_options += ' -DCMAKE_C_FLAGS="%s"' % cflags
+            self.configure_options += ' -DCMAKE_C_FLAGS="%s"' %cflags
             self.configure_options += ' -DCMAKE_CXX_FLAGS="%s"' % cxxflags
         self.configure_options += ' -DLIB_SUFFIX=%s ' % self.config.lib_suffix
         
