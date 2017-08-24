@@ -177,23 +177,58 @@ import shutil
 
 
 #default mirror
-mirror = os.environ.get('CERBERO_TARBALL_MIRROR')
-if mirror:
+_mirror = os.environ.get('CERBERO_TARBALL_MIRROR')
+if _mirror:
     import cerbero.build.source as source
-    source.TARBALL_MIRROR = mirror
+    source.TARBALL_MIRROR = _mirror
 
-
-_deployer=None
-
-def Deploy():
-    return _deployer
-
-if os.path.isfile( os.path.join( os.getcwd(),'deploy.py') ):
+if os.path.isfile( os.path.join( os.getcwd(),'bootstrap.py') ):
     sys.path.append( os.getcwd())
-    _deployer = __import__( 'deploy' )
+    bs = __import__('bootstrap')
+    if hasattr( bs, 'pre_bootstrap') or hasattr(bs, 'post_bootstrap'):
+        import cerbero.commands.bootstrap
+        Bootstrap = cerbero.commands.bootstrap.Bootstrap
+        print '=>',Bootstrap
+        Bootstrap._run = Bootstrap.run
 
 
+        def _run(self, config, args):
+            print '==========RUN======='
+            if hasattr( bs, 'pre_bootstrap'):
+                bs.pre_bootstrap( config )
+            Bootstrap._run(self,config,args )
+            if hasattr( bs, 'post_bootstrap'):
+                bs.post_bootstrap( config )
+        cerbero.commands.bootstrap.Bootstrap.run = _run
 
+#        print '=>',cerbero.commands.bootstrap.Bootstrap
+
+#
+#
+#
+#
+#        def _run(self, config, args):
+#
+#        bootstrappers = Bootstrapper(config, args.build_tools_only)
+#        for bootstrapper in bootstrappers:
+#            bootstrapper.start()
+#
+#    import cerbero.commands.bootstrap.Bootstrap as bootstrap
+#    
+#
+#
+#
+#_deployer=None
+#
+#def Deploy():
+#    return _deployer
+#
+#if os.path.isfile( os.path.join( os.getcwd(),'deploy.py') ):
+#    sys.path.append( os.getcwd())
+#    _deployer = __import__( 'deploy' )
+#
+#
+#
 #if _deployer and hasattr(_deployer,'MIRRORS'):
 #    import cerbero.utils.shell as cshell
 #    cshell._download = cshell.download
