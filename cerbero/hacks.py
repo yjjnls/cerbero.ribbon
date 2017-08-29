@@ -193,7 +193,6 @@ if os.path.isfile( os.path.join( os.getcwd(),'bootstrap.py') ):
 
 
         def _run(self, config, args):
-            print '==========RUN======='
             if hasattr( bs, 'pre_bootstrap'):
                 bs.pre_bootstrap( config )
             Bootstrap._run(self,config,args )
@@ -201,74 +200,3 @@ if os.path.isfile( os.path.join( os.getcwd(),'bootstrap.py') ):
                 bs.post_bootstrap( config )
         cerbero.commands.bootstrap.Bootstrap.run = _run
 
-#        print '=>',cerbero.commands.bootstrap.Bootstrap
-
-#
-#
-#
-#
-#        def _run(self, config, args):
-#
-#        bootstrappers = Bootstrapper(config, args.build_tools_only)
-#        for bootstrapper in bootstrappers:
-#            bootstrapper.start()
-#
-#    import cerbero.commands.bootstrap.Bootstrap as bootstrap
-#    
-#
-#
-#
-#_deployer=None
-#
-#def Deploy():
-#    return _deployer
-#
-#if os.path.isfile( os.path.join( os.getcwd(),'deploy.py') ):
-#    sys.path.append( os.getcwd())
-#    _deployer = __import__( 'deploy' )
-#
-#
-#
-#if _deployer and hasattr(_deployer,'MIRRORS'):
-#    import cerbero.utils.shell as cshell
-#    cshell._download = cshell.download
-#    #del cshell.download
-#
-#    def _mirror_download(url, destination=None, recursive=False, check_cert=True, overwrite=False):
-#        '''
-#        Downloads a file with wget, but try mirror first#
-
-#        @param url: url to download
-#        @type: str
-#        @param destination: destination where the file will be saved
-#        @type destination: str
-#        '''
-#        murl = _deployer.MIRRORS.get( url ,None)
-#        if murl is None:
-#            part=''
-#            for key, value in _deployer.MIRRORS.iteritems():
-#                if url.startswith(key):
-#                    #find the longest matched
-#                    if len(key) > len(part):
-#                        part = key
-#            if part :
-#                murl = url.replace( part , _deployer.MIRRORS[part] )#
-#
-#        if murl :
-#            if murl.startswith('http://') or murl.startswith('https://'):
-#                try :
-#                    m.message('downloading from mirror %s'%murl)
-#                    cshell._download( murl ,destination,recursive,check_cert,overwrite)
-#                    return
-#                except:
-#                    m.warning('download mirror %s failed.'%murl)
-#            elif os.path.isfile( murl ) :
-#                path = os.path.dirname( murl )
-#                if destination:
-#                    path = destination
-#                shutil.copyfile( murl , path )
-#                return
-#        cshell._download( url ,destination,recursive,check_cert,overwrite)#
-#
-#
-#    #cshell.download = _mirror_download

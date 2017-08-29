@@ -55,7 +55,7 @@ class DistTarball(PackagerBase):
             self.package_prefix = '%s-' % self.config.packages_prefix
 
     def pack(self, output_dir, devel=True, force=False, keep_temp=False,
-             split=True, package_prefix='',algorithm='bz2'):
+             split=True, package_prefix=''):
         try:
             dist_files = self.files_list(PackageType.RUNTIME, force)
         except EmptyPackageError:
@@ -80,12 +80,12 @@ class DistTarball(PackagerBase):
         filenames = []
         if dist_files:
             runtime = self._create_tarball(output_dir, PackageType.RUNTIME,
-                                           dist_files, force, package_prefix, algorithm)
+                                           dist_files, force, package_prefix)
             filenames.append(runtime)
 
         if split and devel and len(devel_files) != 0:
             devel = self._create_tarball(output_dir, PackageType.DEVEL,
-                                         devel_files, force, package_prefix, algorithm )
+                                         devel_files, force, package_prefix)
             filenames.append(devel)
         return filenames
 
@@ -98,15 +98,15 @@ class DistTarball(PackagerBase):
                 self.package.version, package_type, ext)
 
     def _create_tarball(self, output_dir, package_type, files, force,
-                        package_prefix, algorithm):
-        filename = os.path.join(output_dir, self._get_name(package_type,'tar.'+algorithm))
+                        package_prefix):
+        filename = os.path.join(output_dir, self._get_name(package_type))
         if os.path.exists(filename):
             if force:
                 os.remove(filename)
             else:
                 raise UsageError("File %s already exists" % filename)
 
-        tar = tarfile.open(filename, "w:"+algorithm)
+        tar = tarfile.open(filename, "w:bz2")
 
         for f in files:
             filepath = os.path.join(self.prefix, f)

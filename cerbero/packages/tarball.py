@@ -78,7 +78,7 @@ class PKGConfig(object):
     # www.freedesktop.org pkg-config file utils
 
     _PATTERN = re.compile('(?P<name>(\w+))'
-  + '=(?P<value>((/\w+|\w\:/|/w\:\\|$\{\w+\})[^\*\?\"<>\|\r\n]+))'
+  + '=\"?(?P<value>((/\w+|\w\:/|/w\:\\|$\{\w+\})[^\*\?\"<>\|\r\n]+))\"?'
   + '(?P<end>[\r\n])*')
 
     def __init__(self, file, tar=None):
@@ -104,6 +104,7 @@ class PKGConfig(object):
     def rebuild(self, prefix):
 
         commprefix = self._parse()
+
         if commprefix:
             n = commprefix.find('/lib')
             if n:
@@ -219,6 +220,7 @@ class DB(object):
 
 
     def __init__(self , prefix, urlbase):
+        self.descs=[]
                 
         #package path
         path = os.path.join(prefix,  'Packages.tar.gz')
@@ -262,7 +264,7 @@ class DB(object):
             if equal(desc['Arch'],arch) and \
                equal(desc['Platform'],platform) and \
                equal(desc['Type'],pkgtype) and \
-               (equal(desc['Build'],'ReleaseOnly') or  orequal( desc['Build'] , build)):
+               (equal(desc['Build'],'ReleaseOnly') or  equal( desc['Build'] , build)):
                return desc
         return None
 
@@ -274,7 +276,7 @@ def Setup(prefix , config, arch,platform, build='Release'):
             'gstreamer-1.0':{
                 'repo':'/tmp/gstreamer'
                 'version':'1.12.2-2'
-            }
+            },
             'ribbon':{
                 'version':'0.2.2'
             }
@@ -301,7 +303,7 @@ def Setup(prefix , config, arch,platform, build='Release'):
             desc = pi.get(platform,arch,pkgtype,build)
             url = os.path.join( urlbase, desc['Filename'])
             path = os.path.join(infod,desc['Filename'])
-            print 'download ...',url
+            print 'downloading ',url
             download( url, path)
             md5sum=get_md5(path)
             assert desc['MD5Sum'] == md5sum,'<%s> != <%s>'%(desc['MD5Sum'] , md5sum)

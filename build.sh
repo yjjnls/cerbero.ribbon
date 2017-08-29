@@ -34,7 +34,7 @@ function build(){
 		[ $? -eq 0 ] &&  touch ${config}.bootstrap
 	fi
 	if [ ! -f ${config}.built ] ; then
-		./cerbero-uninstalled -c config/${config} package ribbon --tarball -a gz -o "${output}"
+		./cerbero-uninstalled -c config/${config} package ribbon --tarball -o "${output}"
 		[ $? -eq 0 ] &&  touch ${config}.built
 	fi
 }

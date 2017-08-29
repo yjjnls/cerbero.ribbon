@@ -58,10 +58,6 @@ class Package(Command):
                     'create this package (conflicts with --skip-deps-build)')),
             ArgparseArgument('-k', '--keep-temp', action='store_true',
                 default=False, help=_('Keep temporary files for debug')),
-            
-            ArgparseArgument('-a', '--compression-algorithm', default='bz2',
-                help=_('Compression algorithm bz2|gz only for now')),
-    
             ])
 
     def run(self, config, args):
@@ -87,8 +83,7 @@ class Package(Command):
         m.action(_("Creating package for %s") % p.name)
         if args.tarball:
             paths = pkg.pack(os.path.abspath(args.output_dir), args.no_devel,
-                             args.force, args.keep_temp, split=not args.no_split,
-                             algorithm =args.compression_algorithm)
+                             args.force, args.keep_temp, split=not args.no_split)
         else:
             paths = pkg.pack(os.path.abspath(args.output_dir), args.no_devel,
                              args.force, args.keep_temp)
