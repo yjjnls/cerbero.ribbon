@@ -25,10 +25,15 @@ class Recipe(recipe.Recipe):
     #configure_tpl = "./configure --prefix %(prefix)s "\
     #                "--libdir %(libdir)s %(options)s"
     #
-    files_libs = ['event','event_core','event_extra']
+    files_libs = []
     files_devel = ['include/libevent', 'lib/pkgconfig/libevent.pc','lib/pkgconfig/libevent_core.pc','lib/pkgconfig/libevent_extra.pc']
 
     def prepare(self):
+        if self.config.target_platform == Platform.WINDOWS:
+            self.files_libs = ['event','event_core','event_extra']
+        elif self.config.target_platform == Platform.LINUX:
+            self.files_libs = ['libevent','libevent_core','libevent_extra']
+
         self.configure_options += " -DEVENT__BUILD_SHARED_LIBRARIES=OFF "
         self.configure_options += " -DEVENT__DISABLE_TESTS=ON "
 
