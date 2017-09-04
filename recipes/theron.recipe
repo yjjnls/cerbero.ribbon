@@ -40,14 +40,11 @@ class Recipe(recipe.Recipe):
         'theron/0001-makefile-shared.patch'
     ]
     #
-    files_libs = []
+    files_libs = ['libtheron']
     files_devel = ['include/Theron', 'lib/pkgconfig/theron.pc']
 
     def prepare(self):
-        if self.config.target_platform == Platform.WINDOWS:
-            self.files_libs = ['theron']
-        elif self.config.target_platform == Platform.LINUX:
-            self.files_libs = ['libtheron']
+        if self.config.target_platform == Platform.LINUX:
             self.make = 'make library mode=%s shared=on' % (
                 self.config.build_type.lower())
 

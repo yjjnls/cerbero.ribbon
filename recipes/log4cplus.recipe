@@ -20,15 +20,12 @@ class Recipe(recipe.Recipe):
     patches = ['log4cplus/0001-AutoCMake-adaptation.patch',
                 'log4cplus/0002-Build-static-lib-only.patch']
     #
-    files_libs = []
+    files_libs = ['liblog4cplus']
     files_devel = ['include/log4cplus',  'lib/pkgconfig/log4cplus.pc']
 
 
     def prepare(self):
-        if self.config.target_platform == Platform.WINDOWS:
-            self.files_libs = ['log4cplus']
-        elif self.config.target_platform == Platform.LINUX:
-            self.files_libs = ['liblog4cplus']
+		if self.config.target_platform == Platform.LINUX:
             self.config_sh = './configure'
             self.configure_tpl = "%(config-sh)s CXXFLAGS=\"-std=c++0x\" --enable-static=yes"
             # self.configure_tpl = "./configure  "
