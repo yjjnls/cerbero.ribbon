@@ -2,7 +2,7 @@
 #from cerbero.tools.libtool import LibtoolLibrary
 from cerbero.utils import shell
 
-PC_TMPL="""
+PC_TMPL = """
 prefix=%(prefix)s
 exec_prefix=${prefix}/bin
 libdir=${prefix}/lib
@@ -15,9 +15,11 @@ Version: %(version)s
 Requires: 
 
 Requires:
-Libs: -L${libdir} -L${sharedlibdir} -ltheron 
+Libs: -L${libdir} -L${sharedlibdir} -ltheron
 Cflags: -I${includedir} 
 """
+
+
 class Recipe(recipe.Recipe):
     name = 'Theron'
     version = '6.00.02'
@@ -33,14 +35,18 @@ class Recipe(recipe.Recipe):
     #can_use_configure_cache = False
     #configure_tpl = "./configure --prefix %(prefix)s "\
     #                "--libdir %(libdir)s %(options)s"
-    patches = ['theron/0001-add-cmake-build.patch','theron/0001-makefile-shared.patch']
+    patches = [
+        'theron/0001-add-cmake-build.patch',
+        'theron/0001-makefile-shared.patch'
+    ]
     #
-    files_libs = ['theron']
+    files_libs = ['libtheron']
     files_devel = ['include/Theron', 'lib/pkgconfig/theron.pc']
 
     def prepare(self):
         if self.config.target_platform == Platform.LINUX:
-            self.make = 'make library mode=%s shared=on'%(self.config.build_type.lower())
+            self.make = 'make library mode=%s shared=on' % (
+                self.config.build_type.lower())
 
     def configure(self):
         if self.config.target_platform == Platform.WINDOWS:
@@ -52,19 +58,24 @@ class Recipe(recipe.Recipe):
         if self.config.target_platform == Platform.WINDOWS:
             super(recipe.Recipe, self).install()
         elif self.config.target_platform == Platform.LINUX:
-            shell.copy_dir('%s/Include'%(self.make_dir), '%s/include/%s'%(self.config.install_dir, Recipe.name))
-            shell.copy_dir('%s/Lib'%(self.make_dir), '%s/lib'%(self.config.install_dir))
-            d="{0}/lib/pkgconfig".format(self.config.install_dir)
+            shell.copy_dir('%s/Include/Theron' % (self.make_dir),
+                           '%s/include/%s' %
+                           (self.config.install_dir, Recipe.name))
+            shell.copy_dir('%s/Lib' % (self.make_dir),
+                           '%s/lib' % (self.config.install_dir))
+            d = "{0}/lib/pkgconfig".format(self.config.install_dir)
             if not os.path.exists(d):
                 os.makedirs(d)
-                
-            filename = "{0}/lib/pkgconfig/theron.pc".format(self.config.install_dir)
-            f = open(filename,'w')
-            f.write(PC_TMPL%{
-                'version':self.version,
-                'prefix':self.config.install_dir
+
+            filename = "{0}/lib/pkgconfig/theron.pc".format(
+                self.config.install_dir)
+            f = open(filename, 'w')
+            f.write(PC_TMPL % {
+                'version': self.version,
+                'prefix': self.config.install_dir
             })
             f.close()
+
 
 #    def prepare(self):
 #        if self.config.target_platform == Platform.WINDOWS:

@@ -25,10 +25,11 @@ class Recipe(recipe.Recipe):
     #configure_tpl = "./configure --prefix %(prefix)s "\
     #                "--libdir %(libdir)s %(options)s"
     #
-    files_libs = ['event','event_core','event_extra']
+    files_libs = ['libevent','libevent_core','libevent_extra']
     files_devel = ['include/libevent', 'lib/pkgconfig/libevent.pc','lib/pkgconfig/libevent_core.pc','lib/pkgconfig/libevent_extra.pc']
 
     def prepare(self):
+
         self.configure_options += " -DEVENT__BUILD_SHARED_LIBRARIES=OFF "
         self.configure_options += " -DEVENT__DISABLE_TESTS=ON "
 

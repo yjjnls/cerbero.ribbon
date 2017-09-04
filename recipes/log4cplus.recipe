@@ -20,14 +20,43 @@ class Recipe(recipe.Recipe):
     patches = ['log4cplus/0001-AutoCMake-adaptation.patch',
                 'log4cplus/0002-Build-static-lib-only.patch']
     #
-    files_libs = ['log4cplus']
+    files_libs = ['liblog4cplus']
     files_devel = ['include/log4cplus',  'lib/pkgconfig/log4cplus.pc']
 
 
     def prepare(self):
-        self.configure_options += " -DEVENT__BUILD_SHARED_LIBRARIES=OFF "
-        self.configure_options += " -DLOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME=OFF "
+		if self.config.target_platform == Platform.LINUX:
+            self.config_sh = './configure'
+            self.configure_tpl = "%(config-sh)s CXXFLAGS=\"-std=c++0x\" --enable-static=yes"
+            # self.configure_tpl = "./configure  "
+            # self.configure_options += " CXXFLAGS= -std=c++0x "
+            
+        # self.configure_options += " -DEVENT__BUILD_SHARED_LIBRARIES=OFF "
+        # self.configure_options += " -DLOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME=OFF "
+    def post_install(self):
+        import shutil
+        if self.config.target_platform == Platform.LINUX:
+            src = os.path.join(self.make_dir,'include/log4cplus')
+            dst = os.path.join(self.config.prefix,'include/log4cplus')
+            if not os.path.exists(dst ):
+                os.makedirs( dst )
+            shell.copy_dir( src,dst )
 
+            src = os.path.join(self.make_dir,'.libs/liblog4cplus.a')
+            d = os.path.join(self.config.prefix,'lib')
+            if not os.path.exists(d ):
+                os.makedirs( d )
+            dst = os.path.join(d,'liblog4cplus.a')
+            shutil.copy(src,dst)
+
+            src = os.path.join(self.make_dir,'log4cplus.pc')
+            d = os.path.join(self.config.prefix,'lib/pkgconfig')
+            if not os.path.exists(d ):
+                os.makedirs( d )
+            dst = os.path.join(d,'log4cplus.pc')
+            shutil.copy(src,dst)
+    # def install(self):
+    #     if self.config.target_platform == Platform.LINUX:
         
 #	
 #        if self.config.target_platform == Platform.WINDOWS:
