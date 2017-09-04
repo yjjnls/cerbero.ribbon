@@ -28,11 +28,9 @@ class Recipe(recipe.Recipe):
 		if self.config.target_platform == Platform.LINUX:
             self.config_sh = './configure'
             self.configure_tpl = "%(config-sh)s CXXFLAGS=\"-std=c++0x\" --enable-static=yes"
-            # self.configure_tpl = "./configure  "
-            # self.configure_options += " CXXFLAGS= -std=c++0x "
             
-        # self.configure_options += " -DEVENT__BUILD_SHARED_LIBRARIES=OFF "
-        # self.configure_options += " -DLOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME=OFF "
+        self.configure_options += " -DEVENT__BUILD_SHARED_LIBRARIES=OFF "
+        self.configure_options += " -DLOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME=OFF "
     def post_install(self):
         import shutil
         if self.config.target_platform == Platform.LINUX:
