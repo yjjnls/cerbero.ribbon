@@ -21,6 +21,7 @@ class Recipe(recipe.Recipe):
     #           'openwebrtc/0001-pulseaudio-support-for-openwebrtc-test.patch',
 	#		   'openwebrtc/0001-add-fix.patch']
     #
+    patches = ['openwebrtc/0003-fix-linux-shared-library.patch']
     files_libs = ['libopenwebrtc_gst-lite','libopenwebrtc-lite-0.3']
     files_devel = ['include/owr', 'lib/pkgconfig/openwebrtc-lite-0.3.pc',
                    'lib/pkgconfig/openwebrtc-gst-lite-0.3.pc']

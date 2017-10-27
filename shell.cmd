@@ -1,5 +1,7 @@
 @ECHO OFF
 set MSYSTEM=msys
+set CERBERO_SDK_REPO=http://172.16.0.119/WMS/SDK
+set CERBERO_TARBALL_MIRROR=http://172.16.0.119/WMS/mirrors
 if not exist c:\msys64\usr\bin\bash.exe (
     echo.
     echo You must install msy2-x86_64 at C:\msys64
