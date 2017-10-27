@@ -1,0 +1,89 @@
+From 519430d671705f8517c3004f0a1660da52816258 Mon Sep 17 00:00:00 2001
+From: cerbero_build <cerbero_build@kedacom.com>
+Date: Tue, 24 Oct 2017 19:44:21 +0800
+Subject: [PATCH 3/3] fix linux shared library
+
+---
+ local/owr_device_list.c | 42 ++++++++++++++++++++++++++----------------
+ owr/CMakeLists.txt      |  4 +++-
+ 2 files changed, 29 insertions(+), 17 deletions(-)
+
+diff --git a/local/owr_device_list.c b/local/owr_device_list.c
+index 31a4479..bad46b6 100644
+--- a/local/owr_device_list.c
++++ b/local/owr_device_list.c
+@@ -372,28 +372,38 @@ static OwrLocalMediaSource *maybe_create_source_from_filename(const gchar *name)
+ 
+ static gboolean enumerate_video_source_devices(GClosure *callback)
+ {
+-    OwrLocalMediaSource *source;
+-    GList *sources = NULL;
+-    GError *error = NULL;
+-    GDir *dev_dir;
+-    const gchar *filename;
++    // OwrLocalMediaSource *source;
++    // GList *sources = NULL;
++    // GError *error = NULL;
++    // GDir *dev_dir;
++    // const gchar *filename;
+ 
+-    dev_dir = g_dir_open("/dev", 0, &error);
++    // dev_dir = g_dir_open("/dev", 0, &error);
+ 
+-    while ((filename = g_dir_read_name(dev_dir))) {
+-        source = maybe_create_source_from_filename(filename);
++    // while ((filename = g_dir_read_name(dev_dir))) {
++        // source = maybe_create_source_from_filename(filename);
+ 
+-        if (source)
+-            sources = g_list_prepend(sources, source);
+-    }
++        // if (source)
++            // sources = g_list_prepend(sources, source);
++    // }
+ 
+-    g_dir_close(dev_dir);
++    // g_dir_close(dev_dir);
+ 
+-    sources = g_list_reverse(sources);
+-    _owr_utils_call_closure_with_list(callback, sources);
+-    g_list_free_full(sources, g_object_unref);
++    // sources = g_list_reverse(sources);
++    // _owr_utils_call_closure_with_list(callback, sources);
++    // g_list_free_full(sources, g_object_unref);
+ 
+-    return FALSE;
++    // return FALSE;
++	
++	OwrLocalMediaSource *source;
++	GList *sources = NULL;
++	source = _owr_local_media_source_new_cached(0, "video0",
++		OWR_MEDIA_TYPE_VIDEO, OWR_SOURCE_TYPE_NET);
++	sources = g_list_prepend(sources, source);
++	sources = g_list_reverse(sources);
++	_owr_utils_call_closure_with_list(callback, sources);
++	g_list_free_full(sources, g_object_unref);
++	return FALSE;
+ }
+ 
+ #endif /*(defined(__linux__) && !defined(__ANDROID__))*/
+diff --git a/owr/CMakeLists.txt b/owr/CMakeLists.txt
+index 19fd4c3..06dc58f 100644
+--- a/owr/CMakeLists.txt
++++ b/owr/CMakeLists.txt
+@@ -34,9 +34,11 @@ add_library (openwebrtc-lite-${OWR_API_VERSION} SHARED ${_SOURCES} ${_HEADERS} o
+ #autocmake_add_library(openwebrtc-lite-${OWR_API_VERSION} SHARED
+ #                      MODULES ${_modules}
+ #					  SOURCES ${_SOURCES} ${_HEADERS} openwebrtc.def )
+-target_link_libraries(openwebrtc-lite-${OWR_API_VERSION}  
++target_link_libraries(openwebrtc-lite-${OWR_API_VERSION}
++		  "-Wl,--whole-archive"  
+           openwebrtc_transport-lite 
+ 		  openwebrtc_local-lite
++		  "-Wl,--no-whole-archive"
+ 		  ${this_LIBS}
+ 		  )
+ 
+-- 
+2.13.0.windows.1
+
